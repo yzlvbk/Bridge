@@ -1,0 +1,72 @@
+{
+  "id": "1748010",
+  "name": "Travel",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5129016",
+      "name": "天气-沙尘暴",
+      "font_class": "tianqi-shachenbao",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "5129019",
+      "name": "天气-雾",
+      "font_class": "tianqi-wu",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "5870840",
+      "name": "天气-晴",
+      "font_class": "tianqi-qing",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "7570739",
+      "name": "天气-冰雹",
+      "font_class": "tianqi-bingbao",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "7571146",
+      "name": "天气-小雪",
+      "font_class": "tianqi-xiaoxue",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "14626446",
+      "name": "天气-雷电天气",
+      "font_class": "tianqi-leidiantianqi",
+      "unicode": "e6dc",
+      "unicode_decimal": 59100
+    },
+    {
+      "icon_id": "16351622",
+      "name": "天气-阴",
+      "font_class": "tianqi-yin",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "16351627",
+      "name": "天气-多云",
+      "font_class": "tianqi-duoyun",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "16351629",
+      "name": "天气-中雨",
+      "font_class": "tianqi-zhongyu",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    }
+  ]
+}

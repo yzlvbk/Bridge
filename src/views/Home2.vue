@@ -1,153 +1,58 @@
 <template>
-    <div>
-        <full-page :options="options">
-            <div class="section">
-                  <div class="header">
-                    <div class="header_title">郑州桥梁展示系统</div>
-                    <div class="scroll_list"><dv-scroll-board :config="config" style="width:500px;height:160px" /></div>
-                    <div class="header_weather">
-                      <i class="iconfont" :class="'icontianqi-'+weatherIcon"></i>
-                      <span class="temperature">{{weatherData.nowTem}}°C</span>
-                      <span class="header_weather_item">
-                        <span>{{weatherData.city}}</span>
-                        <span>{{weatherData.wea}}</span>
-                      </span>
-                      <span class="header_weather_item">
-                        <span>{{weatherData.minTem}}°C~{{weatherData.maxTem}}°C</span>
-                        <span>湿度: {{weatherData.humidity}}</span>
-                      </span>
-                      <span class="header_weather_item">
-                        <span>{{weatherData.win}} {{weatherData.win_speed}}</span>
-                        <span></span>
-                      </span>
-                    </div>
-                  </div>
-                  <div class="main">
-
-                    <div class="main_middle">
-                      <div class="main_middle_title">
-                        <!-- 子系统标题 -->
-                        <div class="main_middle_item_warp" @mouseover="middleItemOver" @mouseout="middleItemOut" @click="middleItemClick('zhenShaoBridge')">
-                          <dv-decoration-11 class="main_middle_item" style="width:200px;height:60px;" :color="activeColor">郑州桥监测系统</dv-decoration-11>
-                        </div>
-                      </div>
-                      <div class="main_middle_map">1</div>
-                    </div>
-
-                  </div>
-            </div>
-            <div class="section">
-                <div class="box2">
-                section2
-                </div>
-            </div>
-            <div class="section">
-                <div class="box3">
-                section3
-                </div>
-            </div>
-        </full-page>
+  <div class="home">
+    <div class="header">
+      <div class="header_title">郑州桥梁展示系统</div>
+      <div class="header_date">
+        <dv-border-Box-13 :color="['skyblue']">
+          <div class="dataV_date_content">2020年7月20日 - 18:00:00</div>
+        </dv-border-Box-13>
+      </div>
     </div>
+
+    <div class="main">
+      <div class="main_left">
+        <div class="main_left_item">
+          <dv-border-box-10></dv-border-box-10>
+        </div>
+        <div class="main_left_item">
+          <dv-border-box-10></dv-border-box-10>
+        </div>
+      </div>
+
+      <div class="main_middle">
+        <div class="main_middle_title">
+          <!-- 子系统标题 -->
+          <div class="main_middle_item_warp" @mouseover="middleItemOver" @mouseout="middleItemOut" @click="middleItemClick('zhenShaoBridge')">
+            <dv-decoration-11 class="main_middle_item" style="width:200px;height:60px;" :color="activeColor">郑州桥监测系统</dv-decoration-11>
+          </div>
+        </div>
+        <div class="main_middle_map">1</div>
+      </div>
+
+      <div class="main_right">
+        <div class="main_right_item">
+          <dv-border-box-10></dv-border-box-10>
+        </div>
+        <div class="main_right_item">
+          <dv-border-box-10></dv-border-box-10>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script>
 export default {
-  async mounted () {
+  data () {
+    return {
+      activeColor: []
+    }
+  },
+  mounted () {
     // 初始化郑州地图
     this.$nextTick(function () {
       this.drawZhengZhouMap()
     })
-
-    // xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
-    const { data } = await this.$http.get('https://www.tianqiapi.com/api?version=v61&appid=13392814&appsecret=RfDCQz2U&city=郑州')
-    console.log(data)
-    this.weatherData = {
-      city: data.city,
-      nowTem: data.tem,
-      maxTem: data.tem1,
-      minTem: data.tem2,
-      wea: data.wea,
-      wea_img: data.wea_img,
-      win: data.win,
-      win_speed: data.win_speed,
-      humidity: data.humidity
-    }
-
-    switch (data.wea_img) {
-      case 'xue':
-        this.weatherIcon = 'xiaoxue'
-        break
-
-      case 'lei':
-        this.weatherIcon = 'leidiantianqi'
-        break
-
-      case 'shachen':
-        this.weatherIcon = 'shachenbao'
-        break
-
-      case 'wu':
-        this.weatherIcon = 'wu'
-        break
-
-      case 'bingbao':
-        this.weatherIcon = 'bingbao'
-        break
-
-      case 'yun':
-        this.weatherIcon = 'duoyun'
-        break
-
-      case 'yu':
-        this.weatherIcon = 'zhongyu'
-        break
-
-      case 'yin':
-        this.weatherIcon = 'yin'
-        break
-
-      case 'qing':
-        this.weatherIcon = 'qing'
-        break
-    }
-  },
-  data () {
-    return {
-      // 整屏滚动配置项
-      options: {
-        licenseKey: 'OPEN-SOURCE-GPLV3-LICENSE',
-        verticalCentered: false, // 每一页幻灯片的内容是否垂直居中
-        scrollBar: false,
-        menu: '#menu',
-        navigation: true,
-        navigationPosition: 'right',
-        navigationTooltips: ['firstSlide', 'secondSlide', 'thirdSlide'],
-        sectionsColor: ['rgba(9, 22, 40, 1)', 'skyblue', 'pink']
-      },
-      // 天气数据
-      weatherData: {},
-      // 天气图标
-      weatherIcon: '',
-      // 按钮当前选中颜色
-      activeColor: [],
-      config: {
-        data: [
-          ['行1列1', '行1列2', '行1列3'],
-          ['行2列1', '行2列2', '行2列3'],
-          ['行3列1', '行3列2', '行3列3'],
-          ['行4列1', '行4列2', '行4列3'],
-          ['行5列1', '行5列2', '行5列3'],
-          ['行6列1', '行6列2', '行6列3'],
-          ['行7列1', '行7列2', '行7列3'],
-          ['行8列1', '行8列2', '行8列3'],
-          ['行9列1', '行9列2', '行9列3'],
-          ['行10列1', '行10列2', '行10列3']
-        ],
-        rowNum: 3, // 表行数
-        oddRowBGC: '#003B51', // 奇数行背景色
-        evenRowBGC: '#0A2732', // 偶数行背景色
-        waitTime: 2000 // 轮播时间
-      }
-    }
   },
   methods: {
     drawZhengZhouMap () {
@@ -207,7 +112,7 @@ export default {
               // formatter:,               // 标签内容格式器
               textStyle: { // 标签的字体样式
                 color: '#000', // 地图初始化区域字体颜色
-                fontSize: 14, // 字体大小
+                fontSize: 8, // 字体大小
                 opacity: 1, // 字体透明度
                 backgroundColor: 'rgba(0,23,11,0)' // 字体背景色
               }
@@ -225,7 +130,7 @@ export default {
                 show: true,
                 textStyle: {
                   // color: '#fff', // 高亮时标签颜色变为 白色
-                  fontSize: 14 // 高亮时标签字体 变大
+                  fontSize: 8 // 高亮时标签字体 变大
                 }
               },
               itemStyle: { // itemStyle高亮时的配置
@@ -264,7 +169,7 @@ export default {
               autoRotateAfterStill: 3, // 在鼠标静止操作后恢复自动旋转的时间间隔。在开启 autoRotate 后有效。[ default: 3 ]
               damping: 0, // 鼠标进行旋转，缩放等操作时的迟滞因子，在大于等于 1 的时候鼠标在停止操作后，视角仍会因为一定的惯性继续运动（旋转和缩放）。[ default: 0.8 ]
               rotateSensitivity: 1, // 旋转操作的灵敏度，值越大越灵敏。支持使用数组分别设置横向和纵向的旋转灵敏度。默认为1, 设置为0后无法旋转。rotateSensitivity: [1, 0]——只能横向旋转； rotateSensitivity: [0, 1]——只能纵向旋转。
-              zoomSensitivity: 0, // 缩放操作的灵敏度，值越大越灵敏。默认为1,设置为0后无法缩放。
+              zoomSensitivity: 1, // 缩放操作的灵敏度，值越大越灵敏。默认为1,设置为0后无法缩放。
               panSensitivity: 1, // 平移操作的灵敏度，值越大越灵敏。默认为1,设置为0后无法平移。支持使用数组分别设置横向和纵向的平移灵敏度
               panMouseButton: 'left', // 平移操作使用的鼠标按键，支持：'left' 鼠标左键（默认）;'middle' 鼠标中键 ;'right' 鼠标右键(注意：如果设置为鼠标右键则会阻止默认的右键菜单。)
               rotateMouseButton: 'left', // 旋转操作使用的鼠标按键，支持：'left' 鼠标左键;'middle' 鼠标中键（默认）;'right' 鼠标右键(注意：如果设置为鼠标右键则会阻止默认的右键菜单。)
@@ -319,6 +224,8 @@ export default {
             }
           ]
         }
+
+        // 设置图表实例的配置项以及数据，万能接口，所有参数和数据的修改都可以通过setOption完成，ECharts 会合并新的参数和数据，然后刷新图表。
         myChart.setOption(option)
 
         // 让图表跟随屏幕自动的去适应
@@ -360,55 +267,70 @@ export default {
 }
 .header {
   position: relative;
+}
+.header_title {
+  text-align: center;
+  line-height: 157px;
+  font-size: 30px;
+  height: 188px;
+  background: url(../assets/image/topbg.png) no-repeat;
+  background-size: 100% 100%;
+  // border: 1px solid #fff;
+}
+.header_date {
+  position: absolute;
+  right: 40px;
+  top: 120px;
 
-  .header_title {
-    text-align: center;
-    line-height: 157px;
-    font-size: 30px;
-    height: 188px;
-    background: url(../assets/image/topbg.png) no-repeat;
-    background-size: 100% 100%;
-    // border: 1px solid #fff;
-  }
-
-  .scroll_list {
-    position: absolute;
-    top: 100px;
-    left: 40px;
-  }
-
-  .header_weather {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 40px;
-    top: 85px;
-    width: 400px;
-    height: 80px;
-
-    .iconfont {
-      font-size: 50px;
-    }
-    .temperature {
-      margin: 0 15px;
-      font-size: 30px;
-    }
-    .header_weather_item {
-      display: flex;
-      height: 40px;
-      margin-right: 18px;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  }
+  width: 400px;
+  height: 60px;
+  // border: 1px solid #fff;
+}
+.dataV_date_content {
+  position: absolute;
+  font-size: 20px;
+  top: 22px;
+  left: 82px;
 }
 
 .main {
   position: relative;
   height: 100%;
 
+  .main_left,
+  .main_right {
+    position: absolute;
+    width: 25vw;
+    height: calc(100% - 188px);
+    // border: 1px solid #fff;
+    z-index: 100;
+  }
+
+  .main_left {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+
+    .main_left_item {
+      flex: 1;
+      padding: 30px 10px;
+    }
+  }
+
+  .main_right {
+    display: flex;
+    flex-direction: column;
+    right: 0;
+
+    .main_right_item {
+      flex: 1;
+      padding: 30px 10px;
+    }
+  }
+
   .main_middle {
     position: absolute;
+    // left: 15%;
     width: 100%;
     height: calc(100% - 188px);
     // border: 1px solid #fff;
@@ -428,14 +350,5 @@ export default {
   }
 
 }
-.icontianqi-shachenbao { color: rgb(131,210,248); }
-.icontianqi-zhongyu { color: rgb(20, 84, 122); }
-.icontianqi-wu { color: rgb(218, 223, 227); }
-.icontianqi-qing { color: rgb(254, 202, 76);}
-.icontianqi-bingbao { color: rgb(218, 223, 227); }
-.icontianqi-xiaoxue { color: rgb(218, 223, 227); }
-.icontianqi-leidiantianqi { color: rgb(125, 125, 137); }
-.icontianqi-yin { color: rgb(20, 84, 122); }
-.icontianqi-duoyun { color: rgb(218, 223, 227);}
 
 </style>
