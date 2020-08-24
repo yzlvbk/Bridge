@@ -20,7 +20,7 @@
     <!-- 内容区域 -->
     <div class="contain">
         <div class="three_d_model" style="width: 60%;">
-            3d模型
+            <ThreeD />
         </div>
         <div class="vsplitter" ref="vsplitter"></div>
         <div class="chart" style="width: 40%;">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import ThreeD from '../../../components/threeD/ThreeD'
 export default {
   mounted () {
     this.path = this.$route.path
@@ -73,6 +74,9 @@ export default {
       this.path = newVal.path
     }
   },
+  components: {
+    ThreeD
+  },
   beforeDestroy () {
     // 销毁移动内容区域窗口大小事件
     this.$refs.vsplitter.removeEventListener('mousedown', this.mouseResize)
@@ -94,6 +98,7 @@ export default {
     .three_d_model,
     .chart {
         height: calc(100% - 110px);
+        overflow: hidden;
         background-color: var(--ContainBgColor);
     }
 
