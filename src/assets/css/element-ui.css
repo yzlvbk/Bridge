@@ -1,0 +1,65 @@
+/* 侧边栏 */
+.el-menu {
+    border-right: none;
+    height: 100%;
+}
+
+
+/* 面包屑导航 */
+.el-breadcrumb__inner,
+.el-breadcrumb__item:last-child .el-breadcrumb__inner  {
+    color: #eee;
+}
+.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover {
+    color: #eee;
+}
+.el-breadcrumb__separator {
+    color: #eee;
+}
+.el-breadcrumb {
+    margin-bottom: 20px;
+}
+
+
+/* 修改表格样式 */
+/* 表头字体颜色 */
+.el-table thead {
+    color: #eee;
+    font-weight: 500;
+}
+/* 表体字体颜色 */
+.el-table {
+    color: #eee;
+    font-size: 16px;
+    background-color: transparent;
+}
+/* 表头背景颜色 */
+.el-table th {
+    background-color: rgb(42,49,58);
+}
+/* 表格偶数行背景颜色 */
+.el-table--striped .el-table__body tr.el-table__row--striped td {
+    background-color: rgb(42,49,58);
+}
+/* 奇数行背景颜色 */
+.el-table tr {
+    background-color: rgb(45,53,63);
+    border: none 
+}
+/* 表头底部边框线 */
+.el-table th.is-leaf {
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+}
+/* 表体底部边框线 */
+.el-table--border::after, .el-table--group::after, .el-table::before {
+    background-color: transparent;
+}
+/* 表格底部边框 */
+.el-table td {
+    border-bottom: 1px solid transparent;
+}
+/* hover高亮颜色 */
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+    background-color: #007491;
+}

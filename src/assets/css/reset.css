@@ -46,7 +46,7 @@ tt,
 code,
 kbd,
 samp {
-    line-height: 1.5;
+    /* line-height: 1.5; */
     font-family: tahoma, arial, "Hiragino Sans GB", simsun, sans-serif
 }
  
@@ -103,9 +103,6 @@ a {
     border: none;
 }
  
- 
- 
- 
 html {
     overflow-x: hidden;
     overflow-y: hidden;
@@ -116,40 +113,22 @@ html {
 body {
     font-family: Arial, "Microsoft Yahei", "Helvetica Neue", Helvetica, sans-serif;
     color: #eee;
-    font-size: .28em;
-    line-height: 1;
+    /* line-height: 1; */
     -webkit-text-size-adjust: none;
     
 }
 
- 
 a {
     color: rgb(15,200,224);
     text-decoration: none;
 }
 
-/* 侧边栏 */
-.el-menu {
-    border-right: none;
-    height: 100%;
-}
-
-/* 面包屑导航 */
-.el-breadcrumb__inner,
-.el-breadcrumb__item:last-child .el-breadcrumb__inner  {
-    color: #fff;
-}
-.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover {
-    color: #fff;
-}
-.el-breadcrumb__separator {
-    color: #fff;
-}
-.el-breadcrumb {
-    margin-bottom: 20px;
-}
 
 :root {
-    /* 内容区背景颜色 */
+    /* 背景颜色 */
+    --BgColor: rgba(9, 22, 40, 1);
+    /* 内容区模块颜色 */
     --ContainBgColor: rgb(37, 42, 53);
+    /* 文字高亮颜色 */
+    --LightTextColor: #0fc8e0;
 }

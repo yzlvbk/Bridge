@@ -14,7 +14,7 @@
         <el-menu
         :default-active="activePath"
         background-color="rgba(44,84,126,0.1)"
-        text-color="#fff"
+        text-color="#eee"
         router
         :unique-opened="true"
         active-text-color=rgb(58,255,251)
@@ -114,9 +114,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../assets/css/reset.css';
 .bridge {
   height: 100%;
-  background-color: rgba(9, 22, 40, 1);
+  background-color: var(--BgColor);
   background-size: 100% 100%;
 }
 .bridge_header {
@@ -129,7 +130,7 @@ export default {
 .header_title {
   margin-left: 20px;
   font-size: 22px;
-  color: rgb(15,200,224);
+  color: var(--LightTextColor);
 }
 .header_user {
   position: absolute;

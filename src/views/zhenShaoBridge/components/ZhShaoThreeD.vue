@@ -22,6 +22,7 @@
         <div class="three_d_model" style="width: 60%;">
             <ThreeD />
         </div>
+        <!-- 空隙模块 -- 控制模块拖动 -->
         <div class="vsplitter" ref="vsplitter"></div>
         <div class="chart" style="width: 40%;">
             <router-view></router-view>

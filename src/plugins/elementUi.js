@@ -10,7 +10,9 @@ import {
   Aside,
   Main,
   Breadcrumb,
-  BreadcrumbItem
+  BreadcrumbItem,
+  Table,
+  TableColumn
 } from 'element-ui'
 
 Vue.use(Button)
@@ -23,3 +25,5 @@ Vue.use(Aside)
 Vue.use(Main)
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
+Vue.use(Table)
+Vue.use(TableColumn)

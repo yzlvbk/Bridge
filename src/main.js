@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './plugins/elementUi'
 import 'echarts-gl'
 import './assets/css/reset.css'
+import './assets/css/element-ui.css'
 import './plugins/datavUi'
 // 整屏滚动插件
 import VueFullpage from 'vue-fullpage.js'

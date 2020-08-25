@@ -133,11 +133,6 @@ export default {
       var transValueY = 0
 
       /* 创建正交投影 */
-      // var clientWidth = 1000
-      // var clientHeight = 800
-      // gl.viewport(0, 0, clientWidth, clientHeight)
-      // var projectMat = createOrtho(-clientWidth * 5, clientWidth * 5, -clientHeight * 5, clientHeight * 5, -10000.0, 10000.0)
-      console.log(canvas.clientWidth, canvas.clientHeight)
       gl.viewport(0, 0, canvas.clientWidth, canvas.clientHeight)
       var projectMat = createOrtho(-canvas.clientWidth * 5, canvas.clientWidth * 5, -canvas.clientHeight * 5, canvas.clientHeight * 5, -10000.0, 10000.0)
       gl.uniformMatrix4fv(uniformProj, false, projectMat)
