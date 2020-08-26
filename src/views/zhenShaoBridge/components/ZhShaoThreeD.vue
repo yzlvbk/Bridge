@@ -1,5 +1,5 @@
 <template>
-<div class="monitor">
+<div class="zhshao_three_d">
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>郑少高速桥</el-breadcrumb-item>
@@ -25,7 +25,9 @@
         <!-- 空隙模块 -- 控制模块拖动 -->
         <div class="vsplitter" ref="vsplitter"></div>
         <div class="chart" style="width: 40%;">
+          <keep-alive>
             <router-view></router-view>
+          </keep-alive>
         </div>
     </div>
 </div>
@@ -88,23 +90,23 @@ export default {
 <style lang="less" scoped>
 @import "../../../assets/css/reset.css";
 
-.monitor {
-    height: 100%;
+.zhshao_three_d {
+    height: calc(100% - 46px);
 }
 
 .contain {
     display: flex;
-    height: calc(100% - 20px);
+    height: calc(100% - 73px);
 
     .three_d_model,
     .chart {
-        height: calc(100% - 110px);
+        height: 100%;
         overflow: hidden;
         background-color: var(--ContainBgColor);
     }
 
     .vsplitter {
-        height: calc(100% - 110px);
+        height: 100%;
         width: 14px;
         cursor: col-resize;
     }

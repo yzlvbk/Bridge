@@ -2,28 +2,37 @@
     <div>
         <full-page :options="options">
             <div class="section">
+                  <!-- 头部区域 -->
                   <div class="header">
                     <div class="header_title">郑州桥梁展示系统</div>
-                    <div class="scroll_list"><dv-scroll-board :config="config" style="width:500px;height:160px" /></div>
-                    <div class="header_weather">
-                      <i class="iconfont" :class="'icontianqi-'+weatherIcon"></i>
-                      <span class="temperature">{{weatherData.nowTem}}°C</span>
-                      <span class="header_weather_item">
-                        <span>{{weatherData.city}}</span>
-                        <span>{{weatherData.wea}}</span>
-                      </span>
-                      <span class="header_weather_item">
-                        <span>{{weatherData.minTem}}°C~{{weatherData.maxTem}}°C</span>
-                        <span>湿度: {{weatherData.humidity}}</span>
-                      </span>
-                      <span class="header_weather_item">
-                        <span>{{weatherData.win}} {{weatherData.win_speed}}</span>
-                        <span></span>
-                      </span>
+                    <div class="scroll_list"><dv-scroll-board :config="config" style="height:120px" /></div>
+                    <div class="header_weather_warp">
+                      <div class="header_weather">
+                        <!-- 天气图标 -->
+                        <i class="iconfont" :class="'icontianqi-'+weatherIcon"></i>
+                        <!-- 温度 -->
+                        <span class="temperature">{{weatherData.nowTem}}°C</span>
+                        <!-- 城市和天气 -->
+                        <span class="header_weather_item">
+                          <span>{{weatherData.city}}</span>
+                          <span>{{weatherData.wea}}</span>
+                        </span>
+                        <!-- 温度范围和湿度 -->
+                        <span class="header_weather_item">
+                          <span>{{weatherData.minTem}}°C~{{weatherData.maxTem}}°C</span>
+                          <span>湿度: {{weatherData.humidity}}</span>
+                        <!-- 风向 -->
+                        </span>
+                        <span class="header_weather_item">
+                          <span>{{weatherData.win}} {{weatherData.win_speed}}</span>
+                          <span></span>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div class="main">
 
+                  <!-- 主题内容区域 -->
+                  <div class="main">
                     <div class="main_middle">
                       <div class="main_middle_title">
                         <!-- 子系统标题 -->
@@ -31,9 +40,8 @@
                           <dv-decoration-11 class="main_middle_item" style="width:200px;height:60px;" :color="activeColor">郑州桥监测系统</dv-decoration-11>
                         </div>
                       </div>
-                      <div class="main_middle_map">1</div>
+                      <div class="main_middle_map"></div>
                     </div>
-
                   </div>
             </div>
             <div class="section">
@@ -143,8 +151,8 @@ export default {
           ['行10列1', '行10列2', '行10列3']
         ],
         rowNum: 3, // 表行数
-        oddRowBGC: '#003B51', // 奇数行背景色
-        evenRowBGC: '#0A2732', // 偶数行背景色
+        oddRowBGC: 'rgba(45,53,63,0.5)', // 奇数行背景色
+        evenRowBGC: 'rgba(42,49,58,0.5)', // 偶数行背景色
         waitTime: 2000 // 轮播时间
       }
     }
@@ -363,44 +371,49 @@ export default {
 
   .header_title {
     text-align: center;
-    line-height: 157px;
-    font-size: 30px;
-    height: 188px;
+    line-height: 75px;
+    font-size: 22px;
+    height: 90px;
     background: url(../assets/image/topbg.png) no-repeat;
     background-size: 100% 100%;
-    // border: 1px solid #fff;
   }
 
   .scroll_list {
     position: absolute;
-    top: 100px;
-    left: 40px;
+    top: 58px;
+    left: 10px;
+    width: 30%;
+    max-width: 500px;
+    z-index: 100;
   }
 
-  .header_weather {
+  .header_weather_warp{
+    .header_weather {
     display: flex;
     align-items: center;
     position: absolute;
-    right: 40px;
-    top: 85px;
-    width: 400px;
-    height: 80px;
+    right: 10px;
+    top: 40px;
+    height: 60px;
+    text-align: left;
 
-    .iconfont {
-      font-size: 50px;
-    }
-    .temperature {
-      margin: 0 15px;
-      font-size: 30px;
-    }
-    .header_weather_item {
-      display: flex;
-      height: 40px;
-      margin-right: 18px;
-      flex-direction: column;
-      justify-content: space-between;
+      .iconfont {
+        font-size: 40px;
+      }
+      .temperature {
+        margin: 0 7px;
+        font-size: 22px;
+      }
+      .header_weather_item {
+        display: flex;
+        height: 36px;
+        margin-right: 7px;
+        flex-direction: column;
+        justify-content: space-between;
+      }
     }
   }
+
 }
 
 .main {
@@ -410,7 +423,7 @@ export default {
   .main_middle {
     position: absolute;
     width: 100%;
-    height: calc(100% - 188px);
+    height: calc(100% - 90px);
     // border: 1px solid #fff;
   }
   .main_middle_map {

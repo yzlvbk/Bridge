@@ -47,6 +47,8 @@
 </template>
 
 <script>
+/* 监听div宽高变化 */
+import elementResizeDetectorMaker from 'element-resize-detector'
 export default {
   mounted () {
     this.$nextTick(() => {
@@ -155,15 +157,17 @@ export default {
           text: '车辆载重',
           textStyle: {
             color: '#eee',
-            fontSize: '16',
-            fontweight: 100
-          }
+            fontSize: '14',
+            fontWeight: 400
+          },
+          left: 'center',
+          top: '10'
         },
         tooltip: {
           trigger: 'axis'
         },
         grid: {
-          top: '25%',
+          top: '22%',
           left: '5%',
           right: '13%',
           bottom: '7%',
@@ -185,6 +189,9 @@ export default {
           boundaryGap: false, // 坐标轴两边留白
           data: dataX,
           name: '时间',
+          nameTextStyle: {
+            color: lineColor
+          },
           axisLine: { // 坐标轴轴线相关设置
             lineStyle: {
               color: fontColor
@@ -193,6 +200,9 @@ export default {
         },
         yAxis: [{
           name: '重量',
+          nameTextStyle: {
+            color: lineColor
+          },
           type: 'value',
           splitNumber: 5,
           axisLine: {
@@ -226,10 +236,16 @@ export default {
       // 3.将配置项给实例
       myChart.setOption(option)
       // 4.让图表跟随屏幕自动的去适应
-      window.addEventListener('resize', function () {
+      const erd = elementResizeDetectorMaker()
+      erd.listenTo(document.querySelector('.weight'), element => {
         myChart.resize()
       })
     }
+  },
+  beforeDestroy () {
+    /* 移除监听事件 */
+    const erd = elementResizeDetectorMaker()
+    erd.removeAllListeners(document.querySelector('.weight'))
   }
 
 }
@@ -240,6 +256,7 @@ export default {
 .monitor {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .ranking {
     display: flex;
@@ -266,7 +283,7 @@ export default {
       height: 50px;
       line-height: 50px;
       text-align: center;
-      font-size: 20px;
+      font-size: 16px;
     }
 
     .component-table {
@@ -293,7 +310,6 @@ export default {
 /* 修改字体颜色 */
 .monitor .el-table .success-row {
     color: pink !important;
-    background-color:purple !important;
 }
 
 .weight_chart {

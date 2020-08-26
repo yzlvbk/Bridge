@@ -5,6 +5,8 @@
 </template>
 
 <script>
+/* 监听div宽高变化 */
+// import elementResizeDetectorMaker from 'element-resize-detector'
 import { vertex } from './vertex'
 import { normal } from './normal'
 export default {
@@ -18,6 +20,15 @@ export default {
     this.$nextTick(() => {
       this.drawThreeD()
     })
+
+    /* 监听宽高变化，响应式绘制 */
+    // const erd = elementResizeDetectorMaker()
+    // erd.listenTo(document.querySelector('.three_d'), element => {
+    //   const wrapDiv = document.querySelector('.three_d')
+    //   this.width = window.getComputedStyle(wrapDiv, null).getPropertyValue('width')
+    //   this.height = window.getComputedStyle(wrapDiv, null).getPropertyValue('height')
+    //   this.drawThreeD()
+    // })
   },
   data () {
     return {
@@ -128,7 +139,7 @@ export default {
       /* 设置旋转、缩放、平移默认值 */
       var anglex = 60 * Math.PI / 180
       var angley = 0 * Math.PI / 180
-      var scaleValue = 1.5
+      var scaleValue = 0.9
       var transValueX = 0
       var transValueY = 0
 

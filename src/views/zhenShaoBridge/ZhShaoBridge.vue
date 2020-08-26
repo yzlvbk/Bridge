@@ -9,24 +9,29 @@
     </div>
 
     <el-container>
-      <!-- 侧边栏 -->
-      <el-aside>
+      <!-- 侧边栏 64px 220px-->
+      <el-aside :width="isCollapse ? '64px' : '210px'">
+        <!-- 折叠按钮 -->
+        <div class="collapse" @click="isCollapse = !isCollapse">| | |</div>
+        <!-- 导航菜单栏 -->
         <el-menu
         :default-active="activePath"
-        background-color="rgba(44,84,126,0.1)"
+        background-color="rgb(14,27,43)"
         text-color="#eee"
         router
+        :collapse="isCollapse"
+        :collapse-transition="false"
         :unique-opened="true"
         active-text-color=rgb(58,255,251)
         >
           <el-menu-item index="/ZhShaoMonitor">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-message-solid"></i>
             <span slot="title">健康监测</span>
           </el-menu-item>
 
           <el-submenu index="1">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i class="el-icon-s-help"></i>
               <span>传感器系统</span>
             </template>
             <el-menu-item-group>
@@ -37,7 +42,7 @@
 
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i class="el-icon-connection"></i>
               <span>结构反应</span>
             </template>
             <el-menu-item-group>
@@ -47,17 +52,17 @@
           </el-submenu>
 
           <el-menu-item index="/ZhShaoMesh">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-cpu"></i>
             <span slot="title">Mesh</span>
           </el-menu-item>
 
           <el-menu-item index="/ZhShaoTraffic">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-s-promotion"></i>
             <span slot="title">车流分析</span>
           </el-menu-item>
 
           <el-menu-item index="/ZhShaoAssess">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-view"></i>
             <span slot="title">车载评估</span>
           </el-menu-item>
 
@@ -67,7 +72,7 @@
           </el-menu-item>
 
           <el-menu-item index="/ZhShaoLog">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-tickets"></i>
             <span slot="title">日志</span>
           </el-menu-item>
 
@@ -87,15 +92,16 @@
 
       <!-- 主题内容 -->
       <el-main>
-        <router-view></router-view>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
 
         <!-- 底部logo -->
         <footer class="footer_logo">
           <img class="footer_logo_img" src="../../assets/LOGO.svg" alt="">
-          <a href="javascript:;" class="header_title">仕达得尔智能科技</a>
+          <a href="javascript:;" class="footer_title">仕达得尔智能科技</a>
         </footer>
       </el-main>
-
     </el-container>
   </div>
 </template>
@@ -107,7 +113,8 @@ export default {
   },
   data () {
     return {
-      activePath: '' // 当前路径
+      activePath: '', // 当前路径
+      isCollapse: true
     }
   }
 }
@@ -138,20 +145,41 @@ export default {
   width: 100px;
 }
 
+.collapse {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 15px;
+  background-color:rgba(44,84,126,0.1);
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(15,200,224);
+  }
+}
+
+.el-menu {
+  height: calc(100% - 30px);
+}
 .el-container {
   height: 100%;
 }
 
+.footer_title {
+  margin-left: 4px;
+  font-size: 14px;
+  color: var(--LightTextColor);
+}
 .footer_logo {
   display: flex;
   align-items: center;
   position: absolute;
   bottom: 0;
-  height: 50px;
+  height: 38px;
 
   .footer_logo_img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 }
 </style>

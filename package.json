@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",
     "echarts-gl": "^1.1.1",
+    "element-resize-detector": "^1.2.1",
     "element-ui": "^2.13.2",
     "vue": "^2.6.11",
     "vue-fullpage.js": "^0.1.5",

@@ -12,7 +12,9 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Table,
-  TableColumn
+  TableColumn,
+  Tabs,
+  TabPane
 } from 'element-ui'
 
 Vue.use(Button)
@@ -27,3 +29,5 @@ Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Tabs)
+Vue.use(TabPane)

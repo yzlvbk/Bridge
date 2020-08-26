@@ -1,3 +1,4 @@
+@import './reset.css';
 /* 侧边栏 */
 .el-menu {
     border-right: none;
@@ -30,7 +31,7 @@
 /* 表体字体颜色 */
 .el-table {
     color: #eee;
-    font-size: 16px;
+    font-size: 14px;
     background-color: transparent;
 }
 /* 表头背景颜色 */
@@ -62,4 +63,25 @@
 /* hover高亮颜色 */
 .el-table--enable-row-hover .el-table__body tr:hover>td {
     background-color: #007491;
+}
+
+
+/* el-tabs样式 */
+.el-tabs__item {
+    color: #eee;
+    font-size: 13px;
+    padding: 0 10px;
+}
+/* 改变tabs顶部宽度 -- 预留给设置按钮 */
+.el-tabs__nav-scroll {
+    width: calc(100% - 52px)
+}
+.el-tabs__item.is-active {
+    color: var(--LightTextColor);
+}
+.el-tabs__item:hover {
+    color: var(--LightTextColor);
+}
+.el-tabs__active-bar {
+    background-color: var(--LightTextColor);
 }
