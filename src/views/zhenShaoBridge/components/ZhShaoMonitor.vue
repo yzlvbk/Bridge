@@ -309,7 +309,7 @@ export default {
 }
 /* 修改字体颜色 */
 .monitor .el-table .success-row {
-    color: pink !important;
+    color: red !important;
 }
 
 .weight_chart {

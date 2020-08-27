@@ -11,13 +11,15 @@
         </el-tabs>
       </div>
       <div class="sernor_data">
-        <!-- <div class="component-title"></div></div> -->
         <div class="component-table">
           <el-table
+            ref="tableList"
             :data="tableData"
             stripe
+            height="100%"
             style="width: 100%; border: none;"
             :row-style="{ height: '60px' }"
+            :highlight-current-row="true"
             :row-class-name="tableRowClassName">
             <el-table-column
               prop="id"
@@ -67,62 +69,62 @@ export default {
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '02',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '03',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '04',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '05',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '06',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '07',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '08',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '09',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '10',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '11',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '12',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
         }, {
-          id: '01',
+          id: '13',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
@@ -337,6 +339,11 @@ export default {
         return 'success-row'
       }
       return ''
+    },
+
+    /* 表格跳转到指定位置 */
+    location () {
+      this.$refs.tableList.$el.scrollTop = 300
     }
   },
   components: {
@@ -423,6 +430,6 @@ export default {
 }
 /* 修改字体颜色 */
 .sernor_data_show .el-table .success-row {
-    color: pink !important;
+    color: red !important;
 }
 </style>>

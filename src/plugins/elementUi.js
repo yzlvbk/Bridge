@@ -14,7 +14,9 @@ import {
   Table,
   TableColumn,
   Tabs,
-  TabPane
+  TabPane,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Button)
@@ -31,3 +33,5 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Select)
+Vue.use(Option)
