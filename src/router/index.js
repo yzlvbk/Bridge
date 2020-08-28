@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import ZhShaoBridge from '../views/zhenShaoBridge/ZhShaoBridge.vue'
-import ZhShaoThreeD from '../views/zhenShaoBridge/components/ZhShaoThreeD.vue'
-import ZhShaoMonitor from '../views/zhenShaoBridge/components/ZhShaoMonitor.vue'
-import ZhShaoSensorData from '../views/zhenShaoBridge/components/ZhShaoSensorData.vue'
-import ZhShaoSensorInfo from '../views/zhenShaoBridge/components/ZhShaoSensorInfo.vue'
-import ZhShaoStress from '../views/zhenShaoBridge/components/ZhShaoStress.vue'
-import ZhShaoTransform from '../views/zhenShaoBridge/components/ZhShaoTransform.vue'
-import ZhShaoMesh from '../views/zhenShaoBridge/components/ZhShaoMesh.vue'
-import ZhShaoTraffic from '../views/zhenShaoBridge/components/ZhShaoTraffic.vue'
-import ZhShaoAssess from '../views/zhenShaoBridge/components/ZhShaoAssess.vue'
-import ZhShaoStatement from '../views/zhenShaoBridge/components/ZhShaoStatement.vue'
-import ZhShaoLog from '../views/zhenShaoBridge/components/ZhShaoLog.vue'
-import ZhShaoProjectInfo from '../views/zhenShaoBridge/components/ZhShaoProjectInfo.vue'
-import ZhShaoProjectImg from '../views/zhenShaoBridge/components/ZhShaoProjectImg.vue'
+const Home = () => import(/* webpackChunkName: "Home" */ '../views/Home.vue')
+const ZhShaoBridge = () => import(/* webpackChunkName: "ZhShaoBridge" */ '../views/zhenShaoBridge/ZhShaoBridge.vue')
+const ZhShaoThreeD = () => import(/* webpackChunkName: "ZhShaoThreeD" */ '../views/zhenShaoBridge/components/ZhShaoThreeD.vue')
+const ZhShaoMonitor = () => import(/* webpackChunkName: "ZhShaoMonitor" */ '../views/zhenShaoBridge/components/ZhShaoMonitor.vue')
+const ZhShaoSensorData = () => import(/* webpackChunkName: "ZhShaoSensorData" */ '../views/zhenShaoBridge/components/ZhShaoSensorData.vue')
+const ZhShaoSensorInfo = () => import(/* webpackChunkName: "ZhShaoSensorInfo" */ '../views/zhenShaoBridge/components/ZhShaoSensorInfo.vue')
+const ZhShaoStress = () => import(/* webpackChunkName: "ZhShaoStress" */ '../views/zhenShaoBridge/components/ZhShaoStress.vue')
+const ZhShaoTransform = () => import(/* webpackChunkName: "ZhShaoTransform" */ '../views/zhenShaoBridge/components/ZhShaoTransform.vue')
+const ZhShaoMesh = () => import(/* webpackChunkName: "ZhShaoMesh" */ '../views/zhenShaoBridge/components/ZhShaoMesh.vue')
+const ZhShaoTraffic = () => import(/* webpackChunkName: "ZhShaoTraffic" */ '../views/zhenShaoBridge/components/ZhShaoTraffic.vue')
+const ZhShaoAssess = () => import(/* webpackChunkName: "ZhShaoAssess" */ '../views/zhenShaoBridge/components/ZhShaoAssess.vue')
+const ZhShaoStatement = () => import(/* webpackChunkName: "ZhShaoStatement" */ '../views/zhenShaoBridge/components/ZhShaoStatement.vue')
+const ZhShaoLog = () => import(/* webpackChunkName: "ZhShaoLog" */ '../views/zhenShaoBridge/components/ZhShaoLog.vue')
+const ZhShaoProjectInfo = () => import(/* webpackChunkName: "ZhShaoProjectInfo" */ '../views/zhenShaoBridge/components/ZhShaoProjectInfo.vue')
+const ZhShaoProjectImg = () => import(/* webpackChunkName: "ZhShaoProjectImg" */ '../views/zhenShaoBridge/components/ZhShaoProjectImg.vue')
 
 Vue.use(VueRouter)
 

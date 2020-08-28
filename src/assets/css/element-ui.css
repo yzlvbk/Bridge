@@ -92,14 +92,27 @@
     width: 110px;
     height: 32px;
     line-height: 32px;
-    color: #333 !important;
+    color: #eee !important;
     font-weight: 600;
     border: none;
-    background-color: var(--LightTextColor);
+    background-color: rgb(62, 88, 119);
+}
+.el-select-dropdown {
+    background-color: rgb(62, 88, 119);
+    border: none;
+}
+.el-popper .popper__arrow::after {
+    border-bottom-color: rgb(62, 88, 119) !important;
+}
+.el-select-dropdown__item.hover {
+    color: #333;
+}
+.el-select-dropdown__item {
+    color: #eee;
 }
 /* 下拉图标颜色 */
 .el-select .el-input .el-select__caret {
-    color: #333;
+    color: #eee;
 }
 .el-select-dropdown__item.selected {
     color: var(--LightTextColor);
