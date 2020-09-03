@@ -19,7 +19,6 @@
             height="100%"
             style="width: 100%; border: none;"
             :row-style="{ height: '60px' }"
-            :highlight-current-row="true"
             :row-class-name="tableRowClassName">
             <el-table-column
               prop="id"
@@ -137,6 +136,7 @@ export default {
       console.log(tab, event)
     },
 
+    /* 绘制时序图 */
     drawTimeChart () {
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'

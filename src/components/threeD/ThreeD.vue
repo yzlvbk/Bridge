@@ -104,7 +104,7 @@ export default {
             // 插值后颜色数据赋值给对应的片元
             gl_FragColor = v_color;
         }
-    `
+        `
 
       // 调用函数initShader(),初始化着色器,返回program对象
       var program = initShader(gl, vertexShaderSource, fragShaderSource)

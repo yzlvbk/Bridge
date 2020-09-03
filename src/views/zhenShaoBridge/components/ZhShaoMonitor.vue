@@ -9,28 +9,22 @@
       <div class="component-title">构件安全级别</div>
       <div class="component-table">
         <el-table
-          :data="tableData"
+          :data="memberSafetyLevelData"
           stripe
           style="width: 100%; border: none;"
-          :row-style="{ height: '60px' }"
-          :row-class-name="tableRowClassName">
+          :row-style="{ height: '60px' }">
           <el-table-column
-            prop="id"
+            prop="MemberId"
             align="center"
             label="编号">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="MemberName"
             align="center"
             label="名称">
           </el-table-column>
           <el-table-column
-            prop="material"
-            align="center"
-            label="主题材质">
-          </el-table-column>
-          <el-table-column
-            prop="level"
+            prop="SafetyLevel"
             align="center"
             label="安全级别">
           </el-table-column>
@@ -49,14 +43,28 @@
 <script>
 /* 监听div宽高变化 */
 import elementResizeDetectorMaker from 'element-resize-detector'
+import {
+  reqBridgeOneGetMemberSafetyLevel,
+  reqBridgeOneVehicalWeight
+} from '@/request/ZhShao/api.js'
 export default {
   mounted () {
+    // 获取桥梁系统1-构件安全级别数据
+    this.getMemberSafetyLevel()
+    this.getVehicalWeight()
+
+    setInterval(() => {
+      this.getVehicalWeight()
+    }, 60000)
+
     this.$nextTick(() => {
       this.drawWeightChart()
     })
   },
   data () {
     return {
+      /* 构件安全级别数据 */
+      memberSafetyLevelData: [],
       /* 表格数据 */
       tableData: [
         {
@@ -129,15 +137,35 @@ export default {
     }
   },
   methods: {
-    /* 表行添加类名 */
-    tableRowClassName ({ row, rowIndex }) {
-      if (rowIndex === 1) {
-        return 'warning-row'
-      } else if (rowIndex === 3) {
-        return 'success-row'
+    /* 获取桥梁系统1-构件安全级别数据 */
+    async getMemberSafetyLevel () {
+      const data = await reqBridgeOneGetMemberSafetyLevel()
+      if (data.statusCode === 200) {
+        // 请求数据成功
+        this.memberSafetyLevelData = data.data
       }
-      return ''
+      console.log(data)
     },
+
+    /* 获取桥梁系统1-车辆载重时序图数据 */
+    async getVehicalWeight () {
+      const data = await reqBridgeOneVehicalWeight()
+      if (data.statusCode === 200) {
+        // 请求数据成功
+        console.log(data)
+      }
+    },
+
+    // :row-class-name="tableRowClassName"
+    /* 表行添加类名 */
+    // tableRowClassName ({ row, rowIndex }) {
+    //   if (rowIndex === 1) {
+    //     return 'warning-row'
+    //   } else if (rowIndex === 3) {
+    //     return 'success-row'
+    //   }
+    //   return ''
+    // },
 
     /* 绘制车辆载重图 */
     drawWeightChart () {

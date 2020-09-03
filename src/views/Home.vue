@@ -122,7 +122,7 @@ export default {
     return {
       // 整屏滚动配置项
       options: {
-        licenseKey: 'OPEN-SOURCE-GPLV3-LICENSE',
+        licenseKey: 'OPEN-SOURCE-GPLv3-LICENSE',
         verticalCentered: false, // 每一页幻灯片的内容是否垂直居中
         scrollBar: false,
         menu: '#menu',
@@ -174,16 +174,24 @@ export default {
         {
           name: '郑州桥监测2',
           value: [
-            113.511576,
-            34.748286,
+            113.546923,
+            34.780839,
             100
           ]
         },
         {
           name: '郑州桥监测3',
           value: [
-            113.645422,
-            34.730936,
+            113.594628,
+            34.678241,
+            100
+          ]
+        },
+        {
+          name: '郑州桥监测3',
+          value: [
+            0,
+            0,
             100
           ]
         }

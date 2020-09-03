@@ -23,6 +23,10 @@
 
 
 /* 修改表格样式 */
+/* 表格高度100% */
+/* .el-table__body-wrapper.is-scrolling-none {
+    height: 100% !important;
+} */
 /* 表头字体颜色 */
 .el-table thead {
     color: #eee;

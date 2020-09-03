@@ -16,7 +16,8 @@ import {
   Tabs,
   TabPane,
   Select,
-  Option
+  Option,
+  Message
 } from 'element-ui'
 
 Vue.use(Button)
@@ -35,3 +36,5 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Select)
 Vue.use(Option)
+
+Vue.prototype.$message = Message

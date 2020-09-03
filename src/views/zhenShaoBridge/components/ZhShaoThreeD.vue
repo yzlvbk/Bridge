@@ -4,16 +4,11 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>郑少高速桥</el-breadcrumb-item>
 
-          <el-breadcrumb-item v-if="path === '/ZhShaoMonitor'">健康监测</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="path === '/ZhShaoMonitor'">健康监测</el-breadcrumb-item>
 
         <template v-if="path === '/ZhShaoSensorData'">
             <el-breadcrumb-item>传感器系统</el-breadcrumb-item>
             <el-breadcrumb-item>数据显示</el-breadcrumb-item>
-        </template>
-
-        <template v-if="path === '/ZhShaoSensorInfo'">
-            <el-breadcrumb-item>传感器系统</el-breadcrumb-item>
-            <el-breadcrumb-item>基本信息</el-breadcrumb-item>
         </template>
     </el-breadcrumb>
 
