@@ -51,7 +51,16 @@
                   <img class="homeTwo_content_img" src="../assets/image/title.png" alt="">
                   <div class="homeTwo_safety">
                     <div class="homeTwo_safety_chart"></div>
-                    <div class="homeTwo_safety_form">表格</div>
+                    <div class="homeTwo_safety_form">
+                      <vue-seamless-scroll :data="listData" class="seamless_scroll">
+                        <ul class="seamless_scroll_ul">
+                          <li v-for="(item, index) in listData" :key="index">
+                            <span class="title" v-text="item.title"></span>
+                            <span class="date" v-text="item.date"></span>
+                          </li>
+                        </ul>
+                      </vue-seamless-scroll>
+                    </div>
                   </div>
                   <div class="homeTwo_vehicle">车辆统计</div>
                 </div>
@@ -65,6 +74,8 @@
     </div>
 </template>
 <script>
+// 导入表格无缝滚动插件
+import vueSeamlessScroll from 'vue-seamless-scroll'
 export default {
   async mounted () {
     // 初始化郑州地图
@@ -125,6 +136,8 @@ export default {
         this.weatherIcon = 'qing'
         break
     }
+
+    // 鼠标事件
   },
   data () {
     return {
@@ -162,7 +175,37 @@ export default {
         oddRowBGC: 'rgba(45,53,63,0.5)', // 奇数行背景色
         evenRowBGC: 'rgba(42,49,58,0.5)', // 偶数行背景色
         waitTime: 2000 // 轮播时间
-      }
+      },
+
+      /* 表格数据 */
+      listData: [{
+        title: '无缝滚动第一行无缝滚动第一行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第二行无缝滚动第二行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第三行无缝滚动第三行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第四行无缝滚动第四行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第五行无缝滚动第五行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第六行无缝滚动第六行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第七行无缝滚动第七行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第八行无缝滚动第八行',
+        date: '2017-12-16'
+      }, {
+        title: '无缝滚动第九行无缝滚动第九行',
+        date: '2017-12-16'
+      }]
     }
   },
   methods: {
@@ -375,10 +418,6 @@ export default {
     /* 第二屏 */
     // 绘制安全统计级别
     drawSafetyLevel () {
-      // 定义颜色
-      // const fontColor = 'rgb(15, 200, 224)'
-      // const lineColor = '#CACACA'
-
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.homeTwo_safety_chart'))
 
@@ -568,6 +607,9 @@ export default {
         myChart.resize()
       }
     }
+  },
+  components: {
+    vueSeamlessScroll
   }
 }
 </script>
@@ -719,12 +761,14 @@ export default {
       background-color: #0B0F2A;
 
       .homeTwo_safety_chart {
-        flex-basis: 50%;
+        flex-basis: 60%;
         overflow: hidden;
       }
 
       .homeTwo_safety_form {
-        flex-basis: 50%;
+        position: relative;
+        flex-basis: 40%;
+        overflow: hidden;
       }
     }
 
@@ -736,5 +780,13 @@ export default {
       background-color: #0B0F2A;
     }
   }
+}
+
+/* 设置el-table高度响应式 */
+.homeTwo .el-table {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll !important;
 }
 </style>
