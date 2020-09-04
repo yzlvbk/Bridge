@@ -1,7 +1,7 @@
 <template>
     <div>
         <full-page :options="options">
-            <div class="section">
+            <div class="section home">
                   <!-- 头部区域 -->
                   <div class="header">
                     <div class="header_title">郑州桥梁展示系统</div>
@@ -44,9 +44,16 @@
                     </div>
                   </div>
             </div>
-            <div class="section">
-                <div class="box2">
-                section2
+            <div class="section homeTwo">
+                <div class="homeTwo_header">郑州桥梁展示系统</div>
+                <div class="homeTwo_title">郑州桥梁安全统计</div>
+                <div class="homeTwo_content">
+                  <img class="homeTwo_content_img" src="../assets/image/title.png" alt="">
+                  <div class="homeTwo_safety">
+                    <div class="homeTwo_safety_chart"></div>
+                    <div class="homeTwo_safety_form">表格</div>
+                  </div>
+                  <div class="homeTwo_vehicle">车辆统计</div>
                 </div>
             </div>
             <div class="section">
@@ -63,6 +70,7 @@ export default {
     // 初始化郑州地图
     this.$nextTick(function () {
       this.drawZhengZhouMap()
+      this.drawSafetyLevel()
     })
 
     // xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
@@ -128,8 +136,8 @@ export default {
         menu: '#menu',
         navigation: true,
         navigationPosition: 'right',
-        navigationTooltips: ['firstSlide', 'secondSlide', 'thirdSlide'],
-        sectionsColor: ['rgba(9, 22, 40, 1)', 'skyblue', 'pink']
+        navigationTooltips: ['firstSlide', 'secondSlide', 'thirdSlide']
+        // sectionsColor: ['rgba(9, 22, 40, 1)', 'skyblue', 'pink']
       },
       // 天气数据
       weatherData: {},
@@ -362,6 +370,203 @@ export default {
     // 鼠标点击标题
     middleItemClick (path) {
       this.$router.push(path)
+    },
+
+    /* 第二屏 */
+    // 绘制安全统计级别
+    drawSafetyLevel () {
+      // 定义颜色
+      // const fontColor = 'rgb(15, 200, 224)'
+      // const lineColor = '#CACACA'
+
+      // 1.初始化echarts
+      const myChart = this.$echarts.init(document.querySelector('.homeTwo_safety_chart'))
+
+      // 2.配置option
+      const option = {
+        // backgroundColor: '#031245',
+        textStyle: {
+          color: '#c0c3cd',
+          fontSize: 14
+        },
+        toolbox: {
+          show: false,
+          feature: {
+            saveAsImage: {
+              backgroundColor: '#031245'
+            },
+            restore: {}
+          },
+          iconStyle: {
+            borderColor: '#c0c3cd'
+          }
+        },
+        legend: {
+          top: 10,
+          itemWidth: 8,
+          itemHeight: 8,
+          icon: 'circle',
+          left: 'center',
+          padding: 0,
+          textStyle: {
+            color: '#c0c3cd',
+            fontSize: 14,
+            padding: [2, 0, 0, 0]
+          }
+        },
+        color: ['#63caff', '#49beff', '#03387a', '#03387a', '#03387a', '#6c93ee', '#a9abff', '#f7a23f', '#27bae7', '#ff6d9d', '#cb79ff', '#f95b5a', '#ccaf27', '#38b99c', '#93d0ff', '#bd74e0', '#fd77da', '#dea700'],
+        grid: {
+          containLabel: true,
+          left: 20,
+          right: 20,
+          bottom: 10,
+          top: 40
+        },
+        xAxis: {
+          nameTextStyle: {
+            color: '#c0c3cd',
+            padding: [0, 0, -10, 0],
+            fontSize: 14
+          },
+          axisLabel: {
+            color: '#c0c3cd',
+            fontSize: 14,
+            interval: 0
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#384267',
+              width: 1
+            },
+            show: true
+          },
+          splitLine: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#384267',
+              width: 1
+            },
+            show: true
+          },
+          data: ['0点~2点', '3点~5点', '6点~8点', '0点~2点', '3点~5点', '6点~8点', '0点~2点', '3点~5点'],
+          type: 'category'
+        },
+        yAxis: {
+          nameTextStyle: {
+            color: '#c0c3cd',
+            padding: [0, 0, -10, 0],
+            fontSize: 14
+          },
+          axisLabel: {
+            color: '#c0c3cd',
+            fontSize: 14
+          },
+          axisTick: {
+            show: false,
+            lineStyle: {
+              color: '#384267',
+              width: 1
+            }
+          },
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: '#384267'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#384267',
+              width: 1
+            },
+            show: true
+          },
+          name: ''
+        },
+        series: [{
+          data: [200, 85, 112, 275, 305, 415, 741, 405],
+          type: 'bar',
+          barMaxWidth: 'auto',
+          barWidth: 30,
+          itemStyle: {
+            color: {
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              type: 'linear',
+              global: false,
+              colorStops: [{
+                offset: 0,
+                color: '#0b9eff'
+              }, {
+                offset: 1,
+                color: '#63caff'
+              }]
+            }
+          },
+          label: {
+            show: true,
+            position: 'top',
+            distance: 10,
+            color: '#fff'
+          }
+        }, {
+          data: [1, 1, 1, 1, 1, 1, 1, 1],
+          type: 'pictorialBar',
+          barMaxWidth: '20',
+          symbol: 'diamond',
+          symbolOffset: [0, '50%'],
+          symbolSize: [30, 15]
+        }, {
+          data: [200, 85, 112, 275, 305, 415, 741, 405],
+          type: 'pictorialBar',
+          barMaxWidth: '20',
+          symbolPosition: 'end',
+          symbol: 'diamond',
+          symbolOffset: [0, '-50%'],
+          symbolSize: [30, 12],
+          zlevel: 2
+        }, {
+          data: [741, 741, 741, 741, 741, 741, 741, 741],
+          type: 'bar',
+          barMaxWidth: 'auto',
+          barWidth: 30,
+          barGap: '-100%',
+          zlevel: -1
+        }, {
+          data: [1, 1, 1, 1, 1, 1, 1, 1],
+          type: 'pictorialBar',
+          barMaxWidth: '20',
+          symbol: 'diamond',
+          symbolOffset: [0, '50%'],
+          symbolSize: [30, 15],
+          zlevel: -2
+        }, {
+          data: [741, 741, 741, 741, 741, 741, 741, 741],
+          type: 'pictorialBar',
+          barMaxWidth: '20',
+          symbolPosition: 'end',
+          symbol: 'diamond',
+          symbolOffset: [0, '-50%'],
+          symbolSize: [30, 12],
+          zlevel: -1
+        }],
+        tooltip: {
+          trigger: 'axis',
+          show: false
+        }
+      }
+
+      // 3.将配置项给实例
+      myChart.setOption(option)
+
+      // 4.跟随屏幕自适应
+      window.onresize = function () {
+        myChart.resize()
+      }
     }
   }
 }
@@ -370,93 +575,166 @@ export default {
 <style lang="less" scoped>
 .home {
   height: 100%;
-  // background: url(../assets/image/bg.png) no-repeat;
-  background-color: rgba(9, 22, 40, 1);
+  background: url(../assets/image/bg.jpg) no-repeat;
+  // background-color: rgba(9, 22, 40, .1) !important;
   background-size: 100% 100%;
-}
-.header {
-  position: relative;
 
-  .header_title {
-    text-align: center;
-    line-height: 75px;
-    font-size: 22px;
-    height: 90px;
-    background: url(../assets/image/topbg.png) no-repeat;
-    background-size: 100% 100%;
-  }
+  .header {
+    position: relative;
 
-  .scroll_list {
-    position: absolute;
-    top: 58px;
-    left: 10px;
-    width: 30%;
-    max-width: 500px;
-    z-index: 100;
-  }
+    .header_title {
+      text-align: center;
+      line-height: 75px;
+      font-size: 22px;
+      height: 90px;
+      background: url(../assets/image/topbg.png) no-repeat;
+      background-size: 100% 100%;
+    }
 
-  .header_weather_warp{
-    .header_weather {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 10px;
-    top: 40px;
-    height: 60px;
-    text-align: left;
+    .scroll_list {
+      position: absolute;
+      top: 58px;
+      left: 10px;
+      width: 30%;
+      max-width: 500px;
+      z-index: 100;
+    }
 
-      .iconfont {
-        font-size: 40px;
-      }
-      .temperature {
-        margin: 0 7px;
-        font-size: 22px;
-      }
-      .header_weather_item {
-        display: flex;
-        height: 36px;
-        margin-right: 7px;
-        flex-direction: column;
-        justify-content: space-between;
+    .header_weather_warp{
+      .header_weather {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      right: 10px;
+      top: 40px;
+      height: 60px;
+      text-align: left;
+
+        .iconfont {
+          font-size: 40px;
+        }
+        .temperature {
+          margin: 0 7px;
+          font-size: 22px;
+        }
+        .header_weather_item {
+          display: flex;
+          height: 36px;
+          margin-right: 7px;
+          flex-direction: column;
+          justify-content: space-between;
+        }
       }
     }
+
   }
 
-}
-
-.main {
-  position: relative;
-  height: 100%;
-
-  .main_middle {
-    position: absolute;
-    width: 100%;
-    height: calc(100% - 90px);
-    // border: 1px solid #fff;
-  }
-  .main_middle_map {
-    width: 100%;
+  .main {
+    position: relative;
     height: 100%;
-  }
-  .main_middle_title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-  }
-  .main_middle_item {
-    cursor: pointer;
-  }
 
+    .main_middle {
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 90px);
+      // border: 1px solid #fff;
+    }
+    .main_middle_map {
+      width: 100%;
+      height: 100%;
+    }
+    .main_middle_title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+    }
+    .main_middle_item {
+      cursor: pointer;
+    }
+
+  }
+  .icontianqi-shachenbao { color: rgb(131,210,248); }
+  .icontianqi-zhongyu { color: rgb(20, 84, 122); }
+  .icontianqi-wu { color: rgb(218, 223, 227); }
+  .icontianqi-qing { color: rgb(254, 202, 76);}
+  .icontianqi-bingbao { color: rgb(218, 223, 227); }
+  .icontianqi-xiaoxue { color: rgb(218, 223, 227); }
+  .icontianqi-leidiantianqi { color: rgb(125, 125, 137); }
+  .icontianqi-yin { color: rgb(20, 84, 122); }
+  .icontianqi-duoyun { color: rgb(218, 223, 227);}
 }
-.icontianqi-shachenbao { color: rgb(131,210,248); }
-.icontianqi-zhongyu { color: rgb(20, 84, 122); }
-.icontianqi-wu { color: rgb(218, 223, 227); }
-.icontianqi-qing { color: rgb(254, 202, 76);}
-.icontianqi-bingbao { color: rgb(218, 223, 227); }
-.icontianqi-xiaoxue { color: rgb(218, 223, 227); }
-.icontianqi-leidiantianqi { color: rgb(125, 125, 137); }
-.icontianqi-yin { color: rgb(20, 84, 122); }
-.icontianqi-duoyun { color: rgb(218, 223, 227);}
 
+.homeTwo{
+  height: 100%;
+  padding: 0 20px;
+  background: url(../assets/image/bg3.png) no-repeat;
+  // background-color: rgb(17, 30, 58);
+  background-size: 100% 100%;
+
+  .homeTwo_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 55px;
+    padding-top: 15px;
+    font-size: 24px;
+    color: #fff;
+  }
+
+  .homeTwo_title {
+    text-indent: 35px;
+    margin-top: 20px;
+    color: #fff;
+    font-size: 24px;
+    height: 33px;
+    line-height: 33px;
+    margin-bottom: 25px;
+  }
+
+  .homeTwo_content {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    height: calc(100% - 195px);
+    border: 1px solid #081f5a;
+    box-sizing: border-box;
+
+    .homeTwo_content_img {
+      position: absolute;
+      left: 70px;
+      top: -13px;
+      width: 269px;
+      display: block;
+    }
+
+    .homeTwo_safety {
+      display: flex;
+      flex-direction: column;
+      flex-basis: 50%;
+      margin-right: 20px;
+      background: linear-gradient(to left, #003BCF, #003BCF) left top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left top no-repeat, linear-gradient(to left, #003BCF, #003BCF) right top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) right top no-repeat, linear-gradient(to left, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat;
+      background-size: 2px 10px, 10px 2px, 2px 10px, 10px 2px;
+      background-color: #0B0F2A;
+
+      .homeTwo_safety_chart {
+        flex-basis: 50%;
+        overflow: hidden;
+      }
+
+      .homeTwo_safety_form {
+        flex-basis: 50%;
+      }
+    }
+
+    .homeTwo_vehicle {
+      flex-basis: 50%;
+      margin-left: 20px;
+      background: linear-gradient(to left, #003BCF, #003BCF) left top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left top no-repeat, linear-gradient(to left, #003BCF, #003BCF) right top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) right top no-repeat, linear-gradient(to left, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat;
+      background-size: 2px 10px, 10px 2px, 2px 10px, 10px 2px;
+      background-color: #0B0F2A;
+    }
+  }
+}
 </style>

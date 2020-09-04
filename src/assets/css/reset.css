@@ -123,12 +123,24 @@ a {
     text-decoration: none;
 }
 
+/* 安全等级评分颜色 <60 为红色， 60~80 为黄色，>80 为绿色 */
+.safety {
+  color: #67c23a;
+}
+.warning {
+  color: #e6a23c;
+}
+.danger {
+  color: #f56c6c;
+}
+
 
 :root {
     /* 背景颜色 */
     --BgColor: rgba(9, 22, 40, 1);
     /* 内容区模块颜色 */
-    --ContainBgColor: rgb(37, 42, 53);
+    /* --ContainBgColor: rgb(37, 42, 53); */
+    --ContainBgColor: rgb(37, 42, 53, 0.75);
     /* 文字高亮颜色 */
     --LightTextColor: #0fc8e0;
 }

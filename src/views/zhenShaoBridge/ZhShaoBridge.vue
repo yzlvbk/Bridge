@@ -1,10 +1,15 @@
 <template>
   <div class="bridge">
     <div class="bridge_header">
-      <div class="header_title">桥梁健康监测系统</div>
+      <div class="header_title">
+        <router-link to="/">桥梁健康监测系统</router-link>
+      </div>
 
       <div class="header_user">
         <div class="header_user_name">您好，admin</div>
+        <div class="logout">
+          <el-button type="info" size="mini">退出</el-button>
+        </div>
       </div>
     </div>
 
@@ -16,7 +21,7 @@
         <!-- 导航菜单栏 -->
         <el-menu
         :default-active="activePath"
-        background-color="rgb(14,27,43)"
+        background-color="rgba(14,27,43,1)"
         text-color="#eee"
         router
         :collapse="isCollapse"
@@ -92,11 +97,11 @@
 
       <!-- 主题内容 -->
       <el-main>
-        <keep-alive>
+        <keep-alive exclude="ZhShaoMonitor">
           <router-view></router-view>
         </keep-alive>
 
-        <!-- 底部logo -->
+        <!-- 底部logo -->x
         <footer class="footer_logo">
           <img class="footer_logo_img" src="../../assets/LOGO.svg" alt="">
           <a href="javascript:;" class="footer_title">仕达得尔智能科技</a>
@@ -110,11 +115,16 @@
 export default {
   created () {
     this.activePath = this.$route.path
+
+    // 浏览器宽度<1280px,默认折叠侧边栏
+    if (window.innerWidth < 1280) {
+      this.isCollapse = true
+    }
   },
   data () {
     return {
       activePath: '', // 当前路径
-      isCollapse: true
+      isCollapse: false // 控制侧边栏是否折叠
     }
   }
 }
@@ -124,7 +134,9 @@ export default {
 @import '../../assets/css/reset.css';
 .bridge {
   height: 100%;
-  background-color: var(--BgColor);
+  // background-color: var(--BgColor);
+  background: url(../../assets/image/index_bg.png);
+  // background: url(../../assets/image/bg3.png);
   background-size: 100% 100%;
 }
 .bridge_header {
@@ -140,9 +152,16 @@ export default {
   color: var(--LightTextColor);
 }
 .header_user {
+  display: flex;
   position: absolute;
-  right: 100px;
-  width: 100px;
+  right: 20px;
+  align-items: center;
+  background-color: black;
+  font-size: 14px;
+
+  .header_user_name {
+    margin-right: 30px;
+  }
 }
 
 .collapse {
@@ -150,7 +169,7 @@ export default {
   line-height: 30px;
   text-align: center;
   font-size: 15px;
-  background-color:rgba(44,84,126,0.1);
+  background-color:rgba(14,27,43,1);
   cursor: pointer;
 
   &:hover {

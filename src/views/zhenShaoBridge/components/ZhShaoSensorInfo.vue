@@ -12,7 +12,7 @@
       <div class="contain_data">
         <div class="sernor_options">
           <!-- 下拉框 -->
-          <el-select v-model="value">
+          <el-select v-model="selectValue">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -26,41 +26,46 @@
         <div class="table_warp">
           <el-table
             ref="tableList"
-            :data="tableData"
+            :data="selectValue === 'Profiler' ? profilerData : strainGaugesData"
             stripe
             height="100%"
             style="width: 100%; border: none;"
             :row-style="{ height: '60px' }"
             :row-class-name="tableRowClassName">
             <el-table-column
-              prop="type"
+              prop="Type"
               align="center"
               label="传感器类型">
             </el-table-column>
             <el-table-column
-              prop="id"
+              prop="Id"
               align="center"
               label="编号">
             </el-table-column>
             <el-table-column
-              prop="name"
+              prop="Name"
               align="center"
               label="构件名">
             </el-table-column>
             <el-table-column
-              prop="x"
+              prop="X"
               align="center"
               label="X">
             </el-table-column>
             <el-table-column
-              prop="y"
+              prop="Y"
               align="center"
               label="Y">
             </el-table-column>
             <el-table-column
-              prop="z"
+              prop="Z"
               align="center"
               label="Z">
+            </el-table-column>
+            <el-table-column
+              prop="Description"
+              align="center"
+              label="状态">
             </el-table-column>
           </el-table>
         </div>
@@ -70,249 +75,56 @@
 </template>
 
 <script>
+import { reqBridgeOneSensorBaseInfo } from '@/request/ZhShao/api.js'
 export default {
+  mounted () {
+    this.getSensorBaseInfo()
+  },
   data () {
     return {
       /* 下拉框配置项 */
       options: [{
-        value: '选项1',
-        label: '黄金糕'
+        value: 'Profiler',
+        label: '姿态盒'
       }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
+        value: 'StrainGauges',
+        label: '应变片'
       }],
       /* 默认选项 */
-      value: '选项2',
-      /* 表格数据 */
-      tableData: [
-        {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }, {
-          type: '姿态盒',
-          id: '编号',
-          name: '构建名',
-          x: '1.001',
-          y: '129.3',
-          z: '3.0'
-        }
-      ]
+      selectValue: 'Profiler',
+      /* 姿态盒数据 */
+      profilerData: [],
+      /* 传感器数据 */
+      strainGaugesData: []
     }
   },
   methods: {
-    handleClick (tab, event) {
-      console.log(tab, event)
-    },
-    /* 表行添加类名 */
-    tableRowClassName ({ row, rowIndex }) {
-      if (rowIndex === 1) {
-        return 'warning-row'
-      } else if (rowIndex === 3) {
-        return 'success-row'
+    // 请求传感器位置数据
+    async getSensorBaseInfo () {
+      const data = await reqBridgeOneSensorBaseInfo()
+      // 请求数据成功
+      if (data.statusCode === 200) {
+        data.data.forEach((item) => {
+          if (item.Type === 'Profiler') {
+            item.Type = '姿态盒'
+            this.profilerData.push(item)
+          } else if (item.Type === 'StrainGauges') {
+            item.Type = '应变片'
+            this.strainGaugesData.push(item)
+          }
+        })
       }
-      return ''
+    },
+
+    /* 表行添加类名 */
+    tableRowClassName ({ row }) {
+      if (row.Description === '正常运行') {
+        return 'safety'
+      } else if (row.Description === '设备故障') {
+        return 'warning'
+      } else {
+        return 'danger'
+      }
     }
   }
 }
