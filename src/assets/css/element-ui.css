@@ -121,3 +121,9 @@
 .el-select-dropdown__item.selected {
     color: var(--LightTextColor);
 }
+
+
+/* 修改el-pagination样式 */
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #034c6a;
+}
