@@ -3,7 +3,7 @@ import http from './http'
 /* 系统首页获取桥梁基础信息 */
 export const reqAllBridgeInfo = () => http('/v10/summary/GetAllBridgeInfo', {}, 'GET')
 
-/* 系统首页获取桥梁基础信息 */
+/* 系统首页获取桥梁安全等级 */
 export const reqBridgeSafetyLevel = () => http('/v10/summary/GetAllBridgeSafetyLevel', {}, 'GET')
 
 /* 系统首页获取桥梁安全评分 */

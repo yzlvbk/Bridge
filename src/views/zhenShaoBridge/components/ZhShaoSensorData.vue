@@ -351,8 +351,8 @@ export default {
   },
   beforeDestroy () {
     /* 移除监听事件 */
-    const erd = elementResizeDetectorMaker()
-    erd.removeAllListeners(document.querySelector('.time_chart'))
+    // const erd = elementResizeDetectorMaker()
+    // erd.removeAllListeners(document.querySelector('.time_chart'))
   }
 }
 </script>

@@ -49,20 +49,64 @@
                 <div class="homeTwo_title">郑州桥梁安全统计</div>
                 <div class="homeTwo_content">
                   <img class="homeTwo_content_img" src="../assets/image/title.png" alt="">
+
+                  <!-- 桥梁安全级别统计模块 -->
                   <div class="homeTwo_safety">
+                    <!-- Echarts图表区域 -->
                     <div class="homeTwo_safety_chart"></div>
+                    <!-- 无缝滚动区域 -->
                     <div class="homeTwo_safety_form">
-                      <vue-seamless-scroll :data="listData" class="seamless_scroll">
+                      <div class="homeTwo_safety_form_title">
+                        <ul>
+                          <li>编号</li>
+                          <li>名称</li>
+                          <li>类型</li>
+                          <li>健康分值</li>
+                          <li>安全级别</li>
+                        </ul>
+                      </div>
+                      <vue-seamless-scroll :data="safetyLevelList" class="seamless_scroll" :style="'max-height: ' + seamlessMaxHeight">
                         <ul class="seamless_scroll_ul">
-                          <li v-for="(item, index) in listData" :key="index">
-                            <span class="title" v-text="item.title"></span>
-                            <span class="date" v-text="item.date"></span>
+                          <li v-for="item in safetyLevelList" :key="item.BridgeId">
+                            <span v-text="item.BridgeId"></span>
+                            <span v-text="item.BridgeName"></span>
+                            <span v-text="item.BridgeType"></span>
+                            <span v-text="item.HealthScore"></span>
+                            <span v-text="item.SafetyLevel"></span>
                           </li>
                         </ul>
                       </vue-seamless-scroll>
                     </div>
                   </div>
-                  <div class="homeTwo_vehicle">车辆统计</div>
+
+                  <!-- 桥梁车辆统计模块 -->
+                  <div class="homeTwo_vehicle">
+                    <!-- Echarts图表区域 -->
+                    <div class="homeTwo_safety_chart"></div>
+                    <!-- 无缝滚动区域 -->
+                    <div class="homeTwo_safety_form">
+                      <div class="homeTwo_safety_form_title">
+                        <ul>
+                          <li>编号</li>
+                          <li>名称</li>
+                          <li>类型</li>
+                          <li>健康分值</li>
+                          <li>安全级别</li>
+                        </ul>
+                      </div>
+                      <vue-seamless-scroll :data="safetyLevelList" class="seamless_scroll" :style="'max-height: ' + seamlessMaxHeight">
+                        <ul class="seamless_scroll_ul">
+                          <li v-for="item in safetyLevelList" :key="item.BridgeId">
+                            <span v-text="item.BridgeId"></span>
+                            <span v-text="item.BridgeName"></span>
+                            <span v-text="item.BridgeType"></span>
+                            <span v-text="item.HealthScore"></span>
+                            <span v-text="item.SafetyLevel"></span>
+                          </li>
+                        </ul>
+                      </vue-seamless-scroll>
+                    </div>
+                  </div>
                 </div>
             </div>
             <div class="section">
@@ -76,17 +120,27 @@
 <script>
 // 导入表格无缝滚动插件
 import vueSeamlessScroll from 'vue-seamless-scroll'
+import {
+  reqAllBridgeInfo,
+  reqBridgeSafetyLevel,
+  reqAllBridgeSafetyScore
+} from '@/request/ZhShao/api.js'
 export default {
   async mounted () {
+    // 获取初始化数据
+    this.getInitData()
+    const lv = await reqAllBridgeInfo()
+    console.log(lv)
+
     // 初始化郑州地图
     this.$nextTick(function () {
       this.drawZhengZhouMap()
       this.drawSafetyLevel()
     })
 
+    // 请求天气数据
     // xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
     const { data } = await this.$http.get('https://www.tianqiapi.com/api?version=v61&appid=13392814&appsecret=RfDCQz2U&city=郑州')
-    console.log(data)
     this.weatherData = {
       city: data.city,
       nowTem: data.tem,
@@ -98,7 +152,7 @@ export default {
       win_speed: data.win_speed,
       humidity: data.humidity
     }
-
+    // 重置天气图标格式
     switch (data.wea_img) {
       case 'xue':
         this.weatherIcon = 'xiaoxue'
@@ -136,11 +190,14 @@ export default {
         this.weatherIcon = 'qing'
         break
     }
-
-    // 鼠标事件
   },
   data () {
     return {
+      // 桥梁安全等级
+      safetyLevelList: [],
+      // 桥梁安全评分
+      SafetyScoreList: [],
+
       // 整屏滚动配置项
       options: {
         licenseKey: 'OPEN-SOURCE-GPLv3-LICENSE',
@@ -152,12 +209,16 @@ export default {
         navigationTooltips: ['firstSlide', 'secondSlide', 'thirdSlide']
         // sectionsColor: ['rgba(9, 22, 40, 1)', 'skyblue', 'pink']
       },
+
       // 天气数据
       weatherData: {},
       // 天气图标
       weatherIcon: '',
+
       // 按钮当前选中颜色
       activeColor: [],
+
+      // 轮播表配置
       config: {
         data: [
           ['行1列1', '行1列2', '行1列3'],
@@ -175,40 +236,23 @@ export default {
         oddRowBGC: 'rgba(45,53,63,0.5)', // 奇数行背景色
         evenRowBGC: 'rgba(42,49,58,0.5)', // 偶数行背景色
         waitTime: 2000 // 轮播时间
-      },
-
-      /* 表格数据 */
-      listData: [{
-        title: '无缝滚动第一行无缝滚动第一行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第二行无缝滚动第二行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第三行无缝滚动第三行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第四行无缝滚动第四行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第五行无缝滚动第五行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第六行无缝滚动第六行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第七行无缝滚动第七行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第八行无缝滚动第八行',
-        date: '2017-12-16'
-      }, {
-        title: '无缝滚动第九行无缝滚动第九行',
-        date: '2017-12-16'
-      }]
+      }
     }
   },
   methods: {
+    // 请求初始化数据
+    getInitData () {
+      const promise1 = reqBridgeSafetyLevel() // 桥梁安全等级
+      const promise2 = reqAllBridgeSafetyScore() // 桥梁安全评分
+
+      Promise.all([promise1, promise2]).then((res) => {
+        this.safetyLevelList = res[0].data
+        this.SafetyScoreList = res[1].data
+        console.log(res)
+      })
+    },
+    /* 第一屏 */
+    // 绘制3D地图
     drawZhengZhouMap () {
       const _this = this
       // 基于准备好的dom，初始化echarts实例
@@ -608,6 +652,12 @@ export default {
       }
     }
   },
+  computed: {
+    // 第二屏无缝滚动最大高度
+    seamlessMaxHeight () {
+      return this.safetyLevelList.length * 45 + 'px'
+    }
+  },
   components: {
     vueSeamlessScroll
   }
@@ -768,16 +818,107 @@ export default {
       .homeTwo_safety_form {
         position: relative;
         flex-basis: 40%;
+        margin-top: 20px;
         overflow: hidden;
+        background-color: rgb(23, 45, 73);
+
+        .homeTwo_safety_form_title {
+          height: 50px;
+          background-color: rgb(4, 62, 117);
+
+          ul {
+            display: flex;
+            height: 100%;
+            align-items: center;
+          }
+          li {
+            flex-basis: 20%;
+            text-align: center;
+            font-size: 14px;
+          }
+        }
+
+        .seamless_scroll {
+          overflow: hidden;
+
+          .seamless_scroll_ul {
+            li {
+              display: flex;
+              justify-content: space-around;
+              height: 45px;
+
+              span {
+                flex-basis: 20%;
+                text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 14px;
+              }
+            }
+          }
+        }
       }
     }
 
     .homeTwo_vehicle {
+      display: flex;
+      flex-direction: column;
       flex-basis: 50%;
       margin-left: 20px;
       background: linear-gradient(to left, #003BCF, #003BCF) left top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left top no-repeat, linear-gradient(to left, #003BCF, #003BCF) right top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) right top no-repeat, linear-gradient(to left, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat;
       background-size: 2px 10px, 10px 2px, 2px 10px, 10px 2px;
       background-color: #0B0F2A;
+
+      .homeTwo_safety_chart {
+        flex-basis: 60%;
+        overflow: hidden;
+      }
+
+      .homeTwo_safety_form {
+        position: relative;
+        flex-basis: 40%;
+        margin-top: 20px;
+        overflow: hidden;
+        background-color: rgb(23, 45, 73);
+
+        .homeTwo_safety_form_title {
+          height: 50px;
+          background-color: rgb(4, 62, 117);
+
+          ul {
+            display: flex;
+            height: 100%;
+            align-items: center;
+          }
+          li {
+            flex-basis: 20%;
+            text-align: center;
+            font-size: 14px;
+          }
+        }
+
+        .seamless_scroll {
+          overflow: hidden;
+
+          .seamless_scroll_ul {
+            li {
+              display: flex;
+              justify-content: space-around;
+              height: 45px;
+
+              span {
+                flex-basis: 20%;
+                text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
