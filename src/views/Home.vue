@@ -6,7 +6,7 @@
                   <div class="header">
                     <div class="header_title">郑州桥梁展示系统</div>
                     <div class="scroll_list"><dv-scroll-board :config="config" style="height:120px" /></div>
-                    <div class="header_weather_warp">
+                    <div v-if="weatherData" class="header_weather_warp">
                       <div class="header_weather">
                         <!-- 天气图标 -->
                         <i class="iconfont" :class="'icontianqi-'+weatherIcon"></i>
@@ -82,10 +82,10 @@
                   <!-- 桥梁车辆统计模块 -->
                   <div class="homeTwo_vehicle">
                     <!-- Echarts图表区域 -->
-                    <div class="homeTwo_safety_chart"></div>
+                    <div class="homeTwo_vehicle_chart"></div>
                     <!-- 无缝滚动区域 -->
-                    <div class="homeTwo_safety_form">
-                      <div class="homeTwo_safety_form_title">
+                    <div class="homeTwo_vehicle_form">
+                      <div class="homeTwo_vehicle_form_title">
                         <ul>
                           <li>编号</li>
                           <li>名称</li>
@@ -127,69 +127,22 @@ import {
 } from '@/request/ZhShao/api.js'
 export default {
   async mounted () {
+    // 获取天气数据
+    this.getWeatherData()
+
     // 获取初始化数据
     this.getInitData()
-    const lv = await reqAllBridgeInfo()
+    const lv = await reqAllBridgeInfo() // 包含经纬度信息
+    const lv2 = await reqAllBridgeSafetyScore()
     console.log(lv)
+    console.log(lv2)
 
     // 初始化郑州地图
     this.$nextTick(function () {
       this.drawZhengZhouMap()
       this.drawSafetyLevel()
+      this.drawVehicleNum()
     })
-
-    // 请求天气数据
-    // xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
-    const { data } = await this.$http.get('https://www.tianqiapi.com/api?version=v61&appid=13392814&appsecret=RfDCQz2U&city=郑州')
-    this.weatherData = {
-      city: data.city,
-      nowTem: data.tem,
-      maxTem: data.tem1,
-      minTem: data.tem2,
-      wea: data.wea,
-      wea_img: data.wea_img,
-      win: data.win,
-      win_speed: data.win_speed,
-      humidity: data.humidity
-    }
-    // 重置天气图标格式
-    switch (data.wea_img) {
-      case 'xue':
-        this.weatherIcon = 'xiaoxue'
-        break
-
-      case 'lei':
-        this.weatherIcon = 'leidiantianqi'
-        break
-
-      case 'shachen':
-        this.weatherIcon = 'shachenbao'
-        break
-
-      case 'wu':
-        this.weatherIcon = 'wu'
-        break
-
-      case 'bingbao':
-        this.weatherIcon = 'bingbao'
-        break
-
-      case 'yun':
-        this.weatherIcon = 'duoyun'
-        break
-
-      case 'yu':
-        this.weatherIcon = 'zhongyu'
-        break
-
-      case 'yin':
-        this.weatherIcon = 'yin'
-        break
-
-      case 'qing':
-        this.weatherIcon = 'qing'
-        break
-    }
   },
   data () {
     return {
@@ -240,6 +193,61 @@ export default {
     }
   },
   methods: {
+    // 请求天气数据
+    async getWeatherData () {
+      // xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
+      const { data } = await this.$http.get('https://www.tianqiapi.com/api?version=v61&appid=13392814&appsecret=RfDCQz2U&city=郑州')
+      this.weatherData = {
+        city: data.city,
+        nowTem: data.tem,
+        // maxTem: data.tem1,
+        minTem: data.tem2,
+        wea: data.wea,
+        wea_img: data.wea_img,
+        win: data.win,
+        win_speed: data.win_speed,
+        humidity: data.humidity
+      }
+      // 重置天气图标格式
+      switch (data.wea_img) {
+        case 'xue':
+          this.weatherIcon = 'xiaoxue'
+          break
+
+        case 'lei':
+          this.weatherIcon = 'leidiantianqi'
+          break
+
+        case 'shachen':
+          this.weatherIcon = 'shachenbao'
+          break
+
+        case 'wu':
+          this.weatherIcon = 'wu'
+          break
+
+        case 'bingbao':
+          this.weatherIcon = 'bingbao'
+          break
+
+        case 'yun':
+          this.weatherIcon = 'duoyun'
+          break
+
+        case 'yu':
+          this.weatherIcon = 'zhongyu'
+          break
+
+        case 'yin':
+          this.weatherIcon = 'yin'
+          break
+
+        case 'qing':
+          this.weatherIcon = 'qing'
+          break
+      }
+    },
+
     // 请求初始化数据
     getInitData () {
       const promise1 = reqBridgeSafetyLevel() // 桥梁安全等级
@@ -248,7 +256,6 @@ export default {
       Promise.all([promise1, promise2]).then((res) => {
         this.safetyLevelList = res[0].data
         this.SafetyScoreList = res[1].data
-        console.log(res)
       })
     },
     /* 第一屏 */
@@ -468,6 +475,14 @@ export default {
       // 2.配置option
       const option = {
         // backgroundColor: '#031245',
+        title: {
+          text: '桥梁安全级别统计',
+          textStyle: {
+            color: '#c0c3cd'
+          },
+          top: '20px',
+          left: 'center'
+        },
         textStyle: {
           color: '#c0c3cd',
           fontSize: 14
@@ -641,6 +656,87 @@ export default {
           trigger: 'axis',
           show: false
         }
+      }
+
+      // 3.将配置项给实例
+      myChart.setOption(option)
+
+      // 4.跟随屏幕自适应
+      window.onresize = function () {
+        myChart.resize()
+      }
+    },
+
+    // 绘制车辆统计图
+    drawVehicleNum () {
+      // 1.初始化echarts
+      const myChart = this.$echarts.init(document.querySelector('.homeTwo_vehicle_chart'))
+
+      // 2.配置option
+      const option = {
+        title: {
+          text: '车辆统计',
+          textStyle: {
+            color: '#c0c3cd'
+          },
+          top: '20px',
+          left: 'center'
+        },
+        legend: {
+          top: '93%',
+          itemWidth: 10,
+          itemHeight: 10,
+          textStyle: {
+            color: 'rgba(255,255,255,.7)',
+            fontSize: '14'
+          }
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        // 注意颜色写的位置
+        color: [
+          '#006cff',
+          '#60cda0',
+          '#ed8884',
+          '#ff9f7f',
+          '#0096ff',
+          '#9fe6b8',
+          '#32c5e9',
+          '#1d9dff'
+        ],
+        series: [
+          {
+            name: '车型统计',
+            type: 'pie',
+            // 如果radius是百分比则必须加引号
+            radius: ['10%', '70%'],
+            center: ['50%', '50%'],
+            roseType: 'radius',
+            data: [
+              { value: 20, name: '卡车' },
+              { value: 26, name: '轿车' },
+              { value: 24, name: '挂车' },
+              { value: 25, name: '拖车' },
+              { value: 20, name: '农用车' },
+              { value: 25, name: '大卡车' },
+              { value: 30, name: '出租车' },
+              { value: 42, name: '摩托车' }
+            ],
+            // 修饰饼形图文字相关的样式 label对象
+            label: {
+              fontSize: 13
+            },
+            // 修饰引导线样式
+            labelLine: {
+              // 连接到图形的线长度
+              length: 10,
+              // 连接到文字的线长度
+              length2: 12
+            }
+          }
+        ]
       }
 
       // 3.将配置项给实例
@@ -870,19 +966,19 @@ export default {
       background-size: 2px 10px, 10px 2px, 2px 10px, 10px 2px;
       background-color: #0B0F2A;
 
-      .homeTwo_safety_chart {
+      .homeTwo_vehicle_chart {
         flex-basis: 60%;
         overflow: hidden;
       }
 
-      .homeTwo_safety_form {
+      .homeTwo_vehicle_form {
         position: relative;
         flex-basis: 40%;
         margin-top: 20px;
         overflow: hidden;
         background-color: rgb(23, 45, 73);
 
-        .homeTwo_safety_form_title {
+        .homeTwo_vehicle_form_title {
           height: 50px;
           background-color: rgb(4, 62, 117);
 
