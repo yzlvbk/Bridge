@@ -127,3 +127,9 @@
 .el-pagination.is-background .el-pager li:not(.disabled).active {
   background-color: #034c6a;
 }
+
+/* 修改级联下拉框过长 */
+.el-popper.el-cascader__dropdown {
+    max-height: 500px;
+    overflow-y: scroll;
+}

@@ -27,3 +27,15 @@ export const reqBridgeOneStrainTimeAndHistory = (ids, StartTime, EndTime) => htt
 
 /* 桥梁系统1-应变片相关关系图 */
 export const reqBridgeOneStrainRelation = (ids, StartTime, EndTime) => http('/v10/bridgeOne/StrainRelation', { ids, StartTime, EndTime }, 'POST')
+
+/* 桥梁系统1-姿态盒倾角时序图和历史图 */
+export const reqBridgeOneIclTimeAndHistory = (ids, StartTime, EndTime) => http('/v10/bridgeOne/IclTimeAndHistory', { ids, StartTime, EndTime }, 'POST')
+
+/* 桥梁系统1-姿态盒倾角相关关系图 */
+export const reqBridgeOneIclRelation = (ids, StartTime, EndTime) => http('/v10/bridgeOne/IclRelation', { ids, StartTime, EndTime }, 'POST')
+
+/* 桥梁系统1-姿态盒加速度时序图和历史图 */
+export const reqBridgeOneAccelTimeAndHistory = (ids, StartTime, EndTime) => http('/v10/bridgeOne/AccelTimeAndHistory', { ids, StartTime, EndTime }, 'POST')
+
+/* 桥梁系统1-姿态盒加速度相关关系图 */
+export const reqBridgeOneAccelRelation = (ids, StartTime, EndTime) => http('/v10/bridgeOne/AccelRelation', { ids, StartTime, EndTime }, 'POST')

@@ -1,13 +1,14 @@
 <template>
   <div class="sernor_data_show">
+    {{activeName}}
       <div class="sernor_chart">
         <Setting class="setting" />
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="时序图" name="first">
+        <el-tabs v-model="activeName" @tab-click="toggleActiveName">
+          <el-tab-pane label="时序图" name="time">
             <div class="time_chart"></div>
           </el-tab-pane>
-          <el-tab-pane label="相关性分析图" name="second">相关性分析图</el-tab-pane>
-          <el-tab-pane label="历史数据" name="third">历史数据</el-tab-pane>
+          <el-tab-pane label="相关性分析图" name="relation">相关性分析图</el-tab-pane>
+          <el-tab-pane label="历史数据" name="history">历史数据</el-tab-pane>
         </el-tabs>
       </div>
       <div class="sernor_data">
@@ -50,20 +51,16 @@
 /* 监听图表div宽高变化 */
 import elementResizeDetectorMaker from 'element-resize-detector'
 import Setting from '../../../components/setting/Setting'
-import { reqBridgeOneStrainRelation } from '@/request/ZhShao/api.js'
+import { mapMutations } from 'vuex'
 export default {
   async mounted () {
     this.$nextTick(() => {
       this.drawTimeChart()
     })
-
-    const data = await reqBridgeOneStrainRelation(['202059', '202053'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
-    console.log(data)
   },
   data () {
     return {
-      activeName: 'first',
-
+      activeName: 'time',
       /* 表格数据 */
       tableData: [
         {
@@ -136,9 +133,11 @@ export default {
     }
   },
   methods: {
-    handleClick (tab, event) {
-      console.log(tab, event)
-    },
+    // 切换tab栏
+    // toggleTabs (tab) {
+    //   console.log(tab.name)
+    // },
+    ...mapMutations('ZhShaoSetting', ['toggleActiveName']),
 
     /* 绘制时序图 */
     drawTimeChart () {
