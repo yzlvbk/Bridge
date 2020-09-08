@@ -21,3 +21,9 @@ export const reqBridgeOneGetMemberSafetyLevel = () => http('/v10/bridgeOne/GetMe
 
 /* 桥梁系统1-车辆载重时序图数据 */
 export const reqBridgeOneVehicalWeight = () => http('/v10/bridgeOne/GetVehicalWeight', {}, 'GET')
+
+/* 桥梁系统1-应变片时序图和历史图 */
+export const reqBridgeOneStrainTimeAndHistory = (ids, StartTime, EndTime) => http('/v10/bridgeOne/StrainTimeAndHistory', { ids, StartTime, EndTime }, 'POST')
+
+/* 桥梁系统1-应变片相关关系图 */
+export const reqBridgeOneStrainRelation = (ids, StartTime, EndTime) => http('/v10/bridgeOne/StrainRelation', { ids, StartTime, EndTime }, 'POST')

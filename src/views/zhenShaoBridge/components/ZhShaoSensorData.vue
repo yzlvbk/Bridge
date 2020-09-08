@@ -50,11 +50,15 @@
 /* 监听图表div宽高变化 */
 import elementResizeDetectorMaker from 'element-resize-detector'
 import Setting from '../../../components/setting/Setting'
+import { reqBridgeOneStrainRelation } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  async mounted () {
     this.$nextTick(() => {
       this.drawTimeChart()
     })
+
+    const data = await reqBridgeOneStrainRelation(['202059', '202053'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
+    console.log(data)
   },
   data () {
     return {

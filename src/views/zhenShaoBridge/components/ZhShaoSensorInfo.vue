@@ -102,17 +102,20 @@ export default {
     // 请求传感器位置数据
     async getSensorBaseInfo () {
       const data = await reqBridgeOneSensorBaseInfo()
+      console.log(data)
       // 请求数据成功
       if (data.statusCode === 200) {
-        data.data.forEach((item) => {
-          if (item.Type === 'Profiler') {
-            item.Type = '姿态盒'
-            this.profilerData.push(item)
-          } else if (item.Type === 'StrainGauges') {
-            item.Type = '应变片'
-            this.strainGaugesData.push(item)
-          }
-        })
+        this.profilerData = data.data.Profiler
+        this.strainGaugesData = data.data.StrainGauges
+        // data.data.forEach((item) => {
+        //   if (item.Type === 'Profiler') {
+        //     item.Type = '姿态盒'
+        //     this.profilerData.push(item)
+        //   } else if (item.Type === 'StrainGauges') {
+        //     item.Type = '应变片'
+        //     this.strainGaugesData.push(item)
+        //   }
+        // })
       }
     },
 
