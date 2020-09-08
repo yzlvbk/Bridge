@@ -300,7 +300,7 @@ export default {
       if (this.timeValue.length === 0) return
       console.log(this.timeValue)
       this.isShowPanel = false
-
+      // 姿态盒接口有待调试
       // 判断类型，发送请求
       if (this.timeValue[0] === '姿态盒倾角') {
         const data = await reqBridgeOneIclTimeAndHistory(['SR3'])
