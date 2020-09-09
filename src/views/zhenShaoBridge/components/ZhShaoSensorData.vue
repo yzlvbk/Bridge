@@ -1,8 +1,8 @@
 <template>
   <div class="sernor_data_show">
-    {{activeName}}
+    <!-- {{timeChartData}} -->
       <div class="sernor_chart">
-        <Setting class="setting" />
+        <Setting class="setting" @reDrawChart="reDrawChart" />
         <el-tabs v-model="activeName" @tab-click="toggleActiveName">
           <el-tab-pane label="时序图" name="time">
             <div class="time_chart"></div>
@@ -55,13 +55,13 @@
 /* 监听图表div宽高变化 */
 import elementResizeDetectorMaker from 'element-resize-detector'
 import Setting from '../../../components/setting/Setting'
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   async mounted () {
     this.$nextTick(() => {
-      this.drawTimeChart()
-      this.drawRelationChart()
-      this.drawHistoryChart()
+      // this.drawTimeChart()
+      // this.drawRelationChart()
+      // this.drawHistoryChart()
     })
   },
   data () {
@@ -138,6 +138,9 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState('ZhShaoSetting', ['timeChartData', 'relationChartData', 'historyChartData'])
+  },
   methods: {
     // 切换tab栏
     // toggleTabs (tab) {
@@ -147,12 +150,45 @@ export default {
 
     /* 绘制时序图 */
     drawTimeChart () {
+      // 保存vuex中数据, 设置X、Y轴数据
+      const object = Object.values(this.timeChartData)[0]
+      const dataX = object.Time
+      const series = []
+      for (const key in object) {
+        if (key !== 'Time') {
+          series.push({
+            name: key,
+            type: 'line',
+            symbol: 'emptyCircle', // 标记形状
+            itemStyle: {
+              normal: {
+                color: 'rgba(58,132,255,1)', // 圆点颜色
+                lineStyle: {
+                  color: 'rgba(58,132,255,1)',
+                  width: 1
+                },
+                areaStyle: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
+                  }, {
+                    offset: 1,
+                    color: 'rgba(58,132,255,0)'// 渐变色结束颜色
+                  }])
+                }
+              }
+            },
+            data: object[key]
+          })
+        }
+      }
+
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'
       var lineColor = '#CACACA'
 
       // moocX轴数据
-      const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
+      // const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
 
       // 1.初始化echarts
       var myChart = this.$echarts.init(document.querySelector('.time_chart'))
@@ -281,8 +317,27 @@ export default {
             yAxisIndex: 0
           }
         ],
-        series: [{
-          name: '2018',
+        series
+      }
+
+      // 3.将配置项给实例
+      myChart.setOption(option, true)
+      // 4.让图表跟随屏幕自动的去适应
+      const erd = elementResizeDetectorMaker()
+      erd.listenTo(document.querySelector('.time_chart'), element => {
+        myChart.resize()
+      })
+    },
+
+    /* 绘制相关性分析图 */
+    drawRelationChart () {
+      // 保存vuex中数据, 设置X、Y轴数据
+      const dataX = this.relationChartData.x
+      const series = []
+      const yObject = this.relationChartData.y
+      for (const key in yObject) {
+        series.push({
+          name: key,
           type: 'line',
           symbol: 'emptyCircle', // 标记形状
           itemStyle: {
@@ -303,51 +358,16 @@ export default {
               }
             }
           },
-          data: [1, 2, 3, 3, 5, 6, 5, 3, 6, 5, 5, 4]
-        },
-        {
-          name: '2015',
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: 'rgba(255,80,124,1)',
-              lineStyle: {
-                color: 'rgba(255,80,124,1)',
-                width: 1
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(255,80,124,0.5)'
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(255,80,124,0)'
-                }])
-              }
-            }
-          },
-          data: [9, 5, 7, 8, 6, 7, 8, 7, 7, 6, 8, 6]
-        }]
+          data: yObject[key]
+        })
       }
 
-      // 3.将配置项给实例
-      myChart.setOption(option)
-      // 4.让图表跟随屏幕自动的去适应
-      const erd = elementResizeDetectorMaker()
-      erd.listenTo(document.querySelector('.time_chart'), element => {
-        myChart.resize()
-      })
-    },
-
-    /* 绘制相关性分析图 */
-    drawRelationChart () {
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'
       var lineColor = '#CACACA'
 
       // moocX轴数据
-      const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
+      // const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
 
       // 1.初始化echarts
       var myChart = this.$echarts.init(document.querySelector('.relation_chart'))
@@ -476,58 +496,11 @@ export default {
             yAxisIndex: 0
           }
         ],
-        series: [{
-          name: '2018',
-          type: 'line',
-          symbol: 'emptyCircle', // 标记形状
-          itemStyle: {
-            normal: {
-              color: 'rgba(58,132,255,1)', // 圆点颜色
-              lineStyle: {
-                color: 'rgba(58,132,255,1)',
-                width: 1
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
-                }, {
-                  offset: 1,
-                  color: 'rgba(58,132,255,0)'// 渐变色结束颜色
-                }])
-              }
-            }
-          },
-          data: [1, 2, 3, 3, 5, 6, 5, 3, 6, 5, 5, 4]
-        },
-        {
-          name: '2015',
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: 'rgba(255,80,124,1)',
-              lineStyle: {
-                color: 'rgba(255,80,124,1)',
-                width: 1
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(255,80,124,0.5)'
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(255,80,124,0)'
-                }])
-              }
-            }
-          },
-          data: [9, 5, 7, 8, 6, 7, 8, 7, 7, 6, 8, 6]
-        }]
+        series
       }
 
       // 3.将配置项给实例
-      myChart.setOption(option)
+      myChart.setOption(option, true)
       // 4.让图表跟随屏幕自动的去适应
       const erd = elementResizeDetectorMaker()
       erd.listenTo(document.querySelector('.relation_chart'), element => {
@@ -537,12 +510,46 @@ export default {
 
     /* 绘制历史图 */
     drawHistoryChart () {
+      // 保存vuex中数据, 设置X、Y轴数据
+      const yObject = this.historyChartData
+      const dataX = yObject.Object.keys(yObject)[0].Time
+      console.log()
+      const series = []
+      for (const key in yObject) {
+        for (const k in yObject[key]) {
+          series.push({
+            name: k,
+            type: 'line',
+            symbol: 'emptyCircle', // 标记形状
+            itemStyle: {
+              normal: {
+                color: 'rgba(58,132,255,1)', // 圆点颜色
+                lineStyle: {
+                  color: 'rgba(58,132,255,1)',
+                  width: 1
+                },
+                areaStyle: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
+                  }, {
+                    offset: 1,
+                    color: 'rgba(58,132,255,0)'// 渐变色结束颜色
+                  }])
+                }
+              }
+            },
+            data: yObject[key]
+          })
+        }
+      }
+
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'
       var lineColor = '#CACACA'
 
       // moocX轴数据
-      const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
+      // const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
 
       // 1.初始化echarts
       var myChart = this.$echarts.init(document.querySelector('.history_chart'))
@@ -671,58 +678,11 @@ export default {
             yAxisIndex: 0
           }
         ],
-        series: [{
-          name: '2018',
-          type: 'line',
-          symbol: 'emptyCircle', // 标记形状
-          itemStyle: {
-            normal: {
-              color: 'rgba(58,132,255,1)', // 圆点颜色
-              lineStyle: {
-                color: 'rgba(58,132,255,1)',
-                width: 1
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
-                }, {
-                  offset: 1,
-                  color: 'rgba(58,132,255,0)'// 渐变色结束颜色
-                }])
-              }
-            }
-          },
-          data: [1, 2, 3, 3, 5, 6, 5, 3, 6, 5, 5, 4]
-        },
-        {
-          name: '2015',
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: 'rgba(255,80,124,1)',
-              lineStyle: {
-                color: 'rgba(255,80,124,1)',
-                width: 1
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(255,80,124,0.5)'
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(255,80,124,0)'
-                }])
-              }
-            }
-          },
-          data: [9, 5, 7, 8, 6, 7, 8, 7, 7, 6, 8, 6]
-        }]
+        series
       }
 
       // 3.将配置项给实例
-      myChart.setOption(option)
+      myChart.setOption(option, true)
       // 4.让图表跟随屏幕自动的去适应
       const erd = elementResizeDetectorMaker()
       erd.listenTo(document.querySelector('.history_chart'), element => {
@@ -743,6 +703,29 @@ export default {
     /* 表格跳转到指定位置 */
     location () {
       this.$refs.tableList.$el.scrollTop = 300
+    },
+
+    // 设置变化, 重新绘制chart
+    reDrawChart (type) {
+      if (type === 'time') {
+        // 重新绘制时序图
+        console.log(this.timeChartData)
+        this.$nextTick(() => {
+          this.drawTimeChart()
+        })
+      } else if (type === 'relation') {
+        // 重新绘制相关性分析图
+        console.log(this.relationChartData)
+        this.$nextTick(() => {
+          this.drawRelationChart()
+        })
+      } else if (type === 'history') {
+        // 重新绘制历史图图
+        console.log(this.historyChartData)
+        this.$nextTick(() => {
+          this.drawHistoryChart()
+        })
+      }
     }
   },
   components: {

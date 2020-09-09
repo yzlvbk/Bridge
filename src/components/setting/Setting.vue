@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import {
   reqBridgeOneSensorBaseInfo,
   reqBridgeOneStrainTimeAndHistory, // 应变片时序图和历史图
@@ -300,17 +300,33 @@ export default {
       if (this.timeValue.length === 0) return
       console.log(this.timeValue)
       this.isShowPanel = false
+
       // 判断类型，发送请求
       if (this.timeValue[0] === '姿态盒倾角') {
         const data = await reqBridgeOneIclTimeAndHistory([this.timeValue[1]])
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setTimeChartData(data.data)
       } else if (this.timeValue[0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelTimeAndHistory([this.timeValue[1]])
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setTimeChartData(data.data)
       } else if (this.timeValue[0] === '应变片') {
         const data = await reqBridgeOneStrainTimeAndHistory([this.timeValue[1]])
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setTimeChartData(data.data)
       }
+
+      // 通知父组件重新绘制Echarts
+      this.$emit('reDrawChart', 'time')
     },
 
     // 相关性分析图确认
@@ -334,14 +350,29 @@ export default {
       // 判断类型，发送请求
       if (this.relationValue[0][0] === '姿态盒倾角') {
         const data = await reqBridgeOneIclRelation(Ids, startTime, endTime)
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setRelationChartData(data.data)
       } else if (this.relationValue[0][0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelRelation(Ids, startTime, endTime)
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setRelationChartData(data.data)
       } else if (this.relationValue[0][0] === '应变片') {
         const data = await reqBridgeOneStrainRelation(Ids, startTime, endTime)
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setRelationChartData(data.data)
       }
+
+      // 通知父组件重新绘制Echarts
+      this.$emit('reDrawChart', 'relation')
     },
 
     // 历史图确认
@@ -365,14 +396,29 @@ export default {
       // 判断类型，发送请求
       if (this.historyValue[0][0] === '姿态盒倾角') {
         const data = await reqBridgeOneIclTimeAndHistory(Ids, startTime, endTime)
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setHistoryChartData(data.data)
       } else if (this.historyValue[0][0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelTimeAndHistory(Ids, startTime, endTime)
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setHistoryChartData(data.data)
       } else if (this.historyValue[0][0] === '应变片') {
         const data = await reqBridgeOneStrainTimeAndHistory(Ids, startTime, endTime)
+        // 请求数据成功
+        if (data.statusCode !== 200) return
         console.log(data)
+        // 保存数据到vuex
+        this.setHistoryChartData(data.data)
       }
+
+      // 通知父组件重新绘制Echarts
+      this.$emit('reDrawChart', 'history')
     },
 
     // 改变日期格式 例如: 2020-09-01 00:00
@@ -384,7 +430,10 @@ export default {
       var hour = time.getHours() < 10 ? '0' + time.getHours() : time.getHours()
       var minute = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
       return year + '-' + month + '-' + date + ' ' + hour + ':' + minute
-    }
+    },
+
+    // 映射vuex中保存时序图数据、保存相关性分析图数据、保存历史图数据
+    ...mapMutations('ZhShaoSetting', ['setTimeChartData', 'setRelationChartData', 'setHistoryChartData'])
   }
 }
 </script>
