@@ -50,18 +50,14 @@ import {
 } from '@/request/ZhShao/api.js'
 export default {
   name: 'ZhShaoMonitor',
-  mounted () {
+  async mounted () {
     // 获取桥梁系统1-构件安全级别数据
     this.getMemberSafetyLevel()
     // 获取桥梁系统1-车辆载重时序图数据
-    this.getVehicalWeight()
+    await this.getVehicalWeight()
 
     // 绘制车辆载重时序图数据 --- 获取数据为异步，设置定时器，获取之后绘制
-    setTimeout(() => {
-      this.$nextTick(() => {
-        this.drawWeightChart()
-      })
-    }, 100)
+    this.drawWeightChart()
   },
   activated () {
     // 每隔60s请求一次实时车辆载重数据

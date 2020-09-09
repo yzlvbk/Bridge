@@ -58,7 +58,8 @@ import Setting from '../../../components/setting/Setting'
 import { mapState, mapMutations } from 'vuex'
 import {
   reqBridgeOneStrainTable,
-  reqBridgeOneIclTable
+  reqBridgeOneIclTable,
+  reqBridgeOneAccelTable
 } from '@/request/ZhShao/api.js'
 export default {
   mounted () {
@@ -145,10 +146,13 @@ export default {
     // 请求表格数据
     async getTableData () {
       const data1 = await reqBridgeOneIclTable()
-      console.log('now1', data1)
+      console.log('倾角', data1)
 
       const data2 = await reqBridgeOneStrainTable()
-      console.log('now2', data2)
+      console.log('应变片', data2)
+
+      const data3 = await reqBridgeOneAccelTable()
+      console.log('加速度', data3)
     },
 
     // 切换tab栏

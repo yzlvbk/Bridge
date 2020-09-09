@@ -2,6 +2,25 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 
+// 导入Nprogress包对应的js和css
+import Nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+// 请求拦截
+axios.interceptors.request.use(config => {
+  // 在request中显示进度条
+  Nprogress.start()
+  // 在最后必须 return config
+  return config
+})
+
+// 在response中隐藏进度条
+axios.interceptors.response.use(config => {
+  Nprogress.done()
+  // 在最后必须 return config
+  return config
+})
+
 export default function http (url, data = {}, type = 'GET') {
   return new Promise((resolve, reject) => {
     let promise
