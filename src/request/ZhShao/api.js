@@ -39,3 +39,12 @@ export const reqBridgeOneAccelTimeAndHistory = (Ids, StartTime, EndTime) => http
 
 /* 桥梁系统1-姿态盒加速度相关关系图 */
 export const reqBridgeOneAccelRelation = (Ids, StartTime, EndTime) => http('/v10/bridgeOne/SrAccelRelation', { Ids, StartTime, EndTime }, 'POST')
+
+/* 桥梁系统1-应变片表格数据 */
+export const reqBridgeOneStrainTable = () => http('/v10/bridgeOne/GetStrainTable', {}, 'GET')
+
+/* 桥梁系统1-姿态盒倾角表格数据 */
+export const reqBridgeOneIclTable = () => http('/v10/bridgeOne/GetIclTable', {}, 'GET')
+
+/* 桥梁系统1-姿态盒加速度表格数据 */
+export const reqBridgeOneAccelTable = () => http('/v10/bridgeOne/GetAccelTable', {}, 'GET')

@@ -56,13 +56,13 @@
 import elementResizeDetectorMaker from 'element-resize-detector'
 import Setting from '../../../components/setting/Setting'
 import { mapState, mapMutations } from 'vuex'
+import {
+  reqBridgeOneStrainTable,
+  reqBridgeOneIclTable
+} from '@/request/ZhShao/api.js'
 export default {
-  async mounted () {
-    this.$nextTick(() => {
-      // this.drawTimeChart()
-      // this.drawRelationChart()
-      // this.drawHistoryChart()
-    })
+  mounted () {
+    this.getTableData()
   },
   data () {
     return {
@@ -142,6 +142,15 @@ export default {
     ...mapState('ZhShaoSetting', ['timeChartData', 'relationChartData', 'historyChartData'])
   },
   methods: {
+    // 请求表格数据
+    async getTableData () {
+      const data1 = await reqBridgeOneIclTable()
+      console.log('now1', data1)
+
+      const data2 = await reqBridgeOneStrainTable()
+      console.log('now2', data2)
+    },
+
     // 切换tab栏
     // toggleTabs (tab) {
     //   console.log(tab.name)
@@ -511,37 +520,35 @@ export default {
     /* 绘制历史图 */
     drawHistoryChart () {
       // 保存vuex中数据, 设置X、Y轴数据
-      const yObject = this.historyChartData
-      const dataX = yObject.Object.keys(yObject)[0].Time
+      const dataX = this.historyChartData.x
+      const yObject = this.historyChartData.y
       console.log()
       const series = []
       for (const key in yObject) {
-        for (const k in yObject[key]) {
-          series.push({
-            name: k,
-            type: 'line',
-            symbol: 'emptyCircle', // 标记形状
-            itemStyle: {
-              normal: {
-                color: 'rgba(58,132,255,1)', // 圆点颜色
-                lineStyle: {
-                  color: 'rgba(58,132,255,1)',
-                  width: 1
-                },
-                areaStyle: {
-                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
-                  }, {
-                    offset: 1,
-                    color: 'rgba(58,132,255,0)'// 渐变色结束颜色
-                  }])
-                }
+        series.push({
+          name: key,
+          type: 'line',
+          symbol: 'emptyCircle', // 标记形状
+          itemStyle: {
+            normal: {
+              color: 'rgba(58,132,255,1)', // 圆点颜色
+              lineStyle: {
+                color: 'rgba(58,132,255,1)',
+                width: 1
+              },
+              areaStyle: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
+                }, {
+                  offset: 1,
+                  color: 'rgba(58,132,255,0)'// 渐变色结束颜色
+                }])
               }
-            },
-            data: yObject[key]
-          })
-        }
+            }
+          },
+          data: yObject[key]
+        })
       }
 
       // 定义颜色
@@ -709,13 +716,13 @@ export default {
     reDrawChart (type) {
       if (type === 'time') {
         // 重新绘制时序图
-        console.log(this.timeChartData)
+        // console.log(this.timeChartData)
         this.$nextTick(() => {
           this.drawTimeChart()
         })
       } else if (type === 'relation') {
         // 重新绘制相关性分析图
-        console.log(this.relationChartData)
+        // console.log(this.relationChartData)
         this.$nextTick(() => {
           this.drawRelationChart()
         })

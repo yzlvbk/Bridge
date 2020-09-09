@@ -134,9 +134,8 @@ export default {
 @import '../../assets/css/reset.css';
 .bridge {
   height: 100%;
-  // background-color: var(--BgColor);
-  background: url(../../assets/image/index_bg.png);
-  // background: url(../../assets/image/bg3.png);
+  background-color: var(--BgColor);
+  // background-color: rgb(5, 24, 49);
   background-size: 100% 100%;
 }
 .bridge_header {

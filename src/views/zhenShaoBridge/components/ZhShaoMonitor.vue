@@ -115,6 +115,9 @@ export default {
           this.vehicalTime.push(item.Time.split('T')[1])
           this.vehicalWeight.push(item.Weight)
         })
+
+        console.log(this.vehicalTime)
+        console.log(this.vehicalWeight)
       }
     },
 

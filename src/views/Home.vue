@@ -1095,7 +1095,7 @@ export default {
 }
 
 .homeThree {
-  background-color: rgb(5, 24, 49);
+  background: url(../assets/image/index_bg.png);
 
   .homeThree_header {
     width: 100%;

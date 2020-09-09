@@ -115,6 +115,11 @@ import {
 export default {
   mounted () {
     this.getSensorBaseInfo()
+
+    // 初始化绘制
+    this.timeConfirm()
+    this.relationConfirm()
+    this.historyConfirm()
   },
   data () {
     return {
@@ -122,7 +127,7 @@ export default {
       isShowPanel: false,
 
       // 时序图选中项
-      timeValue: [],
+      timeValue: ['姿态盒倾角', 'SR1'], // 默认选中第一项
       // 时序图配置项
       Options: [
         {
@@ -143,7 +148,7 @@ export default {
       ],
 
       // 相关性分析图选中项
-      relationValue: [],
+      relationValue: [['姿态盒倾角', 'SR1'], ['姿态盒倾角', 'SR3']],
       // 相关性分析图属性
       relationProps: { multiple: true },
       // 相关性分析图配置
@@ -201,12 +206,12 @@ export default {
         }
       ],
       // 相关性分析图起始时间
-      relationStartTime: '',
+      relationStartTime: 'Mon Jun 22 2020 23:00:00 GMT+0800 (中国标准时间)',
       // 相关性分析图结束时间
-      relationEndTime: '',
+      relationEndTime: 'Mon Jun 22 2020 23:02:00 GMT+0800 (中国标准时间)',
 
       // 历史图选中项
-      historyValue: [],
+      historyValue: [['姿态盒倾角', 'SR1'], ['姿态盒倾角', 'SR3']],
       // 历史图属性
       historyProps: { multiple: true },
       // 历史图配置
@@ -252,9 +257,9 @@ export default {
         }
       ],
       // 历史图起始时间
-      historyStartTime: '',
+      historyStartTime: 'Mon Jun 22 2020 23:00:00 GMT+0800 (中国标准时间)',
       // 历史图结束时间
-      historyEndTime: ''
+      historyEndTime: 'Mon Jun 22 2020 23:02:00 GMT+0800 (中国标准时间)'
     }
   },
   computed: {
@@ -298,7 +303,7 @@ export default {
     async timeConfirm () {
       // 如果没有选中内容，则返回
       if (this.timeValue.length === 0) return
-      console.log(this.timeValue)
+      // console.log(this.timeValue)
       this.isShowPanel = false
 
       // 判断类型，发送请求
@@ -306,21 +311,21 @@ export default {
         const data = await reqBridgeOneIclTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
+        // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
       } else if (this.timeValue[0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
+        // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
       } else if (this.timeValue[0] === '应变片') {
         const data = await reqBridgeOneStrainTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
+        // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
       }
@@ -343,30 +348,30 @@ export default {
       const startTime = this.formatDate(this.relationStartTime)
       const endTime = this.formatDate(this.relationEndTime)
 
-      console.log(Ids)
-      console.log(startTime)
-      console.log(endTime)
+      // console.log(this.relationValue)
+      // console.log(this.relationStartTime)
+      // console.log(this.relationEndTime)
 
       // 判断类型，发送请求
       if (this.relationValue[0][0] === '姿态盒倾角') {
         const data = await reqBridgeOneIclRelation(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
+        // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
       } else if (this.relationValue[0][0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelRelation(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
+        // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
       } else if (this.relationValue[0][0] === '应变片') {
         const data = await reqBridgeOneStrainRelation(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
+        // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
       }
@@ -412,7 +417,6 @@ export default {
         const data = await reqBridgeOneStrainTimeAndHistory(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
         // 保存数据到vuex
         this.setHistoryChartData(data.data)
       }
@@ -421,7 +425,7 @@ export default {
       this.$emit('reDrawChart', 'history')
     },
 
-    // 改变日期格式 例如: 2020-09-01 00:00
+    // 改变日期格式 例如: 2020-09-01T00:00
     formatDate (value) {
       var time = new Date(value)
       var year = time.getFullYear()
@@ -429,7 +433,7 @@ export default {
       var date = time.getDate() < 10 ? '0' + time.getDate() : time.getDate()
       var hour = time.getHours() < 10 ? '0' + time.getHours() : time.getHours()
       var minute = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
-      return year + '-' + month + '-' + date + ' ' + hour + ':' + minute
+      return year + '-' + month + '-' + date + 'T' + hour + ':' + minute
     },
 
     // 映射vuex中保存时序图数据、保存相关性分析图数据、保存历史图数据
