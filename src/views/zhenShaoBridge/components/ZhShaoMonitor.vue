@@ -116,8 +116,8 @@ export default {
           this.vehicalWeight.push(item.Weight)
         })
 
-        console.log(this.vehicalTime)
-        console.log(this.vehicalWeight)
+        // console.log(this.vehicalTime)
+        // console.log(this.vehicalWeight)
       }
     },
 

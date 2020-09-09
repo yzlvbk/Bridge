@@ -37,7 +37,11 @@
                     <div class="main_middle">
                       <div class="main_middle_title">
                         <!-- 子系统标题 -->
-                        <div class="main_middle_item_warp" @mouseover="middleItemOver" @mouseout="middleItemOut" @click="middleItemClick('zhenShaoBridge')">
+                        <div class="main_middle_item_warp"
+                        v-if="false"
+                        @mouseover="middleItemOver"
+                        @mouseout="middleItemOut"
+                        @click="middleItemClick('zhenShaoBridge')">
                           <dv-decoration-11 class="main_middle_item" style="width:200px;height:60px;" :color="activeColor">郑州桥监测系统</dv-decoration-11>
                         </div>
                       </div>
