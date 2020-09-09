@@ -7,8 +7,12 @@
           <el-tab-pane label="时序图" name="time">
             <div class="time_chart"></div>
           </el-tab-pane>
-          <el-tab-pane label="相关性分析图" name="relation">相关性分析图</el-tab-pane>
-          <el-tab-pane label="历史数据" name="history">历史数据</el-tab-pane>
+          <el-tab-pane label="相关性分析图" name="relation">
+            <div class="relation_chart"></div>
+          </el-tab-pane>
+          <el-tab-pane label="历史数据" name="history">
+            <div class="history_chart"></div>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div class="sernor_data">
@@ -56,6 +60,8 @@ export default {
   async mounted () {
     this.$nextTick(() => {
       this.drawTimeChart()
+      this.drawRelationChart()
+      this.drawHistoryChart()
     })
   },
   data () {
@@ -334,6 +340,396 @@ export default {
       })
     },
 
+    /* 绘制相关性分析图 */
+    drawRelationChart () {
+      // 定义颜色
+      var fontColor = 'rgb(15, 200, 224)'
+      var lineColor = '#CACACA'
+
+      // moocX轴数据
+      const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
+
+      // 1.初始化echarts
+      var myChart = this.$echarts.init(document.querySelector('.relation_chart'))
+      // 2.配置option
+      var option = {
+        title: {
+          text: ''
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: '10px',
+          textStyle: {
+            color: lineColor
+          }
+
+        },
+        grid: {
+          left: '4%',
+          right: '12%',
+          bottom: '5%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true
+            },
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            restore: {},
+            saveAsImage: {}
+          },
+          iconStyle: {
+            borderColor: lineColor
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false, // 坐标轴两边留白
+          data: dataX,
+          name: '时间',
+          nameTextStyle: {
+            color: lineColor
+          },
+          // axisLabel: { //坐标轴刻度标签的相关设置。
+          //     // interval: 0,//设置为 1，表示『隔一个标签显示一个标签』
+          // // margin:15,
+          //     formatter:function(params) {
+          //         var newParamsName = "";
+          //         var paramsNameNumber = params.length;
+          //         var provideNumber = 5;  //一行显示几个字
+          //         var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+          //         if (paramsNameNumber > provideNumber) {
+          //             for (var p = 0; p < rowNumber; p++) {
+          //                 var tempStr = "";
+          //                 var start = p * provideNumber;
+          //                 var end = start + provideNumber;
+          //                 if (p == rowNumber - 1) {
+          //                     tempStr = params.substring(start, paramsNameNumber);
+          //                 } else {
+          //                     tempStr = params.substring(start, end) + "\n";
+          //                 }
+          //                 newParamsName += tempStr;
+          //             }
+
+          //         } else {
+          //             newParamsName = params;
+          //         }
+          //         return newParamsName
+          //     },
+          //     //rotate:50,
+          // },
+          axisLine: { // 坐标轴轴线相关设置
+            lineStyle: {
+              color: fontColor
+            }
+          }
+        },
+        yAxis: [{
+          name: '倾角(deg)',
+          nameTextStyle: {
+            color: lineColor
+          },
+          type: 'value',
+          splitNumber: 5,
+          axisLine: {
+            show: true
+          },
+          axisTick: {
+            show: false
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: lineColor,
+              opacity: 0.3
+            }
+          },
+          // eslint-disable-next-line no-dupe-keys
+          axisLine: { // 坐标轴轴线相关设置
+            lineStyle: {
+              color: fontColor
+            }
+          }
+
+        }],
+        dataZoom: [
+          // x轴滚动条
+          {
+            type: 'inside',
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100
+          },
+          // y轴滚动条
+          {
+            type: 'inside',
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100,
+            yAxisIndex: 0
+          }
+        ],
+        series: [{
+          name: '2018',
+          type: 'line',
+          symbol: 'emptyCircle', // 标记形状
+          itemStyle: {
+            normal: {
+              color: 'rgba(58,132,255,1)', // 圆点颜色
+              lineStyle: {
+                color: 'rgba(58,132,255,1)',
+                width: 1
+              },
+              areaStyle: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
+                }, {
+                  offset: 1,
+                  color: 'rgba(58,132,255,0)'// 渐变色结束颜色
+                }])
+              }
+            }
+          },
+          data: [1, 2, 3, 3, 5, 6, 5, 3, 6, 5, 5, 4]
+        },
+        {
+          name: '2015',
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: 'rgba(255,80,124,1)',
+              lineStyle: {
+                color: 'rgba(255,80,124,1)',
+                width: 1
+              },
+              areaStyle: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgba(255,80,124,0.5)'
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255,80,124,0)'
+                }])
+              }
+            }
+          },
+          data: [9, 5, 7, 8, 6, 7, 8, 7, 7, 6, 8, 6]
+        }]
+      }
+
+      // 3.将配置项给实例
+      myChart.setOption(option)
+      // 4.让图表跟随屏幕自动的去适应
+      const erd = elementResizeDetectorMaker()
+      erd.listenTo(document.querySelector('.relation_chart'), element => {
+        myChart.resize()
+      })
+    },
+
+    /* 绘制历史图 */
+    drawHistoryChart () {
+      // 定义颜色
+      var fontColor = 'rgb(15, 200, 224)'
+      var lineColor = '#CACACA'
+
+      // moocX轴数据
+      const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
+
+      // 1.初始化echarts
+      var myChart = this.$echarts.init(document.querySelector('.history_chart'))
+      // 2.配置option
+      var option = {
+        title: {
+          text: ''
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          top: '10px',
+          textStyle: {
+            color: lineColor
+          }
+
+        },
+        grid: {
+          left: '4%',
+          right: '12%',
+          bottom: '5%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true
+            },
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            restore: {},
+            saveAsImage: {}
+          },
+          iconStyle: {
+            borderColor: lineColor
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false, // 坐标轴两边留白
+          data: dataX,
+          name: '时间',
+          nameTextStyle: {
+            color: lineColor
+          },
+          // axisLabel: { //坐标轴刻度标签的相关设置。
+          //     // interval: 0,//设置为 1，表示『隔一个标签显示一个标签』
+          // // margin:15,
+          //     formatter:function(params) {
+          //         var newParamsName = "";
+          //         var paramsNameNumber = params.length;
+          //         var provideNumber = 5;  //一行显示几个字
+          //         var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+          //         if (paramsNameNumber > provideNumber) {
+          //             for (var p = 0; p < rowNumber; p++) {
+          //                 var tempStr = "";
+          //                 var start = p * provideNumber;
+          //                 var end = start + provideNumber;
+          //                 if (p == rowNumber - 1) {
+          //                     tempStr = params.substring(start, paramsNameNumber);
+          //                 } else {
+          //                     tempStr = params.substring(start, end) + "\n";
+          //                 }
+          //                 newParamsName += tempStr;
+          //             }
+
+          //         } else {
+          //             newParamsName = params;
+          //         }
+          //         return newParamsName
+          //     },
+          //     //rotate:50,
+          // },
+          axisLine: { // 坐标轴轴线相关设置
+            lineStyle: {
+              color: fontColor
+            }
+          }
+        },
+        yAxis: [{
+          name: '倾角(deg)',
+          nameTextStyle: {
+            color: lineColor
+          },
+          type: 'value',
+          splitNumber: 5,
+          axisLine: {
+            show: true
+          },
+          axisTick: {
+            show: false
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: lineColor,
+              opacity: 0.3
+            }
+          },
+          // eslint-disable-next-line no-dupe-keys
+          axisLine: { // 坐标轴轴线相关设置
+            lineStyle: {
+              color: fontColor
+            }
+          }
+
+        }],
+        dataZoom: [
+          // x轴滚动条
+          {
+            type: 'inside',
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100
+          },
+          // y轴滚动条
+          {
+            type: 'inside',
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100,
+            yAxisIndex: 0
+          }
+        ],
+        series: [{
+          name: '2018',
+          type: 'line',
+          symbol: 'emptyCircle', // 标记形状
+          itemStyle: {
+            normal: {
+              color: 'rgba(58,132,255,1)', // 圆点颜色
+              lineStyle: {
+                color: 'rgba(58,132,255,1)',
+                width: 1
+              },
+              areaStyle: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
+                }, {
+                  offset: 1,
+                  color: 'rgba(58,132,255,0)'// 渐变色结束颜色
+                }])
+              }
+            }
+          },
+          data: [1, 2, 3, 3, 5, 6, 5, 3, 6, 5, 5, 4]
+        },
+        {
+          name: '2015',
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: 'rgba(255,80,124,1)',
+              lineStyle: {
+                color: 'rgba(255,80,124,1)',
+                width: 1
+              },
+              areaStyle: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgba(255,80,124,0.5)'
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255,80,124,0)'
+                }])
+              }
+            }
+          },
+          data: [9, 5, 7, 8, 6, 7, 8, 7, 7, 6, 8, 6]
+        }]
+      }
+
+      // 3.将配置项给实例
+      myChart.setOption(option)
+      // 4.让图表跟随屏幕自动的去适应
+      const erd = elementResizeDetectorMaker()
+      erd.listenTo(document.querySelector('.history_chart'), element => {
+        myChart.resize()
+      })
+    },
+
     /* 表行添加类名 */
     tableRowClassName ({ row, rowIndex }) {
       if (rowIndex === 1) {
@@ -393,7 +789,9 @@ export default {
         }
       }
 
-      .time_chart {
+      .time_chart,
+      .relation_chart,
+      .history_chart {
         width: 100%;
         height: calc(100% - 55px);
       }

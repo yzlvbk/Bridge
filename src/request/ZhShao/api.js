@@ -23,19 +23,19 @@ export const reqBridgeOneGetMemberSafetyLevel = () => http('/v10/bridgeOne/GetMe
 export const reqBridgeOneVehicalWeight = () => http('/v10/bridgeOne/GetVehicalWeight', {}, 'GET')
 
 /* 桥梁系统1-应变片时序图和历史图 */
-export const reqBridgeOneStrainTimeAndHistory = (ids, StartTime, EndTime) => http('/v10/bridgeOne/StrainTimeAndHistory', { ids, StartTime, EndTime }, 'POST')
+export const reqBridgeOneStrainTimeAndHistory = (Ids, StartTime, EndTime) => http('/v10/bridgeOne/StrainTimeAndHistory', { Ids, StartTime, EndTime }, 'POST')
 
 /* 桥梁系统1-应变片相关关系图 */
-export const reqBridgeOneStrainRelation = (ids, StartTime, EndTime) => http('/v10/bridgeOne/StrainRelation', { ids, StartTime, EndTime }, 'POST')
+export const reqBridgeOneStrainRelation = (Ids, StartTime, EndTime) => http('/v10/bridgeOne/StrainRelation', { Ids, StartTime, EndTime }, 'POST')
 
 /* 桥梁系统1-姿态盒倾角时序图和历史图 */
-export const reqBridgeOneIclTimeAndHistory = (ids, StartTime, EndTime) => http('/v10/bridgeOne/IclTimeAndHistory', { ids, StartTime, EndTime }, 'POST')
+export const reqBridgeOneIclTimeAndHistory = (Ids, StartTime, EndTime) => http('/v10/bridgeOne/SrIclTimeAndHistory', { Ids, StartTime, EndTime }, 'POST')
 
 /* 桥梁系统1-姿态盒倾角相关关系图 */
-export const reqBridgeOneIclRelation = (ids, StartTime, EndTime) => http('/v10/bridgeOne/IclRelation', { ids, StartTime, EndTime }, 'POST')
+export const reqBridgeOneIclRelation = (Ids, StartTime, EndTime) => http('/v10/bridgeOne/SrIclRelation', { Ids, StartTime, EndTime }, 'POST')
 
 /* 桥梁系统1-姿态盒加速度时序图和历史图 */
-export const reqBridgeOneAccelTimeAndHistory = (ids, StartTime, EndTime) => http('/v10/bridgeOne/AccelTimeAndHistory', { ids, StartTime, EndTime }, 'POST')
+export const reqBridgeOneAccelTimeAndHistory = (Ids, StartTime, EndTime) => http('/v10/bridgeOne/SrAccelTimeAndHistory', { Ids, StartTime, EndTime }, 'POST')
 
 /* 桥梁系统1-姿态盒加速度相关关系图 */
-export const reqBridgeOneAccelRelation = (ids, StartTime, EndTime) => http('/v10/bridgeOne/AccelRelation', { ids, StartTime, EndTime }, 'POST')
+export const reqBridgeOneAccelRelation = (Ids, StartTime, EndTime) => http('/v10/bridgeOne/SrAccelRelation', { Ids, StartTime, EndTime }, 'POST')

@@ -302,13 +302,13 @@ export default {
       this.isShowPanel = false
       // 判断类型，发送请求
       if (this.timeValue[0] === '姿态盒倾角') {
-        const data = await reqBridgeOneIclTimeAndHistory(['SR3'])
+        const data = await reqBridgeOneIclTimeAndHistory([this.timeValue[1]])
         console.log(data)
       } else if (this.timeValue[0] === '姿态盒加速度') {
-        const data = await reqBridgeOneAccelTimeAndHistory(['SR3'])
+        const data = await reqBridgeOneAccelTimeAndHistory([this.timeValue[1]])
         console.log(data)
       } else if (this.timeValue[0] === '应变片') {
-        const data = await reqBridgeOneStrainTimeAndHistory(['ZS01013'])
+        const data = await reqBridgeOneStrainTimeAndHistory([this.timeValue[1]])
         console.log(data)
       }
     },
@@ -317,20 +317,29 @@ export default {
     async relationConfirm () {
       // 如果没有选中内容，则返回
       if (this.relationValue.length === 0 || !this.relationStartTime || !this.relationEndTime) return
-      console.log(this.relationValue)
-      console.log(this.formatDate(this.relationStartTime))
-      console.log(this.formatDate(this.relationEndTime))
       this.isShowPanel = false
+
+      // 配置请求参数格式
+      const Ids = []
+      this.relationValue.forEach(item => {
+        Ids.push(item[1])
+      })
+      const startTime = this.formatDate(this.relationStartTime)
+      const endTime = this.formatDate(this.relationEndTime)
+
+      console.log(Ids)
+      console.log(startTime)
+      console.log(endTime)
 
       // 判断类型，发送请求
       if (this.relationValue[0][0] === '姿态盒倾角') {
-        const data = await reqBridgeOneIclRelation(['SR3', 'SR4'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
+        const data = await reqBridgeOneIclRelation(Ids, startTime, endTime)
         console.log(data)
       } else if (this.relationValue[0][0] === '姿态盒加速度') {
-        const data = await reqBridgeOneAccelRelation(['SR3', 'SR4'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
+        const data = await reqBridgeOneAccelRelation(Ids, startTime, endTime)
         console.log(data)
       } else if (this.relationValue[0][0] === '应变片') {
-        const data = await reqBridgeOneStrainRelation(['ZS01010', 'ZS01012'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
+        const data = await reqBridgeOneStrainRelation(Ids, startTime, endTime)
         console.log(data)
       }
     },
@@ -341,19 +350,27 @@ export default {
       if (this.historyValue.length === 0 || !this.historyStartTime || !this.historyEndTime) return
       this.isShowPanel = false
 
-      console.log(this.historyValue)
-      console.log(this.formatDate(this.historyStartTime))
-      console.log(this.formatDate(this.historyEndTime))
+      // 配置请求参数格式
+      const Ids = []
+      this.historyValue.forEach(item => {
+        Ids.push(item[1])
+      })
+      const startTime = this.formatDate(this.historyStartTime)
+      const endTime = this.formatDate(this.historyEndTime)
+
+      console.log(Ids)
+      console.log(startTime)
+      console.log(endTime)
 
       // 判断类型，发送请求
       if (this.historyValue[0][0] === '姿态盒倾角') {
-        const data = await reqBridgeOneIclTimeAndHistory(['SR3', 'SR4'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
+        const data = await reqBridgeOneIclTimeAndHistory(Ids, startTime, endTime)
         console.log(data)
       } else if (this.historyValue[0][0] === '姿态盒加速度') {
-        const data = await reqBridgeOneAccelTimeAndHistory(['SR3', 'SR4'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
+        const data = await reqBridgeOneAccelTimeAndHistory(Ids, startTime, endTime)
         console.log(data)
       } else if (this.historyValue[0][0] === '应变片') {
-        const data = await reqBridgeOneStrainTimeAndHistory(['ZS01010', 'ZS01012'], '2020-09-07 09:44:20', '2020-09-07 09:44:27')
+        const data = await reqBridgeOneStrainTimeAndHistory(Ids, startTime, endTime)
         console.log(data)
       }
     },
@@ -417,7 +434,7 @@ export default {
         color: #eee !important;
         font-weight: 600;
         border: none;
-        background-color: rgb(62, 88, 119);
+        // background-color: #fff !important;
     }
 
     /* 确认和取消按钮 */
