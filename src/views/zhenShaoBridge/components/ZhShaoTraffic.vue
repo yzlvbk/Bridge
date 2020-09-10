@@ -20,7 +20,7 @@
         ref="mySwiper">
 
           <swiperSlide v-for="(item, index) in imgList" :key="index">
-            <img :src="item" @click="handle(item)" width="100%">
+            <img class="swiper_img" :src="item" @click="handle(item)" width="100%">
             </swiperSlide>
 
           <!-- <div class="swiper-button-next"></div>
@@ -45,15 +45,15 @@ import 'swiper/dist/css/swiper.css'
 import { reqBridgeOneTrafficPic } from '@/request/ZhShao/api.js'
 export default {
   async mounted () {
+    // 获取车流图片数据
+    this.getTrafficImg()
+    // setInterval(this.getTrafficImg, 5000)
+
     /* 添加移动内容区域窗口大小事件 */
     // const div = document.querySelector('.vsplitter')
     // div.addEventListener('mousedown', this.mouseResize)
 
     // this.$refs.mySwiper.on('click', this.handleClickSlide)
-
-    const data = await reqBridgeOneTrafficPic(0)
-    console.log(data)
-    this.currentImg = 'data:image/png;base64,' + data.data[0].Base64Data
   },
   data () {
     return {
@@ -81,16 +81,23 @@ export default {
       //   '/img/img9.790795ce.jpg',
       //   '/img/img10.f9ae28a4.jpg'
 
-      imgList: [
-        'image/img1.jpg',
-        'image/img2.jpg',
-        'image/img3.jpg'
-      ], // 照片数组
+      imgList: [], // 照片数组
 
-      currentImg: '' // 当前展示的照片
+      currentImg: '', // 当前展示的照片
+      reqImgId: 94960 // 请求图片Id
     }
   },
   methods: {
+    /* 请求车流图片 */
+    async getTrafficImg () {
+      const data = await reqBridgeOneTrafficPic(this.reqImgId)
+      console.log(data)
+      if (data.data.length === 0) return
+      this.currentImg = 'data:image/png;base64,' + data.data[0].Base64Data
+      this.imgList.push(this.currentImg)
+      this.reqImgId = data.data[0].Id + 1
+    },
+
     /* 鼠标点击改变尺寸 */
     mouseResize (e) {
       const startX = e.clientX // 初始鼠标位置
@@ -198,7 +205,11 @@ export default {
     text-align: center;
     font-weight: bold;
     font-size: 14px;
-    background-color: lightgreen;
+    // background-color: lightgreen;
+  }
+
+  .swiper_img {
+    transform: rotate(90deg);
   }
 }
 </style>
