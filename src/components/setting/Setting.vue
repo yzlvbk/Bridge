@@ -314,6 +314,7 @@ export default {
         // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
+        this.toggleTableName('iclTable')
       } else if (this.timeValue[0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
@@ -321,6 +322,7 @@ export default {
         // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
+        this.toggleTableName('accelTable')
       } else if (this.timeValue[0] === '应变片') {
         const data = await reqBridgeOneStrainTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
@@ -328,6 +330,7 @@ export default {
         // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
+        this.toggleTableName('strainTable')
       }
 
       // 通知父组件重新绘制Echarts
@@ -360,6 +363,7 @@ export default {
         // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
+        this.toggleTableName('iclTable')
       } else if (this.relationValue[0][0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelRelation(Ids, startTime, endTime)
         // 请求数据成功
@@ -367,6 +371,7 @@ export default {
         // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
+        this.toggleTableName('accelTable')
       } else if (this.relationValue[0][0] === '应变片') {
         const data = await reqBridgeOneStrainRelation(Ids, startTime, endTime)
         // 请求数据成功
@@ -374,6 +379,7 @@ export default {
         // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
+        this.toggleTableName('strainTable')
       }
 
       // 通知父组件重新绘制Echarts
@@ -406,6 +412,7 @@ export default {
         console.log(data)
         // 保存数据到vuex
         this.setHistoryChartData(data.data)
+        this.toggleTableName('iclTable')
       } else if (this.historyValue[0][0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelTimeAndHistory(Ids, startTime, endTime)
         // 请求数据成功
@@ -413,12 +420,14 @@ export default {
         console.log(data)
         // 保存数据到vuex
         this.setHistoryChartData(data.data)
+        this.toggleTableName('accelTable')
       } else if (this.historyValue[0][0] === '应变片') {
         const data = await reqBridgeOneStrainTimeAndHistory(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
         // 保存数据到vuex
         this.setHistoryChartData(data.data)
+        this.toggleTableName('strainTable')
       }
 
       // 通知父组件重新绘制Echarts
@@ -437,7 +446,7 @@ export default {
     },
 
     // 映射vuex中保存时序图数据、保存相关性分析图数据、保存历史图数据
-    ...mapMutations('ZhShaoSetting', ['setTimeChartData', 'setRelationChartData', 'setHistoryChartData'])
+    ...mapMutations('ZhShaoSetting', ['setTimeChartData', 'setRelationChartData', 'setHistoryChartData', 'toggleTableName'])
   }
 }
 </script>

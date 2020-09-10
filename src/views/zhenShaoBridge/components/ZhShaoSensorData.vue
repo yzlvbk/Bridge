@@ -1,6 +1,6 @@
 <template>
   <div class="sernor_data_show">
-    <!-- {{timeChartData}} -->
+    <!-- {{activeTableName}} -->
       <div class="sernor_chart">
         <Setting class="setting" @reDrawChart="reDrawChart" />
         <el-tabs v-model="activeName" @tab-click="toggleActiveName">
@@ -17,33 +17,96 @@
       </div>
       <div class="sernor_data">
         <div class="component-table">
+          <!-- 姿态盒倾角表格 -->
           <el-table
+            v-show="activeTableName === 'iclTable'"
             ref="tableList"
-            :data="tableData"
+            :data="iclTableData"
             stripe
             height="100%"
             style="width: 100%; border: none;"
-            :row-style="{ height: '60px' }"
-            :row-class-name="tableRowClassName">
+            :row-style="{ height: '60px' }">
             <el-table-column
-              prop="id"
+              prop="Id"
               align="center"
               label="编号">
             </el-table-column>
             <el-table-column
-              prop="name"
+              prop="Name"
               align="center"
               label="名称">
             </el-table-column>
             <el-table-column
-              prop="material"
+              prop="IclX"
               align="center"
-              label="主题材质">
+              label="倾角X">
             </el-table-column>
             <el-table-column
-              prop="level"
+              prop="IclY"
               align="center"
-              label="安全级别">
+              label="倾角Y">
+            </el-table-column>
+          </el-table>
+
+          <!-- 姿态盒加速度表格 -->
+          <el-table
+            v-show="activeTableName === 'accelTable'"
+            ref="tableList"
+            :data="accelTableData"
+            stripe
+            height="100%"
+            style="width: 100%; border: none;"
+            :row-style="{ height: '60px' }">
+            <el-table-column
+              prop="Id"
+              align="center"
+              label="编号">
+            </el-table-column>
+            <el-table-column
+              prop="Name"
+              align="center"
+              label="名称">
+            </el-table-column>
+            <el-table-column
+              prop="AccelX"
+              align="center"
+              label="加速度X">
+            </el-table-column>
+            <el-table-column
+              prop="AccelY"
+              align="center"
+              label="加速度Y">
+            </el-table-column>
+            <el-table-column
+              prop="AccelZ"
+              align="center"
+              label="加速度Z">
+            </el-table-column>
+          </el-table>
+
+          <!-- 应变片表格 -->
+          <el-table
+            v-show="activeTableName === 'strainTable'"
+            ref="tableList"
+            :data="strainTableData"
+            stripe
+            height="100%"
+            style="width: 100%; border: none;"
+            :row-style="{ height: '60px' }">
+            <el-table-column
+              prop="Id"
+              align="center"
+              label="编号">
+            </el-table-column>
+            <el-table-column
+              prop="Name"
+              align="center"
+              label="名称">
+            </el-table-column>
+            <el-table-column
+              prop="Value"
+              align="center"
+              label="值">
             </el-table-column>
           </el-table>
       </div>
@@ -63,12 +126,21 @@ import {
 } from '@/request/ZhShao/api.js'
 export default {
   mounted () {
+    // 获取表格数据
     this.getTableData()
   },
   data () {
     return {
       activeName: 'time',
-      /* 表格数据 */
+      /* 姿态盒倾角表格数据 */
+      iclTableData: [],
+
+      /* 姿态盒加速度表格数据 */
+      accelTableData: [],
+
+      /* 应变片表格数据 */
+      strainTableData: [],
+
       tableData: [
         {
           id: '01',
@@ -140,25 +212,30 @@ export default {
     }
   },
   computed: {
-    ...mapState('ZhShaoSetting', ['timeChartData', 'relationChartData', 'historyChartData'])
+    ...mapState('ZhShaoSetting', ['timeChartData', 'relationChartData', 'historyChartData', 'activeTableName'])
   },
   methods: {
     // 请求表格数据
     async getTableData () {
       const data1 = await reqBridgeOneIclTable()
-      console.log('倾角', data1)
+      if (data1.statusCode === 200) {
+        console.log('倾角', data1)
+        this.iclTableData = data1.data
+      }
 
       const data2 = await reqBridgeOneStrainTable()
-      console.log('应变片', data2)
+      if (data2.statusCode === 200) {
+        console.log('应变片', data2)
+        this.strainTableData = data2.data
+      }
 
       const data3 = await reqBridgeOneAccelTable()
-      console.log('加速度', data3)
+      if (data3.statusCode === 200) {
+        console.log('加速度', data3)
+        this.accelTableData = data3.data
+      }
     },
 
-    // 切换tab栏
-    // toggleTabs (tab) {
-    //   console.log(tab.name)
-    // },
     ...mapMutations('ZhShaoSetting', ['toggleActiveName']),
 
     /* 绘制时序图 */
@@ -699,16 +776,6 @@ export default {
       erd.listenTo(document.querySelector('.history_chart'), element => {
         myChart.resize()
       })
-    },
-
-    /* 表行添加类名 */
-    tableRowClassName ({ row, rowIndex }) {
-      if (rowIndex === 1) {
-        return 'warning-row'
-      } else if (rowIndex === 3) {
-        return 'success-row'
-      }
-      return ''
     },
 
     /* 表格跳转到指定位置 */

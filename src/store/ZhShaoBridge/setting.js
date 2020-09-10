@@ -4,6 +4,8 @@ export default {
     // 当前展示的tab 默认为time
     activeName: 'time',
 
+    // 当前展示的table 默认为姿态盒倾角 iclTable、accelTable、strainTable
+    activeTableName: 'iclTable',
     // 时序图数据
     timeChartData: {},
 
@@ -17,6 +19,13 @@ export default {
     // 切换当前展示的tab
     toggleActiveName (state, tab) {
       state.activeName = tab.name
+    },
+
+    // 切换当前展示的table
+    toggleTableName (state, name) {
+      if (state.activeTableName === name) return
+      console.log(1)
+      state.activeTableName = name
     },
 
     // 保存时序图数据
