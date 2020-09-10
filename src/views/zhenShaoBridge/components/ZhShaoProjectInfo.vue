@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div class="projectInfo">
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
