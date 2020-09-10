@@ -42,13 +42,18 @@
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import { reqBridgeOneTrafficPic } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  async mounted () {
     /* 添加移动内容区域窗口大小事件 */
     // const div = document.querySelector('.vsplitter')
     // div.addEventListener('mousedown', this.mouseResize)
 
     // this.$refs.mySwiper.on('click', this.handleClickSlide)
+
+    const data = await reqBridgeOneTrafficPic(0)
+    console.log(data)
+    this.currentImg = 'data:image/png;base64,' + data.data[0].Base64Data
   },
   data () {
     return {
@@ -82,7 +87,7 @@ export default {
         'image/img3.jpg'
       ], // 照片数组
 
-      currentImg: '/image/img1.jpg' // 当前展示的照片
+      currentImg: '' // 当前展示的照片
     }
   },
   methods: {
@@ -156,6 +161,7 @@ export default {
           width: 100%;
           height: 100%;
           background-color: #444;
+          transform: rotate(90deg);
         }
       }
     }

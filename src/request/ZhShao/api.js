@@ -48,3 +48,6 @@ export const reqBridgeOneIclTable = () => http('/v10/bridgeOne/GetIclTable', {},
 
 /* 桥梁系统1-姿态盒加速度表格数据 */
 export const reqBridgeOneAccelTable = () => http('/v10/bridgeOne/GetAccelTable', {}, 'GET')
+
+/* 桥梁系统1-车流实时图片 */
+export const reqBridgeOneTrafficPic = (Id) => http('/v10/bridgeOne/GetPic', { Id }, 'GET')
