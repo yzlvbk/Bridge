@@ -50,7 +50,7 @@ export default {
         // attribute声明vec4类型变量apos
         attribute vec4 apos;
         // attribute声明顶点颜色变量
-        // attribute vec4 a_color;
+        attribute vec4 a_color;
         // 顶点法向量变量
         attribute vec4 a_normal;
         // uniform声明平行光颜色变量
@@ -78,7 +78,7 @@ export default {
             // 计算平行光方向向量和顶点法向量的点积
             float dot = max(dot(u_lightDirection, normal), 0.0);
             // 计算反射后的颜色
-            vec4 a_color = vec4(0.0,1.0,1.0,1);
+            // vec4 a_color = vec4(0.0,1.0,1.0,1);
             vec3 reflectedLight = u_lightColor * a_color.rgb * dot;
             // 环境光
             vec3 u_AmbientLight = vec3(0.1,0.1,0.1);
@@ -139,7 +139,7 @@ export default {
       /* 设置旋转、缩放、平移默认值 */
       var anglex = 60 * Math.PI / 180
       var angley = 0 * Math.PI / 180
-      var scaleValue = 0.9
+      var scaleValue = 1.2
       var transValueX = 0
       var transValueY = 0
 
@@ -149,7 +149,7 @@ export default {
       gl.uniformMatrix4fv(uniformProj, false, projectMat)
 
       /** 创建顶点缓冲区**/
-      const n = initVertexBuffers(gl)
+      // const n = initVertexBuffers(gl)
 
       // 添加鼠标点击事件
       canvas.addEventListener('mousedown', onMouseDown, false)
@@ -193,20 +193,91 @@ export default {
         return ortho
       }
 
-      // 声明初始化顶点缓冲区函数
+      // 声明初始化桥梁顶点缓冲区函数
       function initVertexBuffers (gl) {
         // 顶点数据
         var vertexData = new Float32Array(vertex)
 
         // 顶点法向量数组normalData
         var normalData = new Float32Array(normal)
+
+        /* 颜色数据 */
+        var colorData = []
+        for (let i = 0; i < vertex.length; i += 3) {
+          colorData.push('0.0')
+          colorData.push('1.0')
+          colorData.push('1.0')
+        }
+        colorData = new Float32Array(colorData)
+
         if (!initArrayBuffer(gl, vertexData, gl.FLOAT, 3, 'apos')) return -1
         if (!initArrayBuffer(gl, normalData, gl.FLOAT, 3, 'a_normal')) return -1
+        if (!initArrayBuffer(gl, colorData, gl.FLOAT, 3, 'a_color')) return -1
 
         /** 执行绘制之前，一定要开启深度测试，以免颜色混乱**/
         gl.enable(gl.DEPTH_TEST)
 
-        return vertexData.length / 3
+        const n = vertexData.length / 3
+
+        gl.drawArrays(gl.TRIANGLES, 0, n)
+      }
+
+      // 声明初始化传感器顶点缓冲区函数
+      function cubeVertexBuffers (gl, x, y, z) {
+        var cubeData = [
+          60, 60, 60, -60, 60, 60, -60, -60, 60, 60, 60, 60, -60, -60, 60, 60, -60, 60, // 面1
+          60, 60, 60, 60, -60, 60, 60, -60, -60, 60, 60, 60, 60, -60, -60, 60, 60, -60, // 面2
+          60, 60, 60, 60, 60, -60, -60, 60, -60, 60, 60, 60, -60, 60, -60, -60, 60, 60, // 面3
+          -60, 60, 60, -60, 60, -60, -60, -60, -60, -60, 60, 60, -60, -60, -60, -60, -60, 60, // 面4
+          -60, -60, -60, 60, -60, -60, 60, -60, 60, -60, -60, -60, 60, -60, 60, -60, -60, 60, // 面3
+          60, -60, -60, -60, -60, -60, -60, 60, -60, 60, -60, -60, -60, 60, -60, 60, 60, -60 // 面6
+        ]
+
+        // 变换坐标
+        cubeData = cubeData.map((item, index) => {
+          // x坐标
+          if (index % 3 === 0) {
+            return item + x
+          } else if (index % 3 === 1) { // y坐标
+            return item + y
+          } else if (index % 3 === 2) { // z坐标
+            return item + z
+          }
+        })
+
+        cubeData = new Float32Array(cubeData)
+
+        /**
+     *顶点法向量数组normalData
+     **/
+        var normalData = new Float32Array([
+          0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, // z轴正方向——面1
+          1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, // x轴正方向——面2
+          0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, // y轴正方向——面3
+          -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, // x轴负方向——面4
+          0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, // y轴负方向——面5
+          0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1// z轴负方向——面6
+        ])
+
+        /* 颜色数据 */
+        var colorData = []
+        for (let i = 0; i < cubeData.length; i += 3) {
+          colorData.push('1.0')
+          colorData.push('0.0')
+          colorData.push('0.0')
+        }
+        colorData = new Float32Array(colorData)
+
+        if (!initArrayBuffer(gl, cubeData, gl.FLOAT, 3, 'apos')) return -1
+        if (!initArrayBuffer(gl, normalData, gl.FLOAT, 3, 'a_normal')) return -1
+        if (!initArrayBuffer(gl, colorData, gl.FLOAT, 3, 'a_color')) return -1
+
+        /** 执行绘制之前，一定要开启深度测试，以免颜色混乱**/
+        gl.enable(gl.DEPTH_TEST)
+
+        const n = cubeData.length / 3
+
+        gl.drawArrays(gl.TRIANGLES, 0, n)
       }
 
       // 初始化缓冲区
@@ -367,7 +438,17 @@ export default {
         requestAnimationFrame(draw)
         /** 执行绘制命令**/
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-        gl.drawArrays(gl.TRIANGLES, 0, n)
+        // gl.drawArrays(gl.TRIANGLES, 0, n)
+
+        initVertexBuffers(gl)
+        cubeVertexBuffers(gl, 1376, -70, -290)
+        cubeVertexBuffers(gl, -1883, -70, -578)
+        cubeVertexBuffers(gl, 0, 0, -120)
+        cubeVertexBuffers(gl, -2540, -360, -95)
+        cubeVertexBuffers(gl, 2540, -360, -95)
+        cubeVertexBuffers(gl, -2040, -360, -95)
+        cubeVertexBuffers(gl, -1040, -360, -95)
+        cubeVertexBuffers(gl, -1376, -70, -320)
       }
     }
   }
