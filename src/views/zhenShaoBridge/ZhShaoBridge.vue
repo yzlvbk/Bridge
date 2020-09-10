@@ -101,7 +101,7 @@
           <router-view></router-view>
         </keep-alive>
 
-        <!-- 底部logo -->x
+        <!-- 底部logo -->
         <footer class="footer_logo">
           <img class="footer_logo_img" src="../../assets/LOGO.svg" alt="">
           <a href="javascript:;" class="footer_title">仕达得尔智能科技</a>
