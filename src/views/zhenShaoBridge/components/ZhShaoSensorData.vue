@@ -242,7 +242,11 @@ export default {
     drawTimeChart () {
       // 保存vuex中数据, 设置X、Y轴数据
       const object = Object.values(this.timeChartData)[0]
-      const dataX = object.Time
+      const dataX = []
+      console.log(object.Time)
+      object.Time.forEach((item) => {
+        dataX.push(item.split('T')[1])
+      })
       const series = []
       for (const key in object) {
         if (key !== 'Time') {
@@ -423,6 +427,7 @@ export default {
     drawRelationChart () {
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.relationChartData.x
+      console.log('1', dataX)
       const series = []
       const yObject = this.relationChartData.y
       for (const key in yObject) {
@@ -603,7 +608,6 @@ export default {
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.historyChartData.x
       const yObject = this.historyChartData.y
-      console.log()
       const series = []
       for (const key in yObject) {
         series.push({
