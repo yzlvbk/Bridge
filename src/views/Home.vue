@@ -313,6 +313,7 @@ export default {
       Promise.all([promise1, promise2]).then((res) => {
         this.safetyLevelList = res[0].data
         this.SafetyScoreList = res[1].data
+        console.log('lv', this.safetyLevelList)
       })
     },
     /* 第一屏 */
@@ -526,6 +527,89 @@ export default {
     /* 第二屏 */
     // 绘制安全统计级别
     drawSafetyLevel () {
+      // // 保存数据
+      // const data = this.safetyLevelList
+      // // X轴数据
+      // const dataX = []
+      // const dataY = []
+      // data.forEach((item) => {
+      //   dataX.push(item.BridgeName)
+      //   dataY.push(item.SafetyLevel)
+      // })
+      // const series = [{
+      //   data: [1, 1, 1, 1, 1, 1, 1, 1],
+      //   type: 'pictorialBar',
+      //   barMaxWidth: '20',
+      //   symbol: 'diamond',
+      //   symbolOffset: [0, '50%'],
+      //   symbolSize: [30, 15]
+      // }, {
+      //   data: [10, 10, 10, 10, 10, 10, 10, 10], // 顶
+      //   type: 'bar',
+      //   barMaxWidth: 'auto',
+      //   barWidth: 30,
+      //   barGap: '-100%',
+      //   zlevel: -1
+      // }, {
+      //   data: [1, 1, 1, 1, 1, 1, 1, 1],
+      //   type: 'pictorialBar',
+      //   barMaxWidth: '20',
+      //   symbol: 'diamond',
+      //   symbolOffset: [0, '50%'],
+      //   symbolSize: [30, 15],
+      //   zlevel: -2
+      // }, {
+      //   data: [10, 10, 10, 10, 10, 10, 10, 10],
+      //   type: 'pictorialBar',
+      //   barMaxWidth: '20',
+      //   symbolPosition: 'end',
+      //   symbol: 'diamond',
+      //   symbolOffset: [0, '-50%'],
+      //   symbolSize: [30, 12],
+      //   zlevel: -1
+      // }]
+
+      // series.push({
+      //   data: dataY,
+      //   type: 'bar',
+      //   barMaxWidth: 'auto',
+      //   barWidth: 30,
+      //   itemStyle: {
+      //     color: {
+      //       x: 0,
+      //       y: 0,
+      //       x2: 0,
+      //       y2: 1,
+      //       type: 'linear',
+      //       global: false,
+      //       colorStops: [{
+      //         offset: 0,
+      //         color: '#0b9eff'
+      //       }, {
+      //         offset: 1,
+      //         color: '#63caff'
+      //       }]
+      //     }
+      //   },
+      //   label: {
+      //     show: true,
+      //     position: 'top',
+      //     distance: 10,
+      //     color: '#fff'
+      //   }
+      // })
+      // series.push({
+      //   data: dataY,
+      //   type: 'pictorialBar',
+      //   barMaxWidth: '20',
+      //   symbolPosition: 'end',
+      //   symbol: 'diamond',
+      //   symbolOffset: [0, '-50%'],
+      //   symbolSize: [30, 12],
+      //   zlevel: 2
+      // })
+      // console.log(series)
+
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.homeTwo_safety_chart'))
 

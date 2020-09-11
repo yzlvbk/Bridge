@@ -10,7 +10,7 @@
     <div class="contain">
 
       <div class="three_d_model" style="width: 60%;">
-        <button @click="addImg">添加照片</button>
+        <!-- <button @click="addImg">添加照片</button> -->
         <div class="showImg">
           <img :src="currentImg" width="500px" heigth="500px">
         </div>
@@ -47,7 +47,11 @@ export default {
   async mounted () {
     // 获取车流图片数据
     this.getTrafficImg()
-    // setInterval(this.getTrafficImg, 5000)
+    var timer = setInterval(this.getTrafficImg, 2000)
+
+    setTimeout(() => {
+      clearInterval(timer)
+    }, 20000)
 
     /* 添加移动内容区域窗口大小事件 */
     // const div = document.querySelector('.vsplitter')
