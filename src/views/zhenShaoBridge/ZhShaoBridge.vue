@@ -56,11 +56,6 @@
             </el-menu-item-group>
           </el-submenu>
 
-          <el-menu-item index="/ZhShaoMesh">
-            <i class="el-icon-cpu"></i>
-            <span slot="title">Mesh</span>
-          </el-menu-item>
-
           <el-menu-item index="/ZhShaoTraffic">
             <i class="el-icon-s-promotion"></i>
             <span slot="title">车流分析</span>
@@ -102,10 +97,10 @@
         </keep-alive>
 
         <!-- 底部logo -->
-        <footer class="footer_logo">
+        <!-- <footer class="footer_logo">
           <img class="footer_logo_img" src="../../assets/LOGO.svg" alt="">
           <a href="javascript:;" class="footer_title">仕达得尔智能科技</a>
-        </footer>
+        </footer> -->
       </el-main>
     </el-container>
   </div>

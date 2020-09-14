@@ -14,12 +14,12 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-        <div class="three_d_model" style="width: 60%;">
+        <div class="three_d_model" style="height: 40%;">
             <ThreeD />
         </div>
         <!-- 空隙模块 -- 控制模块拖动 -->
-        <div class="vsplitter" ref="vsplitter"></div>
-        <div class="chart" style="width: 40%;">
+        <!-- <div class="vsplitter" ref="vsplitter"></div> -->
+        <div class="chart" style="height: 60%;">
           <keep-alive>
             <router-view></router-view>
           </keep-alive>
@@ -35,8 +35,8 @@ export default {
     this.path = this.$route.path
 
     // 添加移动内容区域窗口大小事件
-    const div = document.querySelector('.vsplitter')
-    div.addEventListener('mousedown', this.mouseResize)
+    // const div = document.querySelector('.vsplitter')
+    // div.addEventListener('mousedown', this.mouseResize)
   },
   data () {
     return {
@@ -77,7 +77,7 @@ export default {
   },
   beforeDestroy () {
     // 销毁移动内容区域窗口大小事件
-    this.$refs.vsplitter.removeEventListener('mousedown', this.mouseResize)
+    // this.$refs.vsplitter.removeEventListener('mousedown', this.mouseResize)
   }
 }
 </script>
@@ -91,8 +91,12 @@ export default {
 
 .contain {
     display: flex;
+    flex-direction: column;
     height: calc(100% - 73px);
 
+    .three_d_model {
+      border-bottom: 10px solid var(--BgColor);
+    }
     .three_d_model,
     .chart {
         height: 100%;

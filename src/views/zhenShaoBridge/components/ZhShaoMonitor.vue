@@ -2,7 +2,7 @@
   <div class="monitor">
 
     <!-- 安全等级评分 -->
-    <div class="ranking">安全等级评分:<i :class="safetyLevelClass">{{totalScore}}</i></div>
+    <!-- <div class="ranking">安全等级评分:<i :class="safetyLevelClass">{{totalScore}}</i></div> -->
 
     <!-- 构件安全级别 -->
     <div class="component">
@@ -102,6 +102,7 @@ export default {
     /* 请求桥梁系统1-车辆载重时序图数据 */
     async getVehicalWeight () {
       const data = await reqBridgeOneVehicalWeight()
+      console.log(data)
       // 请求数据成功
       if (data.statusCode === 200) {
         // 重置上次数据

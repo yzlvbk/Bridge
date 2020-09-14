@@ -62,19 +62,21 @@
 
 <script>
 import {
-  reqAllBridgeSafetyScore
+  reqAllBridgeInfo,
+  reqAllBridgeNotice
 } from '@/request/ZhShao/api.js'
 export default {
   mounted () {
     // 获取天气数据
     this.getWeatherData()
 
-    // 获取桥梁轮播信息
+    // 获取桥梁轮播信息、所有桥梁信息
+    this.getAllBridgeNotices()
     this.getAllBridgeInfo()
 
     // 初始化郑州地图
     this.$nextTick(function () {
-      this.drawZhengZhouMap()
+      // this.drawZhengZhouMap()
     })
   },
 
@@ -88,6 +90,9 @@ export default {
       // 全部桥梁信息
       allBridgeInfo: [],
 
+      // 全部桥梁轮播信息
+      allBridgeNoticesData: [],
+
       // 按钮当前选中颜色
       activeColor: []
     }
@@ -97,41 +102,33 @@ export default {
     // 轮播表配置
     rebroadcastConfig () {
       const data = []
-      this.allBridgeInfo.forEach((item) => {
+      this.allBridgeNoticesData.forEach((item) => {
         if (item.HealthScore < 60) {
           data.push([
+            `<span style="color:#f56c6c;">${item.BridgeId}</span>`,
             `<span style="color:#f56c6c;">${item.BridgeName}</span>`,
-            `<span style="color:#f56c6c;">${item.BridgeType}</span>`,
-            `<span style="color:#f56c6c;">${item.MainMaterial}</span>`,
-            `<span style="color:#f56c6c;">${item.BuildYear}</span>`,
-            `<span style="color:#f56c6c;">${item.HealthScore}</span>`
+            `<span style="color:#f56c6c;">${item.HealthScore}</span>`,
+            `<span style="color:#f56c6c;">${item.HealthStatus}</span>`
           ])
         } else if (item.HealthScore > 80) {
           data.push([
+            `<span style="color:#67c23a;">${item.BridgeId}</span>`,
             `<span style="color:#67c23a;">${item.BridgeName}</span>`,
-            `<span style="color:#67c23a;">${item.BridgeType}</span>`,
-            `<span style="color:#67c23a;">${item.MainMaterial}</span>`,
-            `<span style="color:#67c23a;">${item.BuildYear}</span>`,
-            `<span style="color:#67c23a;">${item.HealthScore}</span>`
+            `<span style="color:#67c23a;">${item.HealthScore}</span>`,
+            `<span style="color:#67c23a;">${item.HealthStatus}</span>`
           ])
         } else {
           data.push([
+            `<span style="color:#e6a23c;">${item.BridgeId}</span>`,
             `<span style="color:#e6a23c;">${item.BridgeName}</span>`,
-            `<span style="color:#e6a23c;">${item.BridgeType}</span>`,
-            `<span style="color:#e6a23c;">${item.MainMaterial}</span>`,
-            `<span style="color:#e6a23c;">${item.BuildYear}</span>`,
-            `<span style="color:#e6a23c;">${item.HealthScore}</span>`
+            `<span style="color:#e6a23c;">${item.HealthScore}</span>`,
+            `<span style="color:#e6a23c;">${item.HealthStatus}</span>`
           ])
         }
       })
-      /*
-      data: [
-        ["桥1", "拱桥", "混凝土", "50t", "2005年", 78],
-        ["桥2", "拱桥", "混凝土", "50t", "2005年", 78]
-      ]
-      */
+
       return {
-        header: ['名称', '类型', '材质', '建筑年限', '健康评分'],
+        header: ['编号', '名称', '评分', '状态'],
         data,
         rowNum: 3, // 表行数
         align: ['center', 'center', 'center', 'center', 'center', 'center'],
@@ -140,6 +137,18 @@ export default {
         evenRowBGC: 'rgba(42,49,58,0)', // 偶数行背景色
         waitTime: 2000 // 轮播时间
       }
+    },
+
+    // 3D地图scatter数据
+    scatterData () {
+      const config = []
+      console.log(this.allBridgeInfo)
+      this.allBridgeInfo.forEach(item => {
+        const value = [item.Longitude, item.Latitude, 100]
+        item.value = value
+        config.push(item)
+      })
+      return config
     }
   },
 
@@ -201,8 +210,17 @@ export default {
 
     // 请求全部桥梁信息
     async getAllBridgeInfo () {
-      const data = await reqAllBridgeSafetyScore()
+      const data = await reqAllBridgeInfo()
       this.allBridgeInfo = data.data
+      this.$nextTick(() => {
+        this.drawZhengZhouMap()
+      })
+    },
+
+    // 请求全部桥梁轮播信息
+    async getAllBridgeNotices () {
+      const data = await reqAllBridgeNotice()
+      this.allBridgeNoticesData = data.data
     },
 
     // 绘制3D地图
@@ -210,43 +228,9 @@ export default {
       const _this = this
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.querySelector('.main_middle_map'))
-      var scatterData = [
-        {
-          name: '郑州桥监测',
-          value: [
-            113.729471,
-            34.453334,
-            100
-          ]
-        },
-        {
-          name: '郑州桥监测2',
-          value: [
-            113.546923,
-            34.780839,
-            100
-          ]
-        },
-        {
-          name: '郑州桥监测3',
-          value: [
-            113.594628,
-            34.678241,
-            100
-          ]
-        },
-        {
-          name: '郑州桥监测3',
-          value: [
-            0,
-            0,
-            100
-          ]
-        }
-      ]
+      var scatterData = this.scatterData
+      console.log('111', scatterData)
       fetch('json/zhengzhou.json').then(response => response.json()).then(res => {
-        console.log(res)
-
         // 注册地图名字和数据
         _this.$echarts.registerMap('zhengzhou', res)
 
@@ -256,10 +240,10 @@ export default {
         // 图表配置项
         var option = {
           tooltip: { // 提示框
-            trigger: 'item',
-            formatter: function (params) {
-              return params.name
-            }
+            trigger: 'item'
+            // formatter: function (params) {
+            //   return params.name
+            // }
           },
           geo3D: {
             map: 'zhengzhou',
@@ -420,7 +404,7 @@ export default {
 .home_one {
   height: 100%;
   background: url(../../assets/image/bg.jpg) no-repeat;
-  // background-color: rgba(9, 22, 40, .1) !important;
+  // background-color: rgba(9, 22, 40, 1) !important;
   background-size: 100% 100%;
 
   .header {

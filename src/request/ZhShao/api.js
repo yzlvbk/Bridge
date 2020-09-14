@@ -1,5 +1,8 @@
 import http from './http'
 
+/* 系统首页获取桥梁轮播信息 */
+export const reqAllBridgeNotice = () => http('/v10/summary/GetNotice', {}, 'GET')
+
 /* 系统首页获取桥梁基础信息 */
 export const reqAllBridgeInfo = () => http('/v10/summary/GetAllBridgeInfo', {}, 'GET')
 
