@@ -3,9 +3,13 @@
     <!-- 头部区域 -->
     <div class="header">
       <div class="header_title">郑州桥梁展示系统</div>
+
+      <!-- 滚动表 -->
       <div class="scroll_list">
-        <dv-scroll-board :config="config" style="height:120px" />
+        <dv-scroll-board :config="rebroadcastConfig" style="height:120px" />
       </div>
+
+      <!-- 天气信息 -->
       <div v-if="weatherData" class="header_weather_warp">
         <div class="header_weather">
           <!-- 天气图标 -->
@@ -57,10 +61,16 @@
 </template>
 
 <script>
+import {
+  reqAllBridgeSafetyScore
+} from '@/request/ZhShao/api.js'
 export default {
   mounted () {
     // 获取天气数据
     this.getWeatherData()
+
+    // 获取桥梁轮播信息
+    this.getAllBridgeInfo()
 
     // 初始化郑州地图
     this.$nextTick(function () {
@@ -75,26 +85,59 @@ export default {
       // 天气图标
       weatherIcon: '',
 
-      // 按钮当前选中颜色
-      activeColor: [],
+      // 全部桥梁信息
+      allBridgeInfo: [],
 
-      // 轮播表配置
-      config: {
-        data: [
-          ['行1列1', '行1列2', '行1列3'],
-          ['行2列1', '行2列2', '行2列3'],
-          ['行3列1', '行3列2', '行3列3'],
-          ['行4列1', '行4列2', '行4列3'],
-          ['行5列1', '行5列2', '行5列3'],
-          ['行6列1', '行6列2', '行6列3'],
-          ['行7列1', '行7列2', '行7列3'],
-          ['行8列1', '行8列2', '行8列3'],
-          ['行9列1', '行9列2', '行9列3'],
-          ['行10列1', '行10列2', '行10列3']
-        ],
+      // 按钮当前选中颜色
+      activeColor: []
+    }
+  },
+
+  computed: {
+    // 轮播表配置
+    rebroadcastConfig () {
+      const data = []
+      this.allBridgeInfo.forEach((item) => {
+        if (item.HealthScore < 60) {
+          data.push([
+            `<span style="color:#f56c6c;">${item.BridgeName}</span>`,
+            `<span style="color:#f56c6c;">${item.BridgeType}</span>`,
+            `<span style="color:#f56c6c;">${item.MainMaterial}</span>`,
+            `<span style="color:#f56c6c;">${item.BuildYear}</span>`,
+            `<span style="color:#f56c6c;">${item.HealthScore}</span>`
+          ])
+        } else if (item.HealthScore > 80) {
+          data.push([
+            `<span style="color:#67c23a;">${item.BridgeName}</span>`,
+            `<span style="color:#67c23a;">${item.BridgeType}</span>`,
+            `<span style="color:#67c23a;">${item.MainMaterial}</span>`,
+            `<span style="color:#67c23a;">${item.BuildYear}</span>`,
+            `<span style="color:#67c23a;">${item.HealthScore}</span>`
+          ])
+        } else {
+          data.push([
+            `<span style="color:#e6a23c;">${item.BridgeName}</span>`,
+            `<span style="color:#e6a23c;">${item.BridgeType}</span>`,
+            `<span style="color:#e6a23c;">${item.MainMaterial}</span>`,
+            `<span style="color:#e6a23c;">${item.BuildYear}</span>`,
+            `<span style="color:#e6a23c;">${item.HealthScore}</span>`
+          ])
+        }
+      })
+      /*
+      data: [
+        ["桥1", "拱桥", "混凝土", "50t", "2005年", 78],
+        ["桥2", "拱桥", "混凝土", "50t", "2005年", 78]
+      ]
+      */
+      return {
+        header: ['名称', '类型', '材质', '建筑年限', '健康评分'],
+        data,
         rowNum: 3, // 表行数
-        oddRowBGC: 'rgba(45,53,63,0.5)', // 奇数行背景色
-        evenRowBGC: 'rgba(42,49,58,0.5)', // 偶数行背景色
+        align: ['center', 'center', 'center', 'center', 'center', 'center'],
+        headerBGC: 'rgba(255,255,255,0)',
+        oddRowBGC: 'rgba(45,53,63,0)', // 奇数行背景色
+        evenRowBGC: 'rgba(42,49,58,0)', // 偶数行背景色
         waitTime: 2000 // 轮播时间
       }
     }
@@ -108,7 +151,7 @@ export default {
       this.weatherData = {
         city: data.city,
         nowTem: data.tem,
-        // maxTem: data.tem1,
+        maxTem: data.tem1,
         minTem: data.tem2,
         wea: data.wea,
         wea_img: data.wea_img,
@@ -154,6 +197,12 @@ export default {
           this.weatherIcon = 'qing'
           break
       }
+    },
+
+    // 请求全部桥梁信息
+    async getAllBridgeInfo () {
+      const data = await reqAllBridgeSafetyScore()
+      this.allBridgeInfo = data.data
     },
 
     // 绘制3D地图

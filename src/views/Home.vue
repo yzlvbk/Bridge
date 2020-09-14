@@ -1,7 +1,7 @@
 <template>
     <div>
         <full-page :options="options">
-          <!-- 第一屏 -->
+            <!-- 第一屏 -->
             <div class="section">
               <HomePageOne />
             </div>
@@ -12,21 +12,14 @@
             </div>
 
             <!-- 第三屏 -->
-            <div class="section homeThree">
-              <HomePageFour />
+            <div class="section">
+              <HomePageThree />
             </div>
         </full-page>
     </div>
 </template>
 <script>
-import {
-  reqAllBridgeInfo
-} from '@/request/ZhShao/api.js'
 export default {
-  async mounted () {
-    const lv = await reqAllBridgeInfo() // 包含经纬度信息
-    console.log(lv)
-  },
   data () {
     return {
       // 整屏滚动配置项
@@ -38,19 +31,32 @@ export default {
         navigation: true,
         navigationPosition: 'right',
         navigationTooltips: ['firstSlide', 'secondSlide', 'thirdSlide']
-        // sectionsColor: ['rgba(9, 22, 40, 1)', 'skyblue', 'pink']
       }
     }
-  },
-  methods: {
   },
   components: {
     HomePageOne: () => import('@/components/Home/HomePageOne'),
     HomePageTwo: () => import('@/components/Home/HomePageTwo'),
-    HomePageFour: () => import('@/components/Home/HomePageFour')
+    HomePageThree: () => import('@/components/Home/HomePageThree')
   }
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+#fp-nav ul li {
+    width: 16px;
+    height: 16px;
+    margin: 14px 7px;
+}
+#fp-nav ul li a span {
+  height: 12px;
+  width: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 100%;
+  background-color: rgba(255, 255, 255, 0.5)
+}
+#fp-nav ul li a.active span {
+  margin: -6px 0 0 -6px;
+  background-color: rgba(255, 255, 255, 1)
+}
 </style>
