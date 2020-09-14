@@ -527,88 +527,60 @@ export default {
     /* 第二屏 */
     // 绘制安全统计级别
     drawSafetyLevel () {
-      // // 保存数据
-      // const data = this.safetyLevelList
-      // // X轴数据
-      // const dataX = []
-      // const dataY = []
-      // data.forEach((item) => {
-      //   dataX.push(item.BridgeName)
-      //   dataY.push(item.SafetyLevel)
-      // })
-      // const series = [{
-      //   data: [1, 1, 1, 1, 1, 1, 1, 1],
-      //   type: 'pictorialBar',
-      //   barMaxWidth: '20',
-      //   symbol: 'diamond',
-      //   symbolOffset: [0, '50%'],
-      //   symbolSize: [30, 15]
-      // }, {
-      //   data: [10, 10, 10, 10, 10, 10, 10, 10], // 顶
-      //   type: 'bar',
-      //   barMaxWidth: 'auto',
-      //   barWidth: 30,
-      //   barGap: '-100%',
-      //   zlevel: -1
-      // }, {
-      //   data: [1, 1, 1, 1, 1, 1, 1, 1],
-      //   type: 'pictorialBar',
-      //   barMaxWidth: '20',
-      //   symbol: 'diamond',
-      //   symbolOffset: [0, '50%'],
-      //   symbolSize: [30, 15],
-      //   zlevel: -2
-      // }, {
-      //   data: [10, 10, 10, 10, 10, 10, 10, 10],
-      //   type: 'pictorialBar',
-      //   barMaxWidth: '20',
-      //   symbolPosition: 'end',
-      //   symbol: 'diamond',
-      //   symbolOffset: [0, '-50%'],
-      //   symbolSize: [30, 12],
-      //   zlevel: -1
-      // }]
+      // 不同等级不同颜色
+      const colorArr = {
+        safety: ['#67c23a', '#cccccc'],
+        warning: ['#e6a23c', '#cccccc'],
+        danger: ['#f56c6c', '#cccccc']
+      }
+      // 保存数据
+      const data = this.safetyLevelList
+      // X轴数据
+      const dataX = []
+      const dataY = []
+      data.forEach((item) => {
+        dataX.push(item.BridgeName)
+        dataY.push(item.SafetyLevel)
+      })
+      const series = []
 
-      // series.push({
-      //   data: dataY,
-      //   type: 'bar',
-      //   barMaxWidth: 'auto',
-      //   barWidth: 30,
-      //   itemStyle: {
-      //     color: {
-      //       x: 0,
-      //       y: 0,
-      //       x2: 0,
-      //       y2: 1,
-      //       type: 'linear',
-      //       global: false,
-      //       colorStops: [{
-      //         offset: 0,
-      //         color: '#0b9eff'
-      //       }, {
-      //         offset: 1,
-      //         color: '#63caff'
-      //       }]
-      //     }
-      //   },
-      //   label: {
-      //     show: true,
-      //     position: 'top',
-      //     distance: 10,
-      //     color: '#fff'
-      //   }
-      // })
-      // series.push({
-      //   data: dataY,
-      //   type: 'pictorialBar',
-      //   barMaxWidth: '20',
-      //   symbolPosition: 'end',
-      //   symbol: 'diamond',
-      //   symbolOffset: [0, '-50%'],
-      //   symbolSize: [30, 12],
-      //   zlevel: 2
-      // })
-      // console.log(series)
+      series.push({
+        data: dataY,
+        type: 'bar',
+        barMaxWidth: 'auto',
+        barWidth: 30,
+        itemStyle: {
+          normal: {
+            color: (params) => {
+              let colorTop = ''
+              let colorBottom = ''
+              if (params.data < 6) {
+                colorTop = colorArr.danger[0]
+                colorBottom = colorArr.danger[1]
+              } else if (params.data > 8) {
+                colorTop = colorArr.safety[0]
+                colorBottom = colorArr.safety[1]
+              } else {
+                colorTop = colorArr.warning[0]
+                colorBottom = colorArr.warning[1]
+              }
+              return new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: colorTop // 0% 处的颜色
+              }, { // 可根据具体情况决定哪根柱子显示哪种颜色
+                offset: 1,
+                color: colorBottom // 100% 处的颜色
+              }], false)
+            }
+          }
+        },
+        label: {
+          show: true,
+          position: 'top',
+          distance: 10,
+          color: '#fff'
+        }
+      })
 
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.homeTwo_safety_chart'))
@@ -653,7 +625,6 @@ export default {
             padding: [2, 0, 0, 0]
           }
         },
-        color: ['#63caff', '#49beff', '#03387a', '#03387a', '#03387a', '#6c93ee', '#a9abff', '#f7a23f', '#27bae7', '#ff6d9d', '#cb79ff', '#f95b5a', '#ccaf27', '#38b99c', '#93d0ff', '#bd74e0', '#fd77da', '#dea700'],
         grid: {
           containLabel: true,
           left: 20,
@@ -689,7 +660,7 @@ export default {
             },
             show: true
           },
-          data: ['0点~2点', '3点~5点', '6点~8点', '0点~2点', '3点~5点', '6点~8点', '0点~2点', '3点~5点'],
+          data: dataX,
           type: 'category'
         },
         yAxis: {
@@ -724,75 +695,7 @@ export default {
           },
           name: ''
         },
-        series: [{
-          data: [200, 85, 112, 275, 305, 415, 741, 405],
-          type: 'bar',
-          barMaxWidth: 'auto',
-          barWidth: 30,
-          itemStyle: {
-            color: {
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              type: 'linear',
-              global: false,
-              colorStops: [{
-                offset: 0,
-                color: '#0b9eff'
-              }, {
-                offset: 1,
-                color: '#63caff'
-              }]
-            }
-          },
-          label: {
-            show: true,
-            position: 'top',
-            distance: 10,
-            color: '#fff'
-          }
-        }, {
-          data: [1, 1, 1, 1, 1, 1, 1, 1],
-          type: 'pictorialBar',
-          barMaxWidth: '20',
-          symbol: 'diamond',
-          symbolOffset: [0, '50%'],
-          symbolSize: [30, 15]
-        }, {
-          data: [200, 85, 112, 275, 305, 415, 741, 405],
-          type: 'pictorialBar',
-          barMaxWidth: '20',
-          symbolPosition: 'end',
-          symbol: 'diamond',
-          symbolOffset: [0, '-50%'],
-          symbolSize: [30, 12],
-          zlevel: 2
-        }, {
-          data: [741, 741, 741, 741, 741, 741, 741, 741],
-          type: 'bar',
-          barMaxWidth: 'auto',
-          barWidth: 30,
-          barGap: '-100%',
-          zlevel: -1
-        }, {
-          data: [1, 1, 1, 1, 1, 1, 1, 1],
-          type: 'pictorialBar',
-          barMaxWidth: '20',
-          symbol: 'diamond',
-          symbolOffset: [0, '50%'],
-          symbolSize: [30, 15],
-          zlevel: -2
-        }, {
-          data: [741, 741, 741, 741, 741, 741, 741, 741],
-          type: 'pictorialBar',
-          barMaxWidth: '20',
-          symbolPosition: 'end',
-          symbol: 'diamond',
-          symbolOffset: [0, '-50%'],
-          symbolSize: [30, 12],
-          zlevel: -1
-        }],
+        series,
         tooltip: {
           trigger: 'axis',
           show: false
@@ -803,9 +706,9 @@ export default {
       myChart.setOption(option)
 
       // 4.跟随屏幕自适应
-      window.onresize = function () {
+      window.addEventListener('resize', function () {
         myChart.resize()
-      }
+      })
     },
 
     // 绘制车辆统计图
@@ -884,9 +787,9 @@ export default {
       myChart.setOption(option)
 
       // 4.跟随屏幕自适应
-      window.onresize = function () {
+      window.addEventListener('resize', function () {
         myChart.resize()
-      }
+      })
     },
 
     // 第三屏
