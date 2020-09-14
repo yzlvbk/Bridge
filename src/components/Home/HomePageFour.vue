@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="homeThree">
     <!-- 头部区域 -->
     <header class="homeThree_header">桥梁安全评分</header>
 
@@ -51,11 +51,21 @@
 </template>
 
 <script>
+import {
+  reqAllBridgeSafetyScore
+} from '@/request/ZhShao/api.js'
 export default {
+  mounted () {
+    this.getInitData()
+  },
+
   data () {
     return {
       // 当前页 默认为1
-      currentPage: 1
+      currentPage: 1,
+
+      // 桥梁安全评分
+      SafetyScoreList: []
     }
   },
 
@@ -78,6 +88,12 @@ export default {
   },
 
   methods: {
+    // 请求初始化数据
+    async getInitData () {
+      const data = await reqAllBridgeSafetyScore()
+      this.SafetyScoreList = data.data
+    },
+
     // 当前页发生变化
     handleCurrentChange (newPage) {
       this.currentPage = newPage
@@ -88,6 +104,7 @@ export default {
 
 <style lang="less" scoped>
 .homeThree {
+  height: 100%;
   background: url(../../assets/image/index_bg.png);
 
   .homeThree_header {

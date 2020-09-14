@@ -13,24 +13,19 @@
 
             <!-- 第三屏 -->
             <div class="section homeThree">
-
+              <HomePageFour />
             </div>
         </full-page>
     </div>
 </template>
 <script>
 import {
-  reqAllBridgeInfo,
-  reqAllBridgeSafetyScore
+  reqAllBridgeInfo
 } from '@/request/ZhShao/api.js'
-import HomePageOne from '@/components/Home/HomePageOne'
-import HomePageTwo from '@/components/Home/HomePageTwo'
 export default {
   async mounted () {
     const lv = await reqAllBridgeInfo() // 包含经纬度信息
-    const lv2 = await reqAllBridgeSafetyScore()
     console.log(lv)
-    console.log(lv2)
   },
   data () {
     return {
@@ -50,8 +45,9 @@ export default {
   methods: {
   },
   components: {
-    HomePageOne,
-    HomePageTwo
+    HomePageOne: () => import('@/components/Home/HomePageOne'),
+    HomePageTwo: () => import('@/components/Home/HomePageTwo'),
+    HomePageFour: () => import('@/components/Home/HomePageFour')
   }
 }
 </script>

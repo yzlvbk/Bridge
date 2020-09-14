@@ -174,7 +174,6 @@ export default {
         }
       })
 
-      console.log(series)
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.homeTwo_safety_chart'))
 
