@@ -240,10 +240,14 @@ export default {
         // 图表配置项
         var option = {
           tooltip: { // 提示框
-            trigger: 'item'
-            // formatter: function (params) {
-            //   return params.name
-            // }
+            trigger: 'item',
+            formatter: function (params) {
+              return '编号：' + params.data.BridgeCode + '<br>' +
+              '类型：' + params.data.BridgeType + '<br>' +
+              '材质：' + params.data.MainMaterial + '<br>' +
+              '建筑年限：' + params.data.BuildYear + '<br>' +
+              '载重：' + params.data.LoadWeight
+            }
           },
           geo3D: {
             map: 'zhengzhou',
@@ -342,7 +346,7 @@ export default {
               coordinateSystem: 'geo3D',
               data: scatterData,
               symbol: 'pin',
-              symbolSize: 40,
+              symbolSize: 30,
               itemStyle: {
                 color: 'red',
                 borderColor: '#fff',
@@ -350,7 +354,9 @@ export default {
               },
               label: {
                 show: true,
-                formatter: '郑州桥监测',
+                formatter: function (params) {
+                  return params.data.BridgeName
+                },
                 position: 'top',
                 textStyle: {
                   color: '#000',
@@ -377,7 +383,7 @@ export default {
 
       myChart.on('click', function (params) {
         console.log(params)
-        if (params.data.name === '郑州桥监测') {
+        if (params.data.BridgeName === '桥1') {
           _this.$router.push('zhenShaoBridge')
         }
       })
