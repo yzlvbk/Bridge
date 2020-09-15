@@ -16,6 +16,8 @@
     "element-resize-detector": "^1.2.1",
     "element-ui": "^2.13.2",
     "nprogress": "^0.2.0",
+    "three": "^0.120.1",
+    "three-orbitcontrols": "^2.110.3",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^2.6.7",
     "vue-fullpage.js": "^0.1.5",
