@@ -98,6 +98,23 @@
       </div>
     </div>
 
+    <!-- 传感器数据设置面板 -->
+    <div class="setting_panel"
+     v-show="isShowPanel && activeName === 'sensorData'">
+      <el-cascader
+        v-model="sensorDataValue"
+        :options="sensorDataOptions"
+        :show-all-levels="false"
+        >
+      </el-cascader>
+
+      <!-- 确认和取消按钮 -->
+      <div class="confirm_cancel_button">
+        <el-button type="primary" size="mini" @click="sensorDataConfirm">确认</el-button>
+        <el-button type="info" size="mini" @click="hidePanel">取消</el-button>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -126,9 +143,7 @@ export default {
       // 是否显示设置面板
       isShowPanel: false,
 
-      // 时序图选中项
-      timeValue: ['姿态盒倾角', 'SR1'], // 默认选中第一项
-      // 时序图配置项
+      // 时序、相关、历史图通用配置项
       Options: [
         {
           value: '姿态盒倾角',
@@ -147,64 +162,13 @@ export default {
         }
       ],
 
+      // 时序图选中项
+      timeValue: ['姿态盒倾角', 'SR1'], // 默认选中第一项
+
       // 相关性分析图选中项
       relationValue: [['姿态盒倾角', 'SR1'], ['姿态盒倾角', 'SR3']],
       // 相关性分析图属性
       relationProps: { multiple: true },
-      // 相关性分析图配置
-      relationOptions: [
-        {
-          value: 'zitaihe',
-          label: '姿态盒倾角',
-          children: [{
-            value: '20002',
-            label: '20002'
-          }, {
-            value: '20003',
-            label: '20003'
-          }, {
-            value: '20004',
-            label: '20004'
-          }, {
-            value: '20005',
-            label: '20005'
-          }]
-        },
-        {
-          value: 'zitaihe',
-          label: '姿态盒加速度',
-          children: [{
-            value: '20002',
-            label: '20002'
-          }, {
-            value: '20003',
-            label: '20003'
-          }, {
-            value: '20004',
-            label: '20004'
-          }, {
-            value: '20005',
-            label: '20005'
-          }]
-        },
-        {
-          value: 'zitaihe',
-          label: '应变片',
-          children: [{
-            value: '20002',
-            label: '20002'
-          }, {
-            value: '20003',
-            label: '20003'
-          }, {
-            value: '20004',
-            label: '20004'
-          }, {
-            value: '20005',
-            label: '20005'
-          }]
-        }
-      ],
       // 相关性分析图起始时间
       relationStartTime: 'Mon Jun 22 2020 23:00:00 GMT+0800 (中国标准时间)',
       // 相关性分析图结束时间
@@ -214,52 +178,19 @@ export default {
       historyValue: [['姿态盒倾角', 'SR1'], ['姿态盒倾角', 'SR3']],
       // 历史图属性
       historyProps: { multiple: true },
-      // 历史图配置
-      historyOptions: [
-        {
-          value: 'zitaihe',
-          label: '姿态盒倾角',
-          children: [{
-            value: '20002',
-            label: '20002'
-          }, {
-            value: '20003',
-            label: '20003'
-          }, {
-            value: '20004',
-            label: '20004'
-          }, {
-            value: '20005',
-            label: '20005'
-          }]
-        },
-        {
-          value: 'zitaihe',
-          label: '姿态盒加速度',
-          children: [{
-            value: '20002',
-            label: '20002'
-          }, {
-            value: '20003',
-            label: '20003'
-          }, {
-            value: '20004',
-            label: '20004'
-          }, {
-            value: '20005',
-            label: '20005'
-          }]
-        },
-        {
-          value: 'zitaihe',
-          label: '应变片',
-          children: []
-        }
-      ],
       // 历史图起始时间
       historyStartTime: 'Mon Jun 22 2020 23:00:00 GMT+0800 (中国标准时间)',
       // 历史图结束时间
-      historyEndTime: 'Mon Jun 22 2020 23:02:00 GMT+0800 (中国标准时间)'
+      historyEndTime: 'Mon Jun 22 2020 23:02:00 GMT+0800 (中国标准时间)',
+
+      // 传感器数据下拉菜单配置项
+      sensorDataOptions: [
+        { value: '姿态盒倾角', label: '姿态盒倾角' },
+        { value: '姿态盒加速度', label: '姿态盒加速度' },
+        { value: '应变片', label: '应变片' }
+      ],
+      // 传感器数据选中项
+      sensorDataValue: ['姿态盒倾角']
     }
   },
   computed: {
@@ -311,26 +242,20 @@ export default {
         const data = await reqBridgeOneIclTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
         if (data.statusCode !== 200) return
-        // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
-        this.toggleTableName('iclTable')
       } else if (this.timeValue[0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
         if (data.statusCode !== 200) return
-        // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
-        this.toggleTableName('accelTable')
       } else if (this.timeValue[0] === '应变片') {
         const data = await reqBridgeOneStrainTimeAndHistory([this.timeValue[1]])
         // 请求数据成功
         if (data.statusCode !== 200) return
-        // console.log(data)
         // 保存数据到vuex
         this.setTimeChartData(data.data)
-        this.toggleTableName('strainTable')
       }
 
       // 通知父组件重新绘制Echarts
@@ -351,35 +276,25 @@ export default {
       const startTime = this.formatDate(this.relationStartTime)
       const endTime = this.formatDate(this.relationEndTime)
 
-      // console.log(this.relationValue)
-      // console.log(this.relationStartTime)
-      // console.log(this.relationEndTime)
-
       // 判断类型，发送请求
       if (this.relationValue[0][0] === '姿态盒倾角') {
         const data = await reqBridgeOneIclRelation(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
-        this.toggleTableName('iclTable')
       } else if (this.relationValue[0][0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelRelation(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
-        this.toggleTableName('accelTable')
       } else if (this.relationValue[0][0] === '应变片') {
         const data = await reqBridgeOneStrainRelation(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        // console.log(data)
         // 保存数据到vuex
         this.setRelationChartData(data.data)
-        this.toggleTableName('strainTable')
       }
 
       // 通知父组件重新绘制Echarts
@@ -400,38 +315,41 @@ export default {
       const startTime = this.formatDate(this.historyStartTime)
       const endTime = this.formatDate(this.historyEndTime)
 
-      console.log(Ids)
-      console.log(startTime)
-      console.log(endTime)
-
       // 判断类型，发送请求
       if (this.historyValue[0][0] === '姿态盒倾角') {
         const data = await reqBridgeOneIclTimeAndHistory(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
         // 保存数据到vuex
         this.setHistoryChartData(data.data)
-        this.toggleTableName('iclTable')
       } else if (this.historyValue[0][0] === '姿态盒加速度') {
         const data = await reqBridgeOneAccelTimeAndHistory(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
-        console.log(data)
         // 保存数据到vuex
         this.setHistoryChartData(data.data)
-        this.toggleTableName('accelTable')
       } else if (this.historyValue[0][0] === '应变片') {
         const data = await reqBridgeOneStrainTimeAndHistory(Ids, startTime, endTime)
         // 请求数据成功
         if (data.statusCode !== 200) return
         // 保存数据到vuex
         this.setHistoryChartData(data.data)
-        this.toggleTableName('strainTable')
       }
 
       // 通知父组件重新绘制Echarts
       this.$emit('reDrawChart', 'history')
+    },
+
+    // 传感器数据确认
+    sensorDataConfirm () {
+      this.isShowPanel = false
+      if (this.sensorDataValue[0] === '姿态盒倾角') {
+        this.toggleTableName('iclTable')
+      } else if (this.sensorDataValue[0] === '姿态盒加速度') {
+        this.toggleTableName('accelTable')
+      } else if (this.sensorDataValue[0] === '应变片') {
+        this.toggleTableName('strainTable')
+      }
     },
 
     // 改变日期格式 例如: 2020-09-01T00:00

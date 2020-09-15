@@ -252,7 +252,7 @@ export default {
 @import "../../../assets/css/reset.css";
 .monitor {
   display: flex;
-  flex-direction: column;
+  // flex-direction: column;
   height: 100%;
 
   .ranking {
@@ -273,8 +273,8 @@ export default {
     display: flex;
     flex-direction: column;
     position: relative;
-    flex-basis: 45%;
-    border-bottom: 10px solid var(--BgColor);
+    flex-basis: 50%;
+    border-right: 10px solid var(--BgColor);
 
     .component-title {
       height: 50px;
@@ -293,7 +293,7 @@ export default {
   }
 
   .weight {
-    flex-basis: 45%;
+    flex-basis: 50%;
   }
 }
 

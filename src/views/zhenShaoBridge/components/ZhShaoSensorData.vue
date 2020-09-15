@@ -1,116 +1,75 @@
 <template>
   <div class="sernor_data_show">
-    <!-- {{activeTableName}} -->
-      <div class="sernor_chart">
-        <Setting class="setting" @reDrawChart="reDrawChart" />
-        <el-tabs v-model="activeName" @tab-click="toggleActiveName">
-          <el-tab-pane label="时序图" name="time">
-            <div class="time_chart"></div>
-          </el-tab-pane>
-          <el-tab-pane label="相关性分析图" name="relation">
-            <div class="relation_chart"></div>
-          </el-tab-pane>
-          <el-tab-pane label="历史数据" name="history">
-            <div class="history_chart"></div>
-          </el-tab-pane>
-        </el-tabs>
-      </div>
-      <div class="sernor_data">
-        <div class="component-table">
-          <!-- 姿态盒倾角表格 -->
-          <el-table
-            v-show="activeTableName === 'iclTable'"
-            ref="tableList"
-            :data="iclTableData"
-            stripe
-            height="100%"
-            style="width: 100%; border: none;"
-            :row-style="{ height: '60px' }">
-            <el-table-column
-              prop="Id"
-              align="center"
-              label="编号">
-            </el-table-column>
-            <el-table-column
-              prop="Name"
-              align="center"
-              label="名称">
-            </el-table-column>
-            <el-table-column
-              prop="IclX"
-              align="center"
-              label="倾角X">
-            </el-table-column>
-            <el-table-column
-              prop="IclY"
-              align="center"
-              label="倾角Y">
-            </el-table-column>
-          </el-table>
+    <div class="sernor_chart">
+      <Setting class="setting" @reDrawChart="reDrawChart" />
+      <el-tabs v-model="activeName" @tab-click="toggleActiveName">
+        <el-tab-pane label="时序图" name="time">
+          <div class="time_chart"></div>
+        </el-tab-pane>
 
-          <!-- 姿态盒加速度表格 -->
-          <el-table
-            v-show="activeTableName === 'accelTable'"
-            ref="tableList"
-            :data="accelTableData"
-            stripe
-            height="100%"
-            style="width: 100%; border: none;"
-            :row-style="{ height: '60px' }">
-            <el-table-column
-              prop="Id"
-              align="center"
-              label="编号">
-            </el-table-column>
-            <el-table-column
-              prop="Name"
-              align="center"
-              label="名称">
-            </el-table-column>
-            <el-table-column
-              prop="AccelX"
-              align="center"
-              label="加速度X">
-            </el-table-column>
-            <el-table-column
-              prop="AccelY"
-              align="center"
-              label="加速度Y">
-            </el-table-column>
-            <el-table-column
-              prop="AccelZ"
-              align="center"
-              label="加速度Z">
-            </el-table-column>
-          </el-table>
+        <el-tab-pane label="相关性分析图" name="relation">
+          <div class="relation_chart"></div>
+        </el-tab-pane>
 
-          <!-- 应变片表格 -->
-          <el-table
-            v-show="activeTableName === 'strainTable'"
-            ref="tableList"
-            :data="strainTableData"
-            stripe
-            height="100%"
-            style="width: 100%; border: none;"
-            :row-style="{ height: '60px' }">
-            <el-table-column
-              prop="Id"
-              align="center"
-              label="编号">
-            </el-table-column>
-            <el-table-column
-              prop="Name"
-              align="center"
-              label="名称">
-            </el-table-column>
-            <el-table-column
-              prop="Value"
-              align="center"
-              label="值">
-            </el-table-column>
-          </el-table>
-      </div>
-      </div>
+        <el-tab-pane label="历史数据" name="history">
+          <div class="history_chart"></div>
+        </el-tab-pane>
+
+        <el-tab-pane label="传感器数据" name="sensorData">
+          <div class="sernor_data">
+            <div class="component-table">
+              <!-- 姿态盒倾角表格 -->
+              <el-table
+                v-show="activeTableName === 'iclTable'"
+                ref="tableList"
+                :data="iclTableData"
+                stripe
+                height="100%"
+                style="width: 100%; border: none;"
+                :row-style="{ height: '60px' }"
+              >
+                <el-table-column prop="Id" align="center" label="编号"></el-table-column>
+                <el-table-column prop="Name" align="center" label="名称"></el-table-column>
+                <el-table-column prop="IclX" align="center" label="倾角X"></el-table-column>
+                <el-table-column prop="IclY" align="center" label="倾角Y"></el-table-column>
+              </el-table>
+
+              <!-- 姿态盒加速度表格 -->
+              <el-table
+                v-show="activeTableName === 'accelTable'"
+                ref="tableList"
+                :data="accelTableData"
+                stripe
+                height="100%"
+                style="width: 100%; border: none;"
+                :row-style="{ height: '60px' }"
+              >
+                <el-table-column prop="Id" align="center" label="编号"></el-table-column>
+                <el-table-column prop="Name" align="center" label="名称"></el-table-column>
+                <el-table-column prop="AccelX" align="center" label="加速度X"></el-table-column>
+                <el-table-column prop="AccelY" align="center" label="加速度Y"></el-table-column>
+                <el-table-column prop="AccelZ" align="center" label="加速度Z"></el-table-column>
+              </el-table>
+
+              <!-- 应变片表格 -->
+              <el-table
+                v-show="activeTableName === 'strainTable'"
+                ref="tableList"
+                :data="strainTableData"
+                stripe
+                height="100%"
+                style="width: 100%; border: none;"
+                :row-style="{ height: '60px' }"
+              >
+                <el-table-column prop="Id" align="center" label="编号"></el-table-column>
+                <el-table-column prop="Name" align="center" label="名称"></el-table-column>
+                <el-table-column prop="Value" align="center" label="值"></el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 
@@ -147,62 +106,74 @@ export default {
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '02',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '03',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '04',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '05',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '06',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '07',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '08',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '09',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '10',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '11',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '12',
           name: '桥面板1',
           material: '混凝土',
           level: '6.0'
-        }, {
+        },
+        {
           id: '13',
           name: '桥面板1',
           material: '混凝土',
@@ -212,26 +183,28 @@ export default {
     }
   },
   computed: {
-    ...mapState('ZhShaoSetting', ['timeChartData', 'relationChartData', 'historyChartData', 'activeTableName'])
+    ...mapState('ZhShaoSetting', [
+      'timeChartData',
+      'relationChartData',
+      'historyChartData',
+      'activeTableName'
+    ])
   },
   methods: {
     // 请求表格数据
     async getTableData () {
       const data1 = await reqBridgeOneIclTable()
       if (data1.statusCode === 200) {
-        console.log('倾角', data1)
         this.iclTableData = data1.data
       }
 
       const data2 = await reqBridgeOneStrainTable()
       if (data2.statusCode === 200) {
-        console.log('应变片', data2)
         this.strainTableData = data2.data
       }
 
       const data3 = await reqBridgeOneAccelTable()
       if (data3.statusCode === 200) {
-        console.log('加速度', data3)
         this.accelTableData = data3.data
       }
     },
@@ -243,7 +216,6 @@ export default {
       // 保存vuex中数据, 设置X、Y轴数据
       const object = Object.values(this.timeChartData)[0]
       const dataX = []
-      console.log(object.Time)
       object.Time.forEach((item) => {
         dataX.push(item.split('T')[1])
       })
@@ -262,13 +234,16 @@ export default {
                   width: 1
                 },
                 areaStyle: {
-                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
-                  }, {
-                    offset: 1,
-                    color: 'rgba(58,132,255,0)'// 渐变色结束颜色
-                  }])
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      offset: 0,
+                      color: 'rgba(58,132,255,0.5)' // 渐变色起始颜色
+                    },
+                    {
+                      offset: 1,
+                      color: 'rgba(58,132,255,0)' // 渐变色结束颜色
+                    }
+                  ])
                 }
               }
             },
@@ -299,7 +274,6 @@ export default {
           textStyle: {
             color: lineColor
           }
-
         },
         grid: {
           left: '4%',
@@ -358,40 +332,43 @@ export default {
           //     },
           //     //rotate:50,
           // },
-          axisLine: { // 坐标轴轴线相关设置
+          axisLine: {
+            // 坐标轴轴线相关设置
             lineStyle: {
               color: fontColor
             }
           }
         },
-        yAxis: [{
-          name: '倾角(deg)',
-          nameTextStyle: {
-            color: lineColor
-          },
-          type: 'value',
-          splitNumber: 5,
-          axisLine: {
-            show: true
-          },
-          axisTick: {
-            show: false
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: lineColor,
-              opacity: 0.3
-            }
-          },
-          // eslint-disable-next-line no-dupe-keys
-          axisLine: { // 坐标轴轴线相关设置
-            lineStyle: {
-              color: fontColor
+        yAxis: [
+          {
+            name: '倾角(deg)',
+            nameTextStyle: {
+              color: lineColor
+            },
+            type: 'value',
+            splitNumber: 5,
+            axisLine: {
+              show: true
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: lineColor,
+                opacity: 0.3
+              }
+            },
+            // eslint-disable-next-line no-dupe-keys
+            axisLine: {
+              // 坐标轴轴线相关设置
+              lineStyle: {
+                color: fontColor
+              }
             }
           }
-
-        }],
+        ],
         dataZoom: [
           // x轴滚动条
           {
@@ -418,7 +395,7 @@ export default {
       myChart.setOption(option, true)
       // 4.让图表跟随屏幕自动的去适应
       const erd = elementResizeDetectorMaker()
-      erd.listenTo(document.querySelector('.time_chart'), element => {
+      erd.listenTo(document.querySelector('.time_chart'), (element) => {
         myChart.resize()
       })
     },
@@ -443,13 +420,16 @@ export default {
                 width: 1
               },
               areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
-                }, {
-                  offset: 1,
-                  color: 'rgba(58,132,255,0)'// 渐变色结束颜色
-                }])
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: 'rgba(58,132,255,0.5)' // 渐变色起始颜色
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgba(58,132,255,0)' // 渐变色结束颜色
+                  }
+                ])
               }
             }
           },
@@ -465,7 +445,9 @@ export default {
       // const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
 
       // 1.初始化echarts
-      var myChart = this.$echarts.init(document.querySelector('.relation_chart'))
+      var myChart = this.$echarts.init(
+        document.querySelector('.relation_chart')
+      )
       // 2.配置option
       var option = {
         title: {
@@ -479,7 +461,6 @@ export default {
           textStyle: {
             color: lineColor
           }
-
         },
         grid: {
           left: '4%',
@@ -538,40 +519,43 @@ export default {
           //     },
           //     //rotate:50,
           // },
-          axisLine: { // 坐标轴轴线相关设置
+          axisLine: {
+            // 坐标轴轴线相关设置
             lineStyle: {
               color: fontColor
             }
           }
         },
-        yAxis: [{
-          name: '倾角(deg)',
-          nameTextStyle: {
-            color: lineColor
-          },
-          type: 'value',
-          splitNumber: 5,
-          axisLine: {
-            show: true
-          },
-          axisTick: {
-            show: false
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: lineColor,
-              opacity: 0.3
-            }
-          },
-          // eslint-disable-next-line no-dupe-keys
-          axisLine: { // 坐标轴轴线相关设置
-            lineStyle: {
-              color: fontColor
+        yAxis: [
+          {
+            name: '倾角(deg)',
+            nameTextStyle: {
+              color: lineColor
+            },
+            type: 'value',
+            splitNumber: 5,
+            axisLine: {
+              show: true
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: lineColor,
+                opacity: 0.3
+              }
+            },
+            // eslint-disable-next-line no-dupe-keys
+            axisLine: {
+              // 坐标轴轴线相关设置
+              lineStyle: {
+                color: fontColor
+              }
             }
           }
-
-        }],
+        ],
         dataZoom: [
           // x轴滚动条
           {
@@ -598,7 +582,7 @@ export default {
       myChart.setOption(option, true)
       // 4.让图表跟随屏幕自动的去适应
       const erd = elementResizeDetectorMaker()
-      erd.listenTo(document.querySelector('.relation_chart'), element => {
+      erd.listenTo(document.querySelector('.relation_chart'), (element) => {
         myChart.resize()
       })
     },
@@ -622,13 +606,16 @@ export default {
                 width: 1
               },
               areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: 'rgba(58,132,255,0.5)'// 渐变色起始颜色
-                }, {
-                  offset: 1,
-                  color: 'rgba(58,132,255,0)'// 渐变色结束颜色
-                }])
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: 'rgba(58,132,255,0.5)' // 渐变色起始颜色
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgba(58,132,255,0)' // 渐变色结束颜色
+                  }
+                ])
               }
             }
           },
@@ -644,7 +631,9 @@ export default {
       // const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
 
       // 1.初始化echarts
-      var myChart = this.$echarts.init(document.querySelector('.history_chart'))
+      var myChart = this.$echarts.init(
+        document.querySelector('.history_chart')
+      )
       // 2.配置option
       var option = {
         title: {
@@ -658,7 +647,6 @@ export default {
           textStyle: {
             color: lineColor
           }
-
         },
         grid: {
           left: '4%',
@@ -717,40 +705,43 @@ export default {
           //     },
           //     //rotate:50,
           // },
-          axisLine: { // 坐标轴轴线相关设置
+          axisLine: {
+            // 坐标轴轴线相关设置
             lineStyle: {
               color: fontColor
             }
           }
         },
-        yAxis: [{
-          name: '倾角(deg)',
-          nameTextStyle: {
-            color: lineColor
-          },
-          type: 'value',
-          splitNumber: 5,
-          axisLine: {
-            show: true
-          },
-          axisTick: {
-            show: false
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: lineColor,
-              opacity: 0.3
-            }
-          },
-          // eslint-disable-next-line no-dupe-keys
-          axisLine: { // 坐标轴轴线相关设置
-            lineStyle: {
-              color: fontColor
+        yAxis: [
+          {
+            name: '倾角(deg)',
+            nameTextStyle: {
+              color: lineColor
+            },
+            type: 'value',
+            splitNumber: 5,
+            axisLine: {
+              show: true
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: lineColor,
+                opacity: 0.3
+              }
+            },
+            // eslint-disable-next-line no-dupe-keys
+            axisLine: {
+              // 坐标轴轴线相关设置
+              lineStyle: {
+                color: fontColor
+              }
             }
           }
-
-        }],
+        ],
         dataZoom: [
           // x轴滚动条
           {
@@ -777,7 +768,7 @@ export default {
       myChart.setOption(option, true)
       // 4.让图表跟随屏幕自动的去适应
       const erd = elementResizeDetectorMaker()
-      erd.listenTo(document.querySelector('.history_chart'), element => {
+      erd.listenTo(document.querySelector('.history_chart'), (element) => {
         myChart.resize()
       })
     },
@@ -831,7 +822,7 @@ export default {
 
   .sernor_chart {
     position: relative;
-    flex-basis: 50%;
+    flex-basis: 100%;
     border-bottom: 5px solid var(--BgColor);
     overflow: hidden;
 
@@ -856,35 +847,36 @@ export default {
 
       .time_chart,
       .relation_chart,
-      .history_chart {
+      .history_chart,
+      .sernor_data {
         width: 100%;
         height: calc(100% - 55px);
+      }
+      .sernor_data {
+        // display: flex;
+        // flex-direction: column;
+        // position: relative;
+        // flex-basis: 50%;
+        // border-top: 5px solid var(--BgColor);
+
+        .component-title {
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          font-size: 16px;
+        }
+
+        .component-table {
+          display:flex;
+          justify-content: center;
+          flex-grow: 1;
+          position: relative;
+          height: 100%;
+        }
       }
     }
   }
 
-  .sernor_data {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    flex-basis: 50%;
-    border-top: 5px solid var(--BgColor);
-
-    .component-title {
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      font-size: 16px;
-    }
-
-    .component-table {
-      display:flex;
-      justify-content: center;
-      flex-grow: 1;
-      position: relative;
-      height: 100%;
-    }
-  }
 }
 
 /* 设置el-table高度响应式 */
@@ -896,6 +888,6 @@ export default {
 }
 /* 修改字体颜色 */
 .sernor_data_show .el-table .success-row {
-    color: red !important;
+  color: red !important;
 }
-</style>>
+</style>
