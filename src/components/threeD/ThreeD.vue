@@ -80,39 +80,40 @@ export default {
       })
 
       // 辅助坐标系   老版本AxisHelper 新版本AxesHelper
-      var axisHelper = new THREE.AxisHelper(1000)
-      scene.add(axisHelper)
+      // var axisHelper = new THREE.AxisHelper(1000)
+      // scene.add(axisHelper)
 
       /* 光源设置 */
       // 点光源
       var point = new THREE.PointLight(0xffffff)
-      point.position.set(0, 0, 100) // 点光源位置
+      point.position.set(0, 800, -500) // 点光源位置
       scene.add(point) // 点光源添加到场景中
+
       // 环境光
-      var ambient = new THREE.AmbientLight(0xffffff, 0.5)
+      var ambient = new THREE.AmbientLight(0xffffff, 0.3)
       scene.add(ambient)
       // 方向光
-      var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+      var directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
       // 设置光源的方向：通过光源position属性和目标指向对象的position属性计算
       // 注意：位置属性在这里不代表方向光的位置，你可以认为方向光没有位置
-      directionalLight.position.set(1000, -1000, 1000)
+      directionalLight.position.set(0, -2500, 1000)
       // 方向光指向对象，可以不设置，默认的位置是0,0,0
       directionalLight.target = bridgeMesh
       scene.add(directionalLight)
 
       // 辅助光源
-      var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
-      scene.add(directionalLightHelper)
+      // var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
+      // scene.add(directionalLightHelper)
       /**
      * 相机设置
      */
       var width = window.innerWidth // 窗口宽度
       var height = window.innerHeight // 窗口高度
       var k = width / height // 窗口宽高比
-      var s = 2500 // 三维场景显示范围控制系数，系数越大，显示的范围越大
+      var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象s
-      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -100000, 100000)
-      camera.position.set(0, -4000, 0) // 设置相机位置
+      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -10000, 10000)
+      camera.position.set(0, -400, 0) // 设置相机位置
       camera.lookAt(scene.position) // 设置相机方向(指向的场景对象)
       /**
      * 创建渲染器对象
@@ -134,8 +135,6 @@ export default {
       // 创建控件对象  相机对象camera作为参数   控件可以监听鼠标的变化，改变相机对象的属性
       // eslint-disable-next-line no-unused-vars
       var controls = new OrbitControls(camera, renderer.domElement)
-      // 监听鼠标事件，触发渲染函数，更新canvas画布渲染效果
-      // controls.addEventListener('change', render)
     },
 
     // 绘制桥梁模型
@@ -163,8 +162,8 @@ export default {
       geometry.computeFaceNormals()
 
       // 材质对象(网格)渲染模式
-      var material = new THREE.MeshLambertMaterial({
-        color: 'pink', // 三角面颜色
+      var material = new THREE.MeshPhongMaterial({
+        color: 'white', // 三角面颜色
         side: THREE.DoubleSide // 两面可见
       })
       var bridgeMesh = new THREE.Mesh(geometry, material) // 网格模型对象Mesh
