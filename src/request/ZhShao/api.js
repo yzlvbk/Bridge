@@ -54,3 +54,9 @@ export const reqBridgeOneAccelTable = () => http('/v10/bridgeOne/GetAccelTable',
 
 /* 桥梁系统1-车流实时图片 */
 export const reqBridgeOneTrafficPic = (Id) => http('/v10/bridgeOne/GetPic', { Id }, 'GET')
+
+/* 桥梁系统1-Mesh模型 */
+export const reqBridgeOneMesh = (Id) => http('/v10/bridgeOne/GetMesh', {}, 'GET')
+
+/* 桥梁系统1-Mesh变形 */
+export const reqBridgeOneMeshDeform = (StartTime, EndTime) => http('/v10/bridgeOne/MeshDeform', { StartTime, EndTime }, 'POST')
