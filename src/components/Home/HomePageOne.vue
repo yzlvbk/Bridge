@@ -6,7 +6,7 @@
 
       <!-- 滚动表 -->
       <div class="scroll_list">
-        <dv-scroll-board :config="rebroadcastConfig" style="height:120px" />
+        <dv-scroll-board :config="rebroadcastConfig" style="height:60px" />
       </div>
 
       <!-- 天气信息 -->
@@ -130,7 +130,7 @@ export default {
       return {
         header: ['编号', '名称', '评分', '状态'],
         data,
-        rowNum: 3, // 表行数
+        rowNum: 1, // 表行数
         align: ['center', 'center', 'center', 'center', 'center', 'center'],
         headerBGC: 'rgba(255,255,255,0)',
         oddRowBGC: 'rgba(45,53,63,0)', // 奇数行背景色

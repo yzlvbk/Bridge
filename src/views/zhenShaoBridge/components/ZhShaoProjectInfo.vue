@@ -51,7 +51,7 @@
 .contain {
   // display: flex;
   height: calc(100% - 130px);
-  padding: 0 40px;
+  padding: 0 80px;
   box-sizing: border-box;
   background-color: var(--ContainBgColor);
   overflow-y: scroll;
