@@ -1,11 +1,11 @@
 <template>
   <div class="sernor_info">
     <!-- 面包屑导航 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
+    <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>郑少高速桥</el-breadcrumb-item>
       <el-breadcrumb-item>工程概况</el-breadcrumb-item>
       <el-breadcrumb-item>基本信息</el-breadcrumb-item>
-    </el-breadcrumb>
+    </el-breadcrumb> -->
 
     <!-- 内容区域 -->
     <div class="contain">
@@ -136,17 +136,19 @@ export default {
 <style lang="less">
 @import '../../../assets/css/reset.css';
 .sernor_info {
-  height: calc(100% - 46px);
+  // height: calc(100% - 46px);
+  height: 100%;
 
   .contain {
     display: flex;
-    height: calc(100% - 73px);
+    // height: calc(100% - 73px);
+    height: 100%;
 
     .contain_data {
       position: relative;
       width: 100%;
       height: 100%;
-      background-color: var(--ContainBgColor);
+      // background-color: var(--ContainBgColor);
 
       .sernor_options {
         height: 60px;
@@ -156,7 +158,8 @@ export default {
 
       .table_warp {
         position: relative;
-        height: calc(100% - 60px);
+        // height: calc(100% - 10px);
+        height: 100%;
       }
     }
   }

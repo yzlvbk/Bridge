@@ -30,10 +30,10 @@ const routes = [
         component: ZhShaoThreeD,
         children: [
           { path: '/ZhShaoMonitor', component: ZhShaoMonitor },
-          { path: '/ZhShaoSensorData', component: ZhShaoSensorData }
+          { path: '/ZhShaoSensorData', component: ZhShaoSensorData },
+          { path: '/ZhShaoSensorInfo', component: ZhShaoSensorInfo }
         ]
       },
-      { path: '/ZhShaoSensorInfo', component: ZhShaoSensorInfo },
       { path: '/ZhShaoStress', component: ZhShaoStress },
       { path: '/ZhShaoTransform', component: ZhShaoTransform },
       { path: '/ZhShaoMesh', component: ZhShaoMesh },

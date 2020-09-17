@@ -10,6 +10,11 @@
             <el-breadcrumb-item>传感器系统</el-breadcrumb-item>
             <el-breadcrumb-item>数据显示</el-breadcrumb-item>
         </template>
+
+        <template v-if="path === '/ZhShaoSensorInfo'">
+            <el-breadcrumb-item>传感器系统</el-breadcrumb-item>
+            <el-breadcrumb-item>基本信息</el-breadcrumb-item>
+        </template>
     </el-breadcrumb>
 
     <!-- 内容区域 -->
