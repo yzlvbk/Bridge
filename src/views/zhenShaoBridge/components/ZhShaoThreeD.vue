@@ -14,12 +14,12 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-        <div class="three_d_model" style="height: 40%;">
+        <div class="three_d_model" style="height: 50%;">
             <ThreeD />
         </div>
         <!-- 空隙模块 -- 控制模块拖动 -->
         <!-- <div class="vsplitter" ref="vsplitter"></div> -->
-        <div class="chart" style="height: 60%;">
+        <div class="chart" style="height: 50%;">
           <keep-alive>
             <router-view></router-view>
           </keep-alive>

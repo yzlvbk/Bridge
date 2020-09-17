@@ -67,11 +67,10 @@ import OrbitControls from 'three-orbitcontrols'
 import { Line2 } from 'three/examples/jsm/lines/Line2'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
-import { reqBridgeOneMesh, reqBridgeOneMeshDeform } from '@/request/ZhShao/api.js'
+import { reqBridgeOneMeshDeform } from '@/request/ZhShao/api.js'
+import { MeshPointObj } from './stressData.js'
 export default {
   async mounted () {
-    const data = await reqBridgeOneMeshDeform('2020-01-09 10:24:02', '2020-01-09 10:34:02')
-    console.log(data)
     // 获取Mesh数据
     this.getMeshData()
     /* 获取canvas的宽高 */
@@ -343,51 +342,112 @@ export default {
       bar7List: [],
       bar8List: [],
 
-      // Mesh所有点数据
-      MeshPointObj: {}
+      // 变形Mesh数据
+      deformMeshObj: {},
+
+      // 所有变形面板点数据
+      panelDeformList: [],
+      // 所有变形拱形点数据
+      vaultedDeformList: [],
+      // 所有变形支柱点数据
+      bar1DeformList: [],
+      bar2DeformList: [],
+      bar3DeformList: [],
+      bar4DeformList: [],
+      bar5DeformList: [],
+      bar6DeformList: [],
+      bar7DeformList: [],
+      bar8DeformList: []
     }
   },
   methods: {
     // 请求Mesh数据
-    async getMeshData () {
-      const data = await reqBridgeOneMesh()
-      if (data.statusCode !== 200) return
+    getMeshData () {
+      // const data = await reqBridgeOneMesh()
+      // if (data.statusCode !== 200) return
       // 保存Mesh点数据
-      this.MeshPointObj = data.data.Mesh.JointArray.Joint
-      // console.log(this.MeshPointObj)
 
       this.panel.forEach(item => {
-        this.panelList.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.panelList.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.vaulted.forEach(item => {
-        this.vaultedList.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.vaultedList.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar1.forEach(item => {
-        this.bar1List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar2.forEach(item => {
-        this.bar2List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar3.forEach(item => {
-        this.bar3List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar4.forEach(item => {
-        this.bar4List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar5.forEach(item => {
-        this.bar5List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar6.forEach(item => {
-        this.bar6List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar7.forEach(item => {
-        this.bar7List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
       this.bar8.forEach(item => {
-        this.bar8List.push(this.MeshPointObj[item].X, this.MeshPointObj[item].Y, this.MeshPointObj[item].Z)
+        this.bar8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
 
-      this.drawStress()
+      setTimeout(() => {
+        this.getMeshDeformData(10000)
+      }, 100)
+    },
+
+    // 请求变形Mesh数据
+    async getMeshDeformData (s) {
+      const data = await reqBridgeOneMeshDeform('2020-01-09 10:24:02', '2020-01-09 10:34:02')
+      this.deformMeshObj = await data.data.Mesh.JointArray.Joint['2020/1/9 10:24:02']
+      // console.log(this.deformMeshObj)
+
+      this.panel.forEach(item => {
+        // if (!this.deformMeshObj[item]) return
+        // console.log(Number(MeshPointObj[item].Z))
+        // console.log((Number(this.deformMeshObj[item].Z) * s))
+        // console.log()
+        MeshPointObj[item] && this.deformMeshObj[item] && this.panelDeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+
+      this.vaulted.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.vaultedDeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar1.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar1DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar2.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar2DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar3.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar3DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar4.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar4DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar5.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar5DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar6.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar6DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar7.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar7DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar8.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar8DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+
+      this.$nextTick(() => {
+        this.drawStress()
+      })
     },
 
     /* 绘制应力图 */
@@ -400,18 +460,32 @@ export default {
       var scene = new THREE.Scene()
 
       // 桥面板部分
-      this.drawMeshPart(this.panelList, scene)
+      this.drawMeshPart(this.panelList, scene, '#fff')
       // 拱形部分
-      this.drawMeshPart(this.vaultedList, scene)
-      // 支柱1部分
-      this.drawMeshPart(this.bar1List, scene)
-      this.drawMeshPart(this.bar2List, scene)
-      this.drawMeshPart(this.bar3List, scene)
-      this.drawMeshPart(this.bar4List, scene)
-      this.drawMeshPart(this.bar5List, scene)
-      this.drawMeshPart(this.bar6List, scene)
-      this.drawMeshPart(this.bar7List, scene)
-      this.drawMeshPart(this.bar8List, scene)
+      this.drawMeshPart(this.vaultedList, scene, '#fff')
+      // 支柱部分
+      this.drawMeshPart(this.bar1List, scene, '#fff')
+      this.drawMeshPart(this.bar2List, scene, '#fff')
+      this.drawMeshPart(this.bar3List, scene, '#fff')
+      this.drawMeshPart(this.bar4List, scene, '#fff')
+      this.drawMeshPart(this.bar5List, scene, '#fff')
+      this.drawMeshPart(this.bar6List, scene, '#fff')
+      this.drawMeshPart(this.bar7List, scene, '#fff')
+      this.drawMeshPart(this.bar8List, scene, '#fff')
+
+      // 桥面板变形部分
+      this.drawMeshPart(this.panelDeformList, scene, 'red')
+      // 拱形变形部分
+      this.drawMeshPart(this.vaultedDeformList, scene, 'red')
+      // 支柱变形部分
+      this.drawMeshPart(this.bar1DeformList, scene, 'red')
+      this.drawMeshPart(this.bar2DeformList, scene, 'red')
+      this.drawMeshPart(this.bar3DeformList, scene, 'red')
+      this.drawMeshPart(this.bar4DeformList, scene, 'red')
+      this.drawMeshPart(this.bar5DeformList, scene, 'red')
+      this.drawMeshPart(this.bar6DeformList, scene, 'red')
+      this.drawMeshPart(this.bar7DeformList, scene, 'red')
+      this.drawMeshPart(this.bar8DeformList, scene, 'red')
 
       /**
      * 光源设置
@@ -460,7 +534,7 @@ export default {
     },
 
     // 绘制Mesh部分
-    drawMeshPart (part, scene) {
+    drawMeshPart (part, scene, color) {
       /* 创建网格模型 */
       var geometry = new LineGeometry() // 创建一个Buffer类型几何体对象
 
@@ -469,8 +543,8 @@ export default {
 
       // 线条渲染模式
       var material = new LineMaterial({
-        color: 0xffffff,
-        linewidth: 5
+        color: color,
+        linewidth: 1
       })// 材质对象
       material.resolution.set(window.innerWidth, window.innerHeight)
       var line = new Line2(geometry, material)// 线条模型对象
