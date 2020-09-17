@@ -452,17 +452,28 @@ export default {
       /* 应变模型 */
       const keysList = Object.keys(this.stressDataObj)
       keysList.forEach(key => {
-        let color
         const linewidth = Number(this.stressDataObj[key]) / 50 + 3
+
+        let color
         console.log(linewidth)
-        if (linewidth < 0) {
-          color = 'blue'
-        } else if (linewidth < 5) {
-          color = 'pink'
+        if (linewidth < 2) {
+          color = '#ff7f50'
+        } else if (linewidth < 4) {
+          color = '#ff6347'
+        } else if (linewidth < 6) {
+          color = '#ff1493'
+        } else if (linewidth < 6) {
+          color = '#8b008b'
+        } else if (linewidth < 8) {
+          color = '#4b0082'
         } else if (linewidth < 10) {
-          color = 'purple'
-        } else {
-          color = 'skyblue'
+          color = '#ff00ff'
+        } else if (linewidth < 12) {
+          color = '#8a2be2'
+        } else if (linewidth < 14) {
+          color = '#8b008b'
+        } else if (linewidth < 16) {
+          color = '#4b0082'
         }
         this.drawMeshPart(this[key + 'List'], scene, color, 3)
       })
