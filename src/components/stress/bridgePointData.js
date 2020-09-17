@@ -1,3 +1,4 @@
+// 桥梁所有点的位置
 export const MeshPointObj = {
   110101: {
     X: -3050,

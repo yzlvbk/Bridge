@@ -1,5 +1,5 @@
 <template>
-  <div class="transform_mesh">
+  <div class="threeD_stress">
     <canvas class="bridge_stress"></canvas>
   </div>
 </template>
@@ -10,103 +10,60 @@ import OrbitControls from 'three-orbitcontrols'
 import { Line2 } from 'three/examples/jsm/lines/Line2'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
-import { MeshPointObj } from '@/views/zhenShaoBridge/components/stressData.js'
+import { reqBridgeOneMeshDeform } from '@/request/ZhShao/api.js'
+import { MeshPointObj } from './bridgePointData'
 export default {
   mounted () {
-    // 获取Mesh数据
+    // 处理Mesh数据
     this.getMeshData()
   },
   data () {
     return {
       // 面板
-      panel1: [
+      panel: [
         110101,
         110102,
         110103,
-        110104
-      ],
-
-      panel2: [
         110104,
         110201,
         110202,
         110203,
-        110204
-      ],
-
-      panel3: [
         110204,
         110301,
         110302,
         110303,
-        110304
-      ],
-
-      panel4: [
         110304,
         110401,
         110402,
         110403,
-        110404
-      ],
-
-      panel5: [
         110404,
         110501,
         110502,
         110503,
-        110504
-      ],
-
-      panel6: [
         110504,
         110601,
         110602,
         110603,
-        110604
-      ],
-
-      panel7: [
         110604,
         110701,
         110702,
         110703,
-        110704
-      ],
-
-      panel8: [
         110704,
         110801,
         110802,
         110803,
-        110804
-      ],
-
-      panel9: [
         110804,
         110901,
         110902,
         110903,
-        110904
-      ],
-
-      panel10: [
         110904,
         111001,
         111002,
         111003,
-        111004
-      ],
-
-      panel11: [
         111004,
         111101,
         111102,
         111103,
-        111104
-      ],
-
-      panel12: [
         111104,
         111201,
         111202,
@@ -116,72 +73,40 @@ export default {
       ],
 
       // 拱形
-      vaulted1: [
+      vaulted: [
         210203,
         210204,
         210301,
         210302,
         210303,
-        210304
-      ],
-
-      vaulted2: [
         210304,
         210401,
         210402,
         210403,
-        210404
-      ],
-
-      vaulted3: [
         210404,
         210501,
         210502,
         210503,
-        210504
-      ],
-
-      vaulted4: [
         210504,
         210601,
         210602,
         210603,
-        210604
-      ],
-
-      vaulted5: [
         210604,
         210701,
         210702,
         210703,
-        210704
-      ],
-
-      vaulted6: [
         210704,
         210801,
         210802,
         210803,
-        210804
-      ],
-
-      vaulted7: [
         210804,
         210901,
         210902,
         210903,
-        210904
-      ],
-
-      vaulted8: [
         210904,
         211001,
         211002,
         211003,
-        211004
-      ],
-
-      vaulted9: [
         211004,
         211101,
         211102,
@@ -261,28 +186,9 @@ export default {
       ],
 
       // 所有面板点数据
-      panel1List: [],
-      panel2List: [],
-      panel3List: [],
-      panel4List: [],
-      panel5List: [],
-      panel6List: [],
-      panel7List: [],
-      panel8List: [],
-      panel9List: [],
-      panel10List: [],
-      panel11List: [],
-      panel12List: [],
+      panelList: [],
       // 所有拱形点数据
-      vaulted1List: [],
-      vaulted2List: [],
-      vaulted3List: [],
-      vaulted4List: [],
-      vaulted5List: [],
-      vaulted6List: [],
-      vaulted7List: [],
-      vaulted8List: [],
-      vaulted9List: [],
+      vaultedList: [],
       // 所有支柱点数据
       bar1List: [],
       bar2List: [],
@@ -291,77 +197,35 @@ export default {
       bar5List: [],
       bar6List: [],
       bar7List: [],
-      bar8List: []
+      bar8List: [],
+
+      // 变形Mesh数据
+      deformMeshObj: {},
+
+      // 所有变形面板点数据
+      panelDeformList: [],
+      // 所有变形拱形点数据
+      vaultedDeformList: [],
+      // 所有变形支柱点数据
+      bar1DeformList: [],
+      bar2DeformList: [],
+      bar3DeformList: [],
+      bar4DeformList: [],
+      bar5DeformList: [],
+      bar6DeformList: [],
+      bar7DeformList: [],
+      bar8DeformList: []
     }
   },
   methods: {
     // 请求Mesh数据
     getMeshData () {
-      this.panel1.forEach(item => {
-        this.panel1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+      this.panel.forEach(item => {
+        this.panelList.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
-      this.panel2.forEach(item => {
-        this.panel2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+      this.vaulted.forEach(item => {
+        this.vaultedList.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
-      this.panel3.forEach(item => {
-        this.panel3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel4.forEach(item => {
-        this.panel4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel5.forEach(item => {
-        this.panel5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel6.forEach(item => {
-        this.panel6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel7.forEach(item => {
-        this.panel7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel8.forEach(item => {
-        this.panel8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel9.forEach(item => {
-        this.panel9List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel10.forEach(item => {
-        this.panel10List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel11.forEach(item => {
-        this.panel11List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.panel12.forEach(item => {
-        this.panel12List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-
-      this.vaulted1.forEach(item => {
-        this.vaulted1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted2.forEach(item => {
-        this.vaulted2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted3.forEach(item => {
-        this.vaulted3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted4.forEach(item => {
-        this.vaulted4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted5.forEach(item => {
-        this.vaulted5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted6.forEach(item => {
-        this.vaulted6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted7.forEach(item => {
-        this.vaulted7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted8.forEach(item => {
-        this.vaulted8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-      this.vaulted9.forEach(item => {
-        this.vaulted9List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
-      })
-
       this.bar1.forEach(item => {
         this.bar1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
@@ -387,6 +251,51 @@ export default {
         this.bar8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
 
+      this.getMeshDeformData(10000) // 10000表示放大10000倍
+    },
+
+    // 请求变形Mesh数据
+    async getMeshDeformData (s) {
+      const data = await reqBridgeOneMeshDeform('2020-01-09 10:24:02', '2020-01-09 10:34:02')
+      this.deformMeshObj = await data.data.Mesh.JointArray.Joint['2020/1/9 10:24:02']
+      // console.log(this.deformMeshObj)
+
+      this.panel.forEach(item => {
+        // if (!this.deformMeshObj[item]) return
+        // console.log(Number(MeshPointObj[item].Z))
+        // console.log((Number(this.deformMeshObj[item].Z) * s))
+        // console.log()
+        MeshPointObj[item] && this.deformMeshObj[item] && this.panelDeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+
+      this.vaulted.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.vaultedDeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar1.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar1DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar2.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar2DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar3.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar3DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar4.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar4DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar5.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar5DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar6.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar6DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar7.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar7DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+      this.bar8.forEach(item => {
+        MeshPointObj[item] && this.deformMeshObj[item] && this.bar8DeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
+      })
+
       this.$nextTick(() => {
         this.drawStress()
       })
@@ -394,7 +303,7 @@ export default {
 
     /* 绘制应力图 */
     drawStress () {
-      const container = document.querySelector('.transform_mesh')
+      const container = document.querySelector('.threeD_stress')
 
       /**
      * 创建场景对象Scene
@@ -402,37 +311,32 @@ export default {
       var scene = new THREE.Scene()
 
       // 桥面板部分
-      this.drawMeshPart(this.panel1List, scene, 'red')
-      this.drawMeshPart(this.panel2List, scene, 'red')
-      this.drawMeshPart(this.panel3List, scene, 'red')
-      this.drawMeshPart(this.panel4List, scene, 'red')
-      this.drawMeshPart(this.panel5List, scene, 'red')
-      this.drawMeshPart(this.panel6List, scene, 'red')
-      this.drawMeshPart(this.panel7List, scene, 'red')
-      this.drawMeshPart(this.panel8List, scene, 'red')
-      this.drawMeshPart(this.panel9List, scene, 'red')
-      this.drawMeshPart(this.panel10List, scene, 'red')
-      this.drawMeshPart(this.panel11List, scene, 'red')
-      this.drawMeshPart(this.panel12List, scene, 'red')
+      this.drawMeshPart(this.panelList, scene, '#fff')
       // 拱形部分
-      this.drawMeshPart(this.vaulted1List, scene, 'red')
-      this.drawMeshPart(this.vaulted2List, scene, 'red')
-      this.drawMeshPart(this.vaulted3List, scene, 'red')
-      this.drawMeshPart(this.vaulted4List, scene, 'red')
-      this.drawMeshPart(this.vaulted5List, scene, 'red')
-      this.drawMeshPart(this.vaulted6List, scene, 'red')
-      this.drawMeshPart(this.vaulted7List, scene, 'red')
-      this.drawMeshPart(this.vaulted8List, scene, 'red')
-      this.drawMeshPart(this.vaulted9List, scene, 'red')
+      this.drawMeshPart(this.vaultedList, scene, '#fff')
       // 支柱部分
-      this.drawMeshPart(this.bar1List, scene, 'red')
-      this.drawMeshPart(this.bar2List, scene, 'red')
-      this.drawMeshPart(this.bar3List, scene, 'red')
-      this.drawMeshPart(this.bar4List, scene, 'red')
-      this.drawMeshPart(this.bar5List, scene, 'red')
-      this.drawMeshPart(this.bar6List, scene, 'red')
-      this.drawMeshPart(this.bar7List, scene, 'red')
-      this.drawMeshPart(this.bar8List, scene, 'red')
+      this.drawMeshPart(this.bar1List, scene, '#fff')
+      this.drawMeshPart(this.bar2List, scene, '#fff')
+      this.drawMeshPart(this.bar3List, scene, '#fff')
+      this.drawMeshPart(this.bar4List, scene, '#fff')
+      this.drawMeshPart(this.bar5List, scene, '#fff')
+      this.drawMeshPart(this.bar6List, scene, '#fff')
+      this.drawMeshPart(this.bar7List, scene, '#fff')
+      this.drawMeshPart(this.bar8List, scene, '#fff')
+
+      // 桥面板变形部分
+      this.drawMeshPart(this.panelDeformList, scene, 'red')
+      // 拱形变形部分
+      this.drawMeshPart(this.vaultedDeformList, scene, 'red')
+      // 支柱变形部分
+      this.drawMeshPart(this.bar1DeformList, scene, 'red')
+      this.drawMeshPart(this.bar2DeformList, scene, 'red')
+      this.drawMeshPart(this.bar3DeformList, scene, 'red')
+      this.drawMeshPart(this.bar4DeformList, scene, 'red')
+      this.drawMeshPart(this.bar5DeformList, scene, 'red')
+      this.drawMeshPart(this.bar6DeformList, scene, 'red')
+      this.drawMeshPart(this.bar7DeformList, scene, 'red')
+      this.drawMeshPart(this.bar8DeformList, scene, 'red')
 
       /**
      * 光源设置

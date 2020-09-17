@@ -1,5 +1,31 @@
 <template>
   <div class="three_d">
+      <div class="threed_icon">
+        <!-- 斜视图 -->
+        <span class="threed_icon_item" @click="changeView(15, 0, 45)">
+          <img src="./threeDicon/obliqueView.png" alt="">
+        </span>
+        <!-- 正视图 -->
+        <span class="threed_icon_item" @click="changeView(0, 0, 0)">
+          <img src="./threeDicon/frontView.png" alt="">
+        </span>
+        <!-- 俯视图 -->
+        <span class="threed_icon_item" @click="changeView(90, 0, 0)">
+          <img src="./threeDicon/topView.png" alt="">
+        </span>
+        <!-- 侧视图 -->
+        <span class="threed_icon_item" @click="changeView(0, 0, 90)">
+          <img src="./threeDicon/sideView.png" alt="">
+        </span>
+        <!-- 旋转 -->
+        <span class="threed_icon_item">
+          <img src="./threeDicon/rotate.png" alt="">
+        </span>
+        <!-- 平移 -->
+        <span class="threed_icon_item">
+          <img src="./threeDicon/pan.png" alt="">
+        </span>
+      </div>
       <canvas id="webgl"></canvas>
   </div>
 </template>
@@ -17,6 +43,7 @@ export default {
   },
   data () {
     return {
+      // 传感器名称列表
       sensorNameList: [
         'ZS01010',
         'ZS01012',
@@ -61,23 +88,46 @@ export default {
         'SR11',
         'SR12',
         'SR13'
-      ]
+      ],
+
+      // X轴旋转值
+      rotateX: 0,
+      // Y轴旋转值
+      rotateY: 0,
+      // Z轴旋转值
+      rotateZ: 0
     }
   },
   methods: {
     drawThreeD () {
       var container = document.querySelector('.three_d')
 
-      /* 创建场景对象Scene */
+      /* 创建场景对象scene */
       const scene = new THREE.Scene()
+
+      /* 创建组对象group */
+      var group = new THREE.Group()
 
       /* 绘制桥梁模型 */
       const bridgeMesh = this.drawBridged(scene)
+      group.add(bridgeMesh)
 
       /* 绘制传感器模型 */
       this.sensorNameList.forEach((item, index) => {
-        this.drawSensor((index + 1), item, scene)
+        const mesh = this.drawSensor((index + 1), item, scene)
+        group.add(mesh)
       })
+
+      scene.add(group)
+
+      group.rotateX(this.rotateX * Math.PI / 180) // 将组对象绕Z轴旋转
+      group.rotateY(this.rotateY * Math.PI / 180) // 将组对象绕Z轴旋转
+      group.rotateZ(this.rotateZ * Math.PI / 180) // 将组对象绕Z轴旋转
+
+      // 斜视图 15, 0, 45
+      // 正视图 0, 0, 0
+      // 侧视图 0, 0, 90
+      // 俯视图 90, 0, 0
 
       // 辅助坐标系   老版本AxisHelper 新版本AxesHelper
       // var axisHelper = new THREE.AxisHelper(1000)
@@ -113,7 +163,9 @@ export default {
       var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象s
       var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -10000, 10000)
-      camera.position.set(0, -400, 0) // 设置相机位置
+      // camera.position.set(0, -400, 0) // 设置相机位置 正视图
+      // camera.position.set(0, 0, 100) // 设置相机位置 俯视图
+      camera.position.set(0, -400, 0) // 设置相机位置 俯视图
       camera.lookAt(scene.position) // 设置相机方向(指向的场景对象)
       /**
      * 创建渲染器对象
@@ -135,6 +187,10 @@ export default {
       // 创建控件对象  相机对象camera作为参数   控件可以监听鼠标的变化，改变相机对象的属性
       // eslint-disable-next-line no-unused-vars
       var controls = new OrbitControls(camera, renderer.domElement)
+      // controls.enabled = false // 控制器是否被启用
+      // controls.enableRotate = true // 是否启用旋转
+      // controls.enableZoom = false // 是否启用缩放
+      // controls.enablePan = false // 是否启用平移
     },
 
     // 绘制桥梁模型
@@ -167,56 +223,65 @@ export default {
         side: THREE.DoubleSide // 两面可见
       })
       var bridgeMesh = new THREE.Mesh(geometry, material) // 网格模型对象Mesh
-      scene.add(bridgeMesh) // 网格模型添加到场景中
+      // scene.add(bridgeMesh) // 网格模型添加到场景中
       return bridgeMesh
     },
 
     // 绘制传感器模型
     drawSensor (num, name, scene) {
-      var geometry2 = new THREE.Geometry() // 创建一个Buffer类型几何体对象
-      geometry2.name = name
+      var sensorGeometry = new THREE.Geometry() // 创建一个Buffer类型几何体对象
+      sensorGeometry.name = name
 
-      const vertices2 = sensorVertex.slice((num - 1) * 24, num * 24)
+      const sensorVertices = sensorVertex.slice((num - 1) * 24, num * 24)
       // 顶点数组
-      var verticesArry2 = []
+      var verticesArry = []
 
-      for (let i = 0; i < vertices2.length; i += 3) {
-        verticesArry2.push(new THREE.Vector3(vertices2[i], vertices2[i + 1], vertices2[i + 2]))
+      for (let i = 0; i < sensorVertices.length; i += 3) {
+        verticesArry.push(new THREE.Vector3(sensorVertices[i], sensorVertices[i + 1], sensorVertices[i + 2]))
       }
-      geometry2.vertices = verticesArry2
+      sensorGeometry.vertices = verticesArry
 
-      var allFaceIndex2 = [0, 4, 5, 0, 1, 5, 1, 5, 6, 1, 2, 6, 2, 6, 7, 2, 3, 7, 3, 7, 4, 3, 0, 4, 0, 3, 2, 0, 1, 2, 4, 7, 6, 4, 5, 6]
+      var allFaceIndex = [0, 4, 5, 0, 1, 5, 1, 5, 6, 1, 2, 6, 2, 6, 7, 2, 3, 7, 3, 7, 4, 3, 0, 4, 0, 3, 2, 0, 1, 2, 4, 7, 6, 4, 5, 6]
       // Face3构造函数创建一个三角面
-      var facesArry2 = []
+      var facesArry = []
 
-      for (let i = 0; i < allFaceIndex2.length; i += 3) {
-        facesArry2.push(new THREE.Face3(allFaceIndex2[i], allFaceIndex2[i + 1], allFaceIndex2[i + 2]))
+      for (let i = 0; i < allFaceIndex.length; i += 3) {
+        facesArry.push(new THREE.Face3(allFaceIndex[i], allFaceIndex[i + 1], allFaceIndex[i + 2]))
       }
-      geometry2.faces = facesArry2
+      sensorGeometry.faces = facesArry
 
-      geometry2.computeFaceNormals()
+      sensorGeometry.computeFaceNormals()
 
       if (name.startsWith('SR')) {
         // 三角面(网格)渲染模式
-        var material2 = new THREE.MeshLambertMaterial({
+        var material = new THREE.MeshLambertMaterial({
           color: 'red', // 三角面颜色
           side: THREE.DoubleSide // 两面可见
         }) // 材质对象
-        var mesh2 = new THREE.Mesh(geometry2, material2) // 网格模型对象Mesh
-        scene.add(mesh2) // 网格模型添加到场景中
+        var mesh = new THREE.Mesh(sensorGeometry, material) // 网格模型对象Mesh
+        // scene.add(mesh) // 网格模型添加到场景中
+        return mesh
       } else if (name.startsWith('ZS')) {
         // 三角面(网格)渲染模式
         // eslint-disable-next-line no-redeclare
-        var material2 = new THREE.MeshLambertMaterial({
+        var material = new THREE.MeshLambertMaterial({
           color: 'blue', // 三角面颜色
           side: THREE.DoubleSide // 两面可见
         }) // 材质对象
         // eslint-disable-next-line no-redeclare
-        var mesh2 = new THREE.Mesh(geometry2, material2) // 网格模型对象Mesh
-        scene.add(mesh2) // 网格模型添加到场景中
+        var mesh = new THREE.Mesh(sensorGeometry, material) // 网格模型对象Mesh
+        // scene.add(mesh) // 网格模型添加到场景中
+        return mesh
       }
-    }
+    },
 
+    // 改变视图
+    changeView (x, y, z) {
+      this.rotateX = x
+      this.rotateY = y
+      this.rotateZ = z
+      this.drawThreeD()
+    }
   }
 
 }
@@ -224,10 +289,34 @@ export default {
 
 <style scoped lang="less">
 .three_d {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
+
+  .threed_icon {
+    display: flex;
+    position: absolute;
+    top: 10px;
+    right: 40px;
+
+    .threed_icon_item {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      background-color: rgb(241, 241, 241);
+
+      &:hover {
+        background-color: rgb(0, 204, 204);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }
 </style>

@@ -60,3 +60,6 @@ export const reqBridgeOneMesh = (Id) => http('/v10/bridgeOne/GetMesh', {}, 'GET'
 
 /* 桥梁系统1-Mesh变形 */
 export const reqBridgeOneMeshDeform = (StartTime, EndTime) => http('/v10/bridgeOne/MeshDeform', { StartTime, EndTime }, 'POST')
+
+/* 桥梁系统1-应力 */
+export const reqBridgeOneMemberForce = () => http('/v10/bridgeOne/GetMemberForce', {}, 'GET')
