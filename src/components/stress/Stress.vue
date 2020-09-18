@@ -14,10 +14,8 @@ import { MeshPointObj } from './bridgePointData'
 import { reqBridgeOneMemberForce } from '@/request/ZhShao/api.js'
 export default {
   async mounted () {
-    // 获取应变值
-    this.getStressData()
     // 获取Mesh数据
-    this.getMeshData()
+    this.getStressData()
   },
   data () {
     return {
@@ -301,105 +299,134 @@ export default {
     }
   },
   methods: {
-    // 处理Mesh数据
-    getMeshData () {
+    // 请求应变值并处理
+    async getStressData () {
+      const data = await reqBridgeOneMemberForce()
+      if (data.statusCode !== 200) return
+      this.stressDataObj = data.data
+
+      // 缩放比列
+      const zoom = 3
       this.panel1.forEach(item => {
         this.panel1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        // Z轴增加
+        this.panel1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel1) / zoom)
       })
       this.panel2.forEach(item => {
         this.panel2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        // Z轴增加
+        this.panel2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel2) / zoom)
       })
       this.panel3.forEach(item => {
         this.panel3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel3) / zoom)
       })
       this.panel4.forEach(item => {
         this.panel4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel4) / zoom)
       })
       this.panel5.forEach(item => {
         this.panel5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel5) / zoom)
       })
       this.panel6.forEach(item => {
         this.panel6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel6) / zoom)
       })
       this.panel7.forEach(item => {
         this.panel7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel7) / zoom)
       })
       this.panel8.forEach(item => {
         this.panel8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel8) / zoom)
       })
       this.panel9.forEach(item => {
         this.panel9List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel9List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel9) / zoom)
       })
       this.panel10.forEach(item => {
         this.panel10List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel10List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel10) / zoom)
       })
       this.panel11.forEach(item => {
         this.panel11List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel11List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel11) / zoom)
       })
       this.panel12.forEach(item => {
         this.panel12List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.panel12List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.panel12) / zoom)
       })
 
       this.vaulted1.forEach(item => {
         this.vaulted1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted1) / zoom)
       })
       this.vaulted2.forEach(item => {
         this.vaulted2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted2) / zoom)
       })
       this.vaulted3.forEach(item => {
         this.vaulted3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted3) / zoom)
       })
       this.vaulted4.forEach(item => {
         this.vaulted4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted4) / zoom)
       })
       this.vaulted5.forEach(item => {
         this.vaulted5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted5) / zoom)
       })
       this.vaulted6.forEach(item => {
         this.vaulted6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted6) / zoom)
       })
       this.vaulted7.forEach(item => {
         this.vaulted7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted7) / zoom)
       })
       this.vaulted8.forEach(item => {
         this.vaulted8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted8) / zoom)
       })
       this.vaulted9.forEach(item => {
         this.vaulted9List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.vaulted9List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.vaulted9) / zoom)
       })
 
       this.bar1.forEach(item => {
         this.bar1List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar1List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar1) / zoom)
       })
       this.bar2.forEach(item => {
         this.bar2List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar2List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar2) / zoom)
       })
       this.bar3.forEach(item => {
         this.bar3List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar3List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar3) / zoom)
       })
       this.bar4.forEach(item => {
         this.bar4List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar4List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar4) / zoom)
       })
       this.bar5.forEach(item => {
         this.bar5List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar5List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar5) / zoom)
       })
       this.bar6.forEach(item => {
         this.bar6List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar6List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar6) / zoom)
       })
       this.bar7.forEach(item => {
         this.bar7List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar7List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar7) / zoom)
       })
       this.bar8.forEach(item => {
         this.bar8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
+        this.bar8List.push(MeshPointObj[item].X + 20, MeshPointObj[item].Y, MeshPointObj[item].Z - Number(this.stressDataObj.bar8) / zoom)
       })
-    },
-
-    // 请求应变值
-    async getStressData () {
-      const data = await reqBridgeOneMemberForce()
-      if (data.statusCode !== 200) return
-      console.log(data)
-      this.stressDataObj = data.data
 
       this.$nextTick(() => {
         this.drawStress()
@@ -417,66 +444,98 @@ export default {
 
       /* 基准模型 */
       // 桥面板部分
-      this.drawMeshPart(this.panel1List, scene, 'red', 3)
-      this.drawMeshPart(this.panel2List, scene, 'red', 3)
-      this.drawMeshPart(this.panel3List, scene, 'red', 3)
-      this.drawMeshPart(this.panel4List, scene, 'red', 3)
-      this.drawMeshPart(this.panel5List, scene, 'red', 3)
-      this.drawMeshPart(this.panel6List, scene, 'red', 3)
-      this.drawMeshPart(this.panel7List, scene, 'red', 3)
-      this.drawMeshPart(this.panel8List, scene, 'red', 3)
-      this.drawMeshPart(this.panel9List, scene, 'red', 3)
-      this.drawMeshPart(this.panel10List, scene, 'red', 3)
-      this.drawMeshPart(this.panel11List, scene, 'red', 3)
-      this.drawMeshPart(this.panel12List, scene, 'red', 3)
-      // 拱形部分
-      this.drawMeshPart(this.vaulted1List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted2List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted3List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted4List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted5List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted6List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted7List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted8List, scene, 'red', 3)
-      this.drawMeshPart(this.vaulted9List, scene, 'red', 3)
-      // 支柱部分
-      this.drawMeshPart(this.bar1List, scene, 'red', 3)
-      this.drawMeshPart(this.bar2List, scene, 'red', 3)
-      this.drawMeshPart(this.bar3List, scene, 'red', 3)
-      this.drawMeshPart(this.bar4List, scene, 'red', 3)
-      this.drawMeshPart(this.bar5List, scene, 'red', 3)
-      this.drawMeshPart(this.bar6List, scene, 'red', 3)
-      this.drawMeshPart(this.bar7List, scene, 'red', 3)
-      this.drawMeshPart(this.bar8List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel1List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel2List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel3List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel4List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel5List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel6List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel7List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel8List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel9List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel10List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel11List, scene, 'red', 3)
+      // this.drawMeshPart(this.panel12List, scene, 'red', 3)
+      // // 拱形部分
+      // this.drawMeshPart(this.vaulted1List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted2List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted3List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted4List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted5List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted6List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted7List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted8List, scene, 'red', 3)
+      // this.drawMeshPart(this.vaulted9List, scene, 'red', 3)
+      // // 支柱部分
+      // this.drawMeshPart(this.bar1List, scene, 'red', 3)
+      // this.drawMeshPart(this.bar2List, scene, 'red', 3)
+      // this.drawMeshPart(this.bar3List, scene, 'red', 3)
+      // this.drawMeshPart(this.bar4List, scene, 'red', 3)
+      // this.drawMeshPart(this.bar5List, scene, 'red', 3)
+      // this.drawMeshPart(this.bar6List, scene, 'red', 3)
+      // this.drawMeshPart(this.bar7List, scene, 'red', 3)
+      // this.drawMeshPart(this.bar8List, scene, 'red', 3)
 
       /* 应变模型 */
-      const keysList = Object.keys(this.stressDataObj)
-      keysList.forEach(key => {
-        const linewidth = Number(this.stressDataObj[key]) / 50 + 3
+      // const keysList = Object.keys(this.stressDataObj)
+      // keysList.forEach(key => {
+      //   const linewidth = Number(this.stressDataObj[key]) / 50 + 3
 
-        let color
-        console.log(linewidth)
-        if (linewidth < 2) {
-          color = '#ff7f50'
-        } else if (linewidth < 4) {
-          color = '#ff6347'
-        } else if (linewidth < 6) {
-          color = '#ff1493'
-        } else if (linewidth < 6) {
-          color = '#8b008b'
-        } else if (linewidth < 8) {
-          color = '#4b0082'
-        } else if (linewidth < 10) {
-          color = '#ff00ff'
-        } else if (linewidth < 12) {
-          color = '#8a2be2'
-        } else if (linewidth < 14) {
-          color = '#8b008b'
-        } else if (linewidth < 16) {
-          color = '#4b0082'
-        }
-        this.drawMeshPart(this[key + 'List'], scene, color, 3)
-      })
+      //   let color
+      //   if (linewidth < 2) {
+      //     color = '#ff7f50'
+      //   } else if (linewidth < 4) {
+      //     color = '#ff6347'
+      //   } else if (linewidth < 6) {
+      //     color = '#ff1493'
+      //   } else if (linewidth < 6) {
+      //     color = '#8b008b'
+      //   } else if (linewidth < 8) {
+      //     color = '#4b0082'
+      //   } else if (linewidth < 10) {
+      //     color = '#ff00ff'
+      //   } else if (linewidth < 12) {
+      //     color = '#8a2be2'
+      //   } else if (linewidth < 14) {
+      //     color = '#8b008b'
+      //   } else if (linewidth < 16) {
+      //     color = '#4b0082'
+      //   }
+      //   this.drawMeshPart(this[key + 'List'], scene, color, 3)
+      // })
+
+      // 绘制Mesh矩形宽度
+      this.drawMeshRect(this.panel1List, scene, this.stressDataObj.panel1)
+      this.drawMeshRect(this.panel2List, scene, this.stressDataObj.panel2)
+      this.drawMeshRect(this.panel3List, scene, this.stressDataObj.panel3)
+      this.drawMeshRect(this.panel4List, scene, this.stressDataObj.panel4)
+      this.drawMeshRect(this.panel5List, scene, this.stressDataObj.panel5)
+      this.drawMeshRect(this.panel6List, scene, this.stressDataObj.panel6)
+      this.drawMeshRect(this.panel7List, scene, this.stressDataObj.panel7)
+      this.drawMeshRect(this.panel8List, scene, this.stressDataObj.panel8)
+      this.drawMeshRect(this.panel9List, scene, this.stressDataObj.panel9)
+      this.drawMeshRect(this.panel10List, scene, this.stressDataObj.panel10)
+      this.drawMeshRect(this.panel11List, scene, this.stressDataObj.panel11)
+      this.drawMeshRect(this.panel12List, scene, this.stressDataObj.panel12)
+
+      this.drawMeshRect(this.vaulted1List, scene, this.stressDataObj.vaulted1)
+      this.drawMeshRect(this.vaulted2List, scene, this.stressDataObj.vaulted2)
+      this.drawMeshRect(this.vaulted3List, scene, this.stressDataObj.vaulted3)
+      this.drawMeshRect(this.vaulted4List, scene, this.stressDataObj.vaulted4)
+      this.drawMeshRect(this.vaulted5List, scene, this.stressDataObj.vaulted5)
+      this.drawMeshRect(this.vaulted6List, scene, this.stressDataObj.vaulted6)
+      this.drawMeshRect(this.vaulted7List, scene, this.stressDataObj.vaulted7)
+      this.drawMeshRect(this.vaulted8List, scene, this.stressDataObj.vaulted8)
+      this.drawMeshRect(this.vaulted9List, scene, this.stressDataObj.vaulted9)
+
+      this.drawMeshRect(this.bar1List, scene, this.stressDataObj.bar1)
+      this.drawMeshRect(this.bar2List, scene, this.stressDataObj.bar2)
+      this.drawMeshRect(this.bar3List, scene, this.stressDataObj.bar3)
+      this.drawMeshRect(this.bar4List, scene, this.stressDataObj.bar4)
+      this.drawMeshRect(this.bar5List, scene, this.stressDataObj.bar5)
+      this.drawMeshRect(this.bar6List, scene, this.stressDataObj.bar6)
+      this.drawMeshRect(this.bar7List, scene, this.stressDataObj.bar7)
+      this.drawMeshRect(this.bar8List, scene, this.stressDataObj.bar8)
 
       /**
      * 光源设置
@@ -486,7 +545,7 @@ export default {
       point.position.set(0, 4000, 0) // 点光源位置
       scene.add(point) // 点光源添加到场景中
       // 环境光
-      var ambient = new THREE.AmbientLight(0x444444)
+      var ambient = new THREE.AmbientLight(0xffffff)
       scene.add(ambient)
       // console.log(scene)
       // console.log(scene.children)
@@ -535,14 +594,68 @@ export default {
       // 线条渲染模式
       var material = new LineMaterial({
         color: color,
-        linecap: 'butt',
-        linejoin: 'miter',
         linewidth
       })// 材质对象
       material.resolution.set(window.innerWidth, window.innerHeight)
       var line = new Line2(geometry, material)// 线条模型对象
       line.computeLineDistances()
       scene.add(line)// 线条对象添加到场景中
+    },
+
+    // 绘制Mesh矩形
+    drawMeshRect (vertexAry, scene, stress) {
+      /**
+     * 创建网格模型
+     */
+      var geometry = new THREE.BufferGeometry() // 声明一个空几何体对象
+
+      // 类型数组创建顶点位置position数据
+      var vertices = new Float32Array(vertexAry)
+
+      // 创建属性缓冲区对象
+      var attribue = new THREE.BufferAttribute(vertices, 3) // 3个为一组，作为一个顶点的xyz坐标
+      // 设置几何体attributes属性的位置position属性
+      geometry.attributes.position = attribue
+
+      // 动态计算索引数组
+      const indexAry = []
+      for (let i = 0; i < (vertices.length / 3 - 2); i++) {
+        indexAry.push(i, i + 1, i + 2)
+      }
+
+      // Uint16Array类型数组创建顶点索引数据
+      var indexes = new Uint16Array(indexAry)
+      // 索引数据赋值给几何体的index属性
+      geometry.index = new THREE.BufferAttribute(indexes, 1) // 1个为一组
+
+      console.log(stress)
+      let color
+      if (stress < 2) {
+        color = '#ff7f50'
+      } else if (stress < 40) {
+        color = '#ff6347'
+      } else if (stress < 80) {
+        color = '#ff1493'
+      } else if (stress < 120) {
+        color = '#8b008b'
+      } else if (stress < 160) {
+        color = '#4b0082'
+      } else if (stress < 200) {
+        color = '#ff00ff'
+      } else if (stress < 240) {
+        color = '#8a2be2'
+      } else if (stress < 280) {
+        color = '#8b008b'
+      } else {
+        color = '#4b0082'
+      }
+      // 材质对象
+      var material = new THREE.MeshPhongMaterial({
+        color, // 三角面颜色
+        side: THREE.DoubleSide // 两面可见
+      })
+      var mesh = new THREE.Mesh(geometry, material) // 网格模型对象Mesh
+      scene.add(mesh) // 网格模型添加到场景中
     }
   }
 }
