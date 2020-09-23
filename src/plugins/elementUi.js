@@ -20,7 +20,8 @@ import {
   Message,
   Pagination,
   Cascader,
-  DatePicker
+  DatePicker,
+  Input
 } from 'element-ui'
 
 Vue.use(Button)
@@ -42,5 +43,6 @@ Vue.use(Option)
 Vue.use(Pagination)
 Vue.use(Cascader)
 Vue.use(DatePicker)
+Vue.use(Input)
 
 Vue.prototype.$message = Message
