@@ -10,7 +10,7 @@
     <div class="contain">
       <div class="asseee_chart" style="width: 60%;">
         <div class="asseee_chart_top">
-          <canvas class="asseee_chart_top_canvas" style="background-color: skyblue;"></canvas>
+          <canvas class="asseee_chart_top_canvas"></canvas>
         </div>
         <div class="asseee_chart_bottom">
           <!-- 添加轴距/轴重 -->
@@ -85,11 +85,7 @@ export default {
 
       // 车轮数组
       wheelList: [
-        { distance: 20, weight: 40 },
-        { distance: 20, weight: 40 },
-        { distance: 20, weight: 40 },
-        { distance: 20, weight: 40 },
-        { distance: 20, weight: 40 }
+        { distance: 0, weight: '' }
       ],
 
       // 轴距输入值
@@ -144,26 +140,28 @@ export default {
       const canvas = document.querySelector('.asseee_chart_top_canvas')
 
       var ctx = canvas.getContext('2d')
-      console.log(parseInt(this.width))
       canvas.width = parseInt(this.width) // 设置标签的属性宽高
       canvas.height = parseInt(this.height) // 千万不要用 canvas.style.height
       // canvas.style.border = '1px solid #000';
 
       /* 将原点位移画布中心 */
-      ctx.translate(80, canvas.height / 2)
+      ctx.translate(80, canvas.height / 2 + 50)
 
-      // 0 - 50
-      drawLine(0, 50)
-      // 50 - 150
-      drawLine(50, 150)
+      this.wheelList.forEach((item, index) => {
+        if (index === 0) {
+          drawLine(0, item.distance)
+          drawWheel(0, item.distance, item.weight)
+        } else {
+          // eslint-disable-next-line no-unused-vars
+          let sum = 0
+          for (let i = 0; i < index; i++) {
+            sum += Number(this.wheelList[i].distance)
+          }
 
-      drawLine(150, 300)
-
-      drawWheel(0, 50, 40)
-
-      drawWheel(50, 150, 50)
-
-      drawWheel(150, 300, 100)
+          drawLine(sum, Number(item.distance) + sum)
+          drawWheel(sum, Number(item.distance) + sum, item.weight)
+        }
+      })
 
       // 绘制距离
       function drawLine (start, end) {
@@ -196,7 +194,7 @@ export default {
         // ctx.closePath()
         /* 描边 */
         ctx.lineWidth = 1
-        ctx.strokeStyle = '#000'
+        ctx.strokeStyle = '#E6A23C'
         ctx.stroke()
 
         /* 绘制文本 */
@@ -205,6 +203,7 @@ export default {
         /* 文本的属性：尺寸、字体、左右对齐方式、垂直对齐的方式 */
         ctx.font = '16px Microsoft YaHei'
         ctx.textAlign = 'center' // 对齐方式
+        ctx.fillStyle = '#eee' // 填充颜色
         // ctx.strokeText(str, (end - start) / 2 + start, -20) // 描边
         ctx.fillText(str, (end - start) / 2 + start, -20) // 填充
       }
@@ -221,30 +220,41 @@ export default {
           /* 文本的属性：尺寸、字体、左右对齐方式、垂直对齐的方式 */
           ctx.font = '12px Microsoft YaHei'
           ctx.textAlign = 'center' // 对齐方式
+          ctx.fillStyle = '#eee' // 填充颜色
           ctx.fillText(str, start - 5, -60) // 填充
 
           ctx.fillText(str, start - 5, -110) // 填充
+        } else {
+          ctx.rect(end - 5, -50, 10, 5)
+
+          ctx.rect(end - 5, -100, 10, 5)
+
+          ctx.lineWidth = 1
+          ctx.strokeStyle = '#0fc8e0'
+          ctx.stroke()
+
+          /* 绘制文本 */
+          ctx.beginPath()
+          // eslint-disable-next-line no-redeclare
+          var str = weight + 'KN'
+          /* 文本的属性：尺寸、字体、左右对齐方式、垂直对齐的方式 */
+          ctx.font = '12px Microsoft YaHei'
+          ctx.textAlign = 'center' // 对齐方式
+          ctx.fillStyle = '#eee' // 填充颜色
+
+          ctx.fillText(str, end - 5, -60) // 填充
+
+          ctx.fillText(str, end - 5, -110) // 填充
         }
+      }
+    }
+  },
 
-        ctx.rect(end - 5, -50, 10, 5)
-
-        ctx.rect(end - 5, -100, 10, 5)
-
-        ctx.lineWidth = 1
-        ctx.strokeStyle = '#000'
-        ctx.stroke()
-
-        /* 绘制文本 */
-        ctx.beginPath()
-        // eslint-disable-next-line no-redeclare
-        var str = weight + 'KN'
-        /* 文本的属性：尺寸、字体、左右对齐方式、垂直对齐的方式 */
-        ctx.font = '12px Microsoft YaHei'
-        ctx.textAlign = 'center' // 对齐方式
-
-        ctx.fillText(str, end - 5, -60) // 填充
-
-        ctx.fillText(str, end - 5, -110) // 填充
+  watch: {
+    wheelList: {
+      deep: true,
+      handler () {
+        this.drawDistanceChart()
       }
     }
   }
@@ -273,7 +283,14 @@ export default {
 
       .asseee_chart_top {
         // flex-basis: 50%;
+        display: flex;
+        justify-content: center;
         height: 50%;
+
+        .asseee_chart_top_canvas {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       .asseee_chart_bottom {
