@@ -20,10 +20,10 @@
 
       <div class="chart" style="width: 40%;">
         <!-- echarts图 -->
-        <div class="stress_chart"></div>
+        <div v-if="false" class="stress_chart"></div>
 
         <!-- table表格 -->
-        <div class="stress_data">
+        <div v-if="false" class="stress_data">
           <el-table
             ref="tableList"
             :data="tableData"

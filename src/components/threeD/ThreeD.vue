@@ -18,13 +18,13 @@
           <img src="./threeDicon/sideView.png" alt="">
         </span>
         <!-- 旋转 -->
-        <span class="threed_icon_item">
+        <!-- <span class="threed_icon_item">
           <img src="./threeDicon/rotate.png" alt="">
-        </span>
+        </span> -->
         <!-- 平移 -->
-        <span class="threed_icon_item">
+        <!-- <span class="threed_icon_item">
           <img src="./threeDicon/pan.png" alt="">
-        </span>
+        </span> -->
       </div>
       <canvas id="webgl"></canvas>
   </div>
@@ -91,11 +91,11 @@ export default {
       ],
 
       // X轴旋转值
-      rotateX: 0,
+      rotateX: 15,
       // Y轴旋转值
       rotateY: 0,
       // Z轴旋转值
-      rotateZ: 0
+      rotateZ: 45
     }
   },
   methods: {

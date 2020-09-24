@@ -83,7 +83,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="/ZhShaoProjectInfo">基本信息</el-menu-item>
-              <el-menu-item index="/ZhShaoProjectImg">图片、视频</el-menu-item>
+              <!-- <el-menu-item index="/ZhShaoProjectImg">图片、视频</el-menu-item> -->
             </el-menu-item-group>
           </el-submenu>
 
@@ -150,7 +150,7 @@ export default {
   position: absolute;
   right: 20px;
   align-items: center;
-  background-color: black;
+  // background-color: black;
   font-size: 14px;
 
   .header_user_name {

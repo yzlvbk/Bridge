@@ -101,6 +101,9 @@
     border: none;
     background-color: rgb(62, 88, 119);
 }
+.el-input.is-disabled .el-input__inner {
+    background-color: rgb(62, 88, 119);
+}
 .el-select-dropdown {
     background-color: rgb(62, 88, 119);
     border: none;
