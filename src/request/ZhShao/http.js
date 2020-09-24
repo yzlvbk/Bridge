@@ -6,6 +6,11 @@ import { Message } from 'element-ui'
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 
+// 开发环境
+// const baseUrl = 'http://118.190.216.205:8005/bridgeWeb'
+// 生产环境
+const baseUrl = ''
+
 // 请求拦截
 axios.interceptors.request.use(config => {
   // 在request中显示进度条
@@ -27,7 +32,7 @@ export default function http (url, data = {}, type = 'GET') {
 
     // 1.执行异步ajax请求
     if (type === 'GET') {
-      promise = axios.get(url, {
+      promise = axios.get((baseUrl + url), {
         params: data // 指定请求参数
       })
     }
