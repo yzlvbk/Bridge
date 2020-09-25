@@ -7,9 +7,9 @@ import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 // 开发环境
-// const baseUrl = 'http://118.190.216.205:8005/bridgeWeb'
+const baseUrl = 'http://118.190.216.205:8005/bridgeWeb'
 // 生产环境
-const baseUrl = ''
+// const baseUrl = ''
 
 // 请求拦截
 axios.interceptors.request.use(config => {
@@ -38,7 +38,7 @@ export default function http (url, data = {}, type = 'GET') {
     }
 
     if (type === 'POST') {
-      promise = axios.post(url, data)
+      promise = axios.post((baseUrl + url), data)
     }
 
     promise.then(response => {

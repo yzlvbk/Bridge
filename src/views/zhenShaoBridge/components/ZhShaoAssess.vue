@@ -309,7 +309,7 @@ export default {
 
           /* 绘制文本 */
           ctx.beginPath()
-          const str = `${vehicleData.axies} Axies，${vehicleData.length} m，${vehicleData.weight} KN`
+          const str = `${vehicleData.axies} Axies，${vehicleData.length.toFixed(2)} m，${vehicleData.weight.toFixed(2)} KN`
           ctx.font = '12px Microsoft YaHei'
           ctx.textAlign = 'center' // 对齐方式
           ctx.fillStyle = '#eee' // 填充颜色

@@ -63,3 +63,9 @@ export const reqBridgeOneMeshDeform = (StartTime, EndTime) => http('/v10/bridgeO
 
 /* 桥梁系统1-应力 */
 export const reqBridgeOneMemberForce = () => http('/v10/bridgeOne/GetMemberForce', {}, 'GET')
+
+/* 桥梁系统1-获取日志 */
+export const reqBridgeOneGetWorkLog = () => http('/v10/bridgeOne/GetWorkLog', {}, 'GET')
+
+/* 桥梁系统1-上传日志 */
+export const reqBridgeOnePostWorkLog = (User, CreateTime, Content) => http('/v10/bridgeOne/PostWorkLog', { User, CreateTime, Content }, 'POST')

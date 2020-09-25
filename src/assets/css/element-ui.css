@@ -40,21 +40,29 @@
 }
 /* 表头背景颜色 */
 .el-table th {
-    background-color: rgba(42,49,58,0);
+    background-color: rgba(34, 75, 128, 0.24);
 }
-/* 表格偶数行背景颜色 */
+/* 表格选中行行背景颜色 */
 .el-table--striped .el-table__body tr.el-table__row--striped td {
-    background-color: rgba(42,49,58,0);
+    background-color: rgba(81, 145, 228, 0);
 }
-/* 奇数行背景颜色 */
+/* 全都背景颜色 */
 .el-table tr {
-    background-color: rgba(45,53,63,0);
+    background-color: rgb(40, 49, 59);
     border: none 
+}
+/* 偶数行背景色 */
+.el-table__row--striped {
+    background-color:var(--ContainBgColor) !important;
 }
 /* 表头底部边框线 */
 .el-table th.is-leaf {
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;
+}
+/* 表格warp */
+.el-table--border, .el-table--group {
+    border: 1px solid #626366;
 }
 /* 表体底部边框线 */
 .el-table--border::after, .el-table--group::after, .el-table::before {
@@ -63,10 +71,11 @@
 /* 表格底部边框 */
 .el-table td {
     border-bottom: 1px solid transparent;
+    /* border-right: 1px solid transparent; */
 }
 /* hover高亮颜色 */
 .el-table--enable-row-hover .el-table__body tr:hover>td {
-    background-color: #007491;
+    background-color: rgba(34, 75, 128, 0.24);
 }
 
 
@@ -101,6 +110,9 @@
     border: none;
     background-color: rgb(62, 88, 119);
 }
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 110px;
+}
 .el-input.is-disabled .el-input__inner {
     background-color: rgb(62, 88, 119);
 }
@@ -124,11 +136,23 @@
 .el-select-dropdown__item.selected {
     color: var(--LightTextColor);
 }
+/* el-input文本域 */
+.el-textarea__inner {
+  background-color: rgb(62, 88, 119);
+  color: #eee;
+  border: none;
+}
 
 
 /* 修改el-pagination样式 */
 .el-pagination.is-background .el-pager li:not(.disabled).active {
-  background-color: #034c6a;
+  background-color: var(--LightTextColor);
+}
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li   {
+    background-color: rgb(53, 62, 75);
+    color: #eee;
 }
 
 /* 修改级联下拉框过长 */
@@ -152,4 +176,21 @@
 .el-picker-panel__footer {
     background-color: rgb(24, 43, 65);
     border-top: none;
+}
+
+/* el-dialog弹出框 */
+.el-dialog {
+    background-color: #36404a;
+}
+.el-dialog__header {
+    padding: 20px 20px 0px;
+}
+.el-dialog__title {
+    line-height: 16px;
+    font-size: 18px;
+    color: #eee;
+}
+.el-dialog__body {
+  padding: 0px 20px;
+  color: #eee;
 }

@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/BridgeWebSite',
   devServer: {
     proxy: { // 配置跨域
       '/v10': {
