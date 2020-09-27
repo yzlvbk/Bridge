@@ -1,32 +1,32 @@
 <template>
   <div class="three_d">
-      <div class="threed_icon">
-        <!-- 斜视图 -->
-        <span class="threed_icon_item" @click="changeView(15, 0, 45)">
-          <img src="./threeDicon/obliqueView.png" alt="">
-        </span>
-        <!-- 正视图 -->
-        <span class="threed_icon_item" @click="changeView(0, 0, 0)">
-          <img src="./threeDicon/frontView.png" alt="">
-        </span>
-        <!-- 俯视图 -->
-        <span class="threed_icon_item" @click="changeView(90, 0, 0)">
-          <img src="./threeDicon/topView.png" alt="">
-        </span>
-        <!-- 侧视图 -->
-        <span class="threed_icon_item" @click="changeView(0, 0, 90)">
-          <img src="./threeDicon/sideView.png" alt="">
-        </span>
-        <!-- 旋转 -->
-        <!-- <span class="threed_icon_item">
-          <img src="./threeDicon/rotate.png" alt="">
-        </span> -->
-        <!-- 平移 -->
-        <!-- <span class="threed_icon_item">
-          <img src="./threeDicon/pan.png" alt="">
-        </span> -->
-      </div>
-      <canvas id="webgl"></canvas>
+    <div class="threed_icon">
+      <!-- 斜视图 -->
+      <span class="threed_icon_item" @click="changeView(15, 0, 45)">
+        <img src="./threeDicon/obliqueView.png" alt />
+      </span>
+      <!-- 正视图 -->
+      <span class="threed_icon_item" @click="changeView(20, 0, 0)">
+        <img src="./threeDicon/frontView.png" alt />
+      </span>
+      <!-- 俯视图 -->
+      <span class="threed_icon_item" @click="changeView(90, 0, 0)">
+        <img src="./threeDicon/topView.png" alt />
+      </span>
+      <!-- 侧视图 -->
+      <span class="threed_icon_item" @click="changeView(0, 0, 90)">
+        <img src="./threeDicon/sideView.png" alt />
+      </span>
+      <!-- 旋转 -->
+      <span class="threed_icon_item">
+        <img src="./threeDicon/rotate.png" alt />
+      </span>
+      <!-- 平移 -->
+      <span class="threed_icon_item">
+        <img src="./threeDicon/pan.png" alt />
+      </span>
+    </div>
+    <canvas id="webgl"></canvas>
   </div>
 </template>
 
@@ -105,6 +105,86 @@ export default {
       /* 创建场景对象scene */
       const scene = new THREE.Scene()
 
+      // 获取事件操作对象
+      function getSelsectOBj (mouse, raycaster, e) {
+        // 将html坐标系转化为webgl坐标系，并确定鼠标点击位置
+        mouse.x = e.offsetX / container.querySelector('canvas').clientWidth * 2 - 1
+
+        mouse.y = -(e.offsetY / container.querySelector('canvas').clientHeight * 2) + 1
+
+        // 以camera为z坐标，确定所点击物体的3D空间位置
+        raycaster.setFromCamera(mouse, camera)
+        // 确定所点击位置上的物体数量
+        const intersects = raycaster.intersectObjects(scene.children, true)
+        return intersects
+      }
+
+      var currentMesh
+      // 鼠标移入移出事件
+      var mouseMoveFuc = (e) => {
+        const raycaster = new THREE.Raycaster() // 光线投射，用于确定鼠标点击位置
+        const mouse = new THREE.Vector2() // 创建二维平面
+        const intersects = getSelsectOBj(mouse, raycaster, e)
+        if (intersects.length > 0) {
+          if (intersects[0].object.geometry.name) {
+            // 保存当前选中物体
+            currentMesh = intersects[0].object
+
+            // 选中变色
+            intersects[0].object.material = new THREE.MeshLambertMaterial({
+              color: 'lightgreen', // 三角面颜色
+              side: THREE.DoubleSide // 两面可见
+            })
+          } else if (currentMesh) {
+            resetMaterials()
+          }
+        } else if (currentMesh) {
+          resetMaterials()
+        }
+      }
+
+      // 重置传感器颜色
+      function resetMaterials () {
+        const name = currentMesh.geometry.name
+        let color = ''
+        if (name.startsWith('SR')) {
+          color = 'red'
+        } else if (name.startsWith('ZS')) {
+          color = 'blue'
+        }
+
+        currentMesh.material = new THREE.MeshLambertMaterial({
+          color, // 三角面颜色
+          side: THREE.DoubleSide // 两面可见
+        })
+        currentMesh = ''
+      }
+
+      // 鼠标点击事件
+      // var mouseDownFuc = async (e) => {
+      //   const raycaster = new THREE.Raycaster() // 光线投射，用于确定鼠标点击位置
+      //   const mouse = new THREE.Vector2() // 创建二维平面
+      //   const intersects = getSelsectOBj(mouse, raycaster, e)
+      //   if (intersects.length > 0) {
+      //     for (var i = 0; i < intersects.length; i++) {
+      //       if (intersects[i].object.material.name === 'yingbianji') {
+      //         // 发送请求获取信息
+      //         const ids = _this.threeDInfo.id
+      //         // 1 获取时序图
+      //         const { data } = await post(ometerTime, { ids })
+      //         // 存储时序图Echarts数据
+      //         this.firstEchartsDataX = data.times
+      //         this.firstEchartsDataYs = data // 需删除里面times属性
+
+      //         // 绘制echarts
+      //         this.$nextTick(function () {
+      //           this.drawFirstEcharts()
+      //         })
+      //       }
+      //     }
+      //   }
+      // }
+
       /* 创建组对象group */
       var group = new THREE.Group()
 
@@ -125,7 +205,7 @@ export default {
       group.rotateZ(this.rotateZ * Math.PI / 180) // 将组对象绕Z轴旋转
 
       // 斜视图 15, 0, 45
-      // 正视图 0, 0, 0
+      // 正视图 20, 0, 0
       // 侧视图 0, 0, 90
       // 俯视图 90, 0, 0
 
@@ -162,11 +242,11 @@ export default {
       var k = width / height // 窗口宽高比
       var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象s
-      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -10000, 10000)
-      // camera.position.set(0, -400, 0) // 设置相机位置 正视图
+      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -100000, 100000)
+      camera.position.set(0, -400, 0) // 设置相机位置 正视图
       // camera.position.set(0, 0, 100) // 设置相机位置 俯视图
-      camera.position.set(0, -400, 0) // 设置相机位置 俯视图
-      camera.lookAt(scene.position) // 设置相机方向(指向的场景对象)
+      // camera.position.set(-23000, -17600, 20600) // 设置相机位置 俯视图
+      camera.lookAt(scene.position)
       /**
      * 创建渲染器对象
      */
@@ -191,6 +271,10 @@ export default {
       // controls.enableRotate = true // 是否启用旋转
       // controls.enableZoom = false // 是否启用缩放
       // controls.enablePan = false // 是否启用平移
+
+      // 监听鼠标事件
+      container.addEventListener('mousemove', mouseMoveFuc)
+      // container.addEventListener('mousedown', mouseDownFuc)
     },
 
     // 绘制桥梁模型

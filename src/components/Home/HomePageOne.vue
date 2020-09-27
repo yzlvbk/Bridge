@@ -223,6 +223,7 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.querySelector('.main_middle_map'))
       var scatterData = this.scatterData
+      // 模拟scatter数据，点位不显示在地图中，charts中单个scatter没有鼠标效果
       const mockScatterData = [
         { value: [1.92, 44.37, 100] },
         { value: [13.92, 44.37, 100] },
@@ -234,7 +235,7 @@ export default {
         { value: [10.92, 44.37, 100] },
         { value: [8.92, 44.37, 100] },
         { value: [7.92, 44.37, 100] }]
-      console.log('111', scatterData)
+      // 根据评分动态添加scatter
       const series = []
       scatterData.forEach(item => {
         let color = ''
@@ -402,26 +403,11 @@ export default {
       })
 
       myChart.on('click', function (params) {
-        console.log(params)
         if (params.data.BridgeName === '桥1') {
           _this.$router.push('zhenShaoBridge')
         }
       })
-    },
-
-    // 鼠标移入标题
-    middleItemOver () {
-      this.activeColor = ['pink', '#eee']
-    },
-    // 鼠标移出标题
-    middleItemOut () {
-      this.activeColor = []
-    },
-    // 鼠标点击标题
-    middleItemClick (path) {
-      this.$router.push(path)
     }
-
   }
 }
 </script>

@@ -2,10 +2,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 
-// 导入Nprogress包对应的js和css
-import Nprogress from 'nprogress'
-import 'nprogress/nprogress.css'
-
 // 开发环境
 const baseUrl = 'http://118.190.216.205:8005/bridgeWeb'
 // 生产环境
@@ -13,15 +9,6 @@ const baseUrl = 'http://118.190.216.205:8005/bridgeWeb'
 
 // 请求拦截
 axios.interceptors.request.use(config => {
-  // 在request中显示进度条
-  Nprogress.start()
-  // 在最后必须 return config
-  return config
-})
-
-// 在response中隐藏进度条
-axios.interceptors.response.use(config => {
-  Nprogress.done()
   // 在最后必须 return config
   return config
 })

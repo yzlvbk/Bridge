@@ -51,7 +51,6 @@ export default {
   mounted () {
     // 获取初始化数据
     this.getInitData()
-    console.log('Home Two')
   },
 
   data () {
@@ -92,6 +91,7 @@ export default {
 
     // 绘制安全统计级别
     drawSafetyLevel () {
+      const _this = this
       // 不同等级不同颜色
       const colorArr = {
         safety: ['#67c23a', '#cccccc'],
@@ -273,6 +273,13 @@ export default {
       // 4.跟随屏幕自适应
       window.addEventListener('resize', function () {
         myChart.resize()
+      })
+
+      // 5.点击跳转
+      myChart.on('click', function (params) {
+        if (params.name === '桥1') {
+          _this.$router.push('zhenShaoBridge')
+        }
       })
     }
 

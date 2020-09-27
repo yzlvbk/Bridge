@@ -99,6 +99,7 @@ VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
+/* 路由导航守卫 */
 router.beforeEach((to, from, next) => {
   console.log(to, from)
   // 如果非登录页或首页，进行拦截

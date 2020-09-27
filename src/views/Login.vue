@@ -84,7 +84,7 @@ export default {
 }
 .title {
   margin: 10px 0;
-  color: rgb(114, 121, 130);
+  color: rgb(178, 180, 184);
   font-size: 16px;
 }
 .login_form {
@@ -97,7 +97,7 @@ export default {
 .login_form >>> .el-input__inner {
   background-color: rgb(53, 59, 71);
   border: 1px solid rgb(53, 59, 71);
-  color: rgb(114, 121, 130);
+  /* color: rgb(114, 121, 130); */
 }
 .login_btn {
   width: 100%;
