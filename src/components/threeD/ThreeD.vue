@@ -6,7 +6,7 @@
         <img src="./threeDicon/obliqueView.png" alt />
       </span>
       <!-- 正视图 -->
-      <span class="threed_icon_item" @click="changeView(20, 0, 0)">
+      <span class="threed_icon_item" @click="changeView(0, 0, 0)">
         <img src="./threeDicon/frontView.png" alt />
       </span>
       <!-- 俯视图 -->
@@ -95,15 +95,19 @@ export default {
       // Y轴旋转值
       rotateY: 0,
       // Z轴旋转值
-      rotateZ: 45
+      rotateZ: 45,
+
+      scene: '',
+      renderer: ''
     }
   },
   methods: {
     drawThreeD () {
+      const _this = this
       var container = document.querySelector('.three_d')
 
       /* 创建场景对象scene */
-      const scene = new THREE.Scene()
+      this.scene = new THREE.Scene()
 
       // 获取事件操作对象
       function getSelsectOBj (mouse, raycaster, e) {
@@ -115,7 +119,7 @@ export default {
         // 以camera为z坐标，确定所点击物体的3D空间位置
         raycaster.setFromCamera(mouse, camera)
         // 确定所点击位置上的物体数量
-        const intersects = raycaster.intersectObjects(scene.children, true)
+        const intersects = raycaster.intersectObjects(_this.scene.children, true)
         return intersects
       }
 
@@ -189,16 +193,16 @@ export default {
       var group = new THREE.Group()
 
       /* 绘制桥梁模型 */
-      const bridgeMesh = this.drawBridged(scene)
+      const bridgeMesh = this.drawBridged(_this.scene)
       group.add(bridgeMesh)
 
       /* 绘制传感器模型 */
       this.sensorNameList.forEach((item, index) => {
-        const mesh = this.drawSensor((index + 1), item, scene)
+        const mesh = this.drawSensor((index + 1), item, _this.scene)
         group.add(mesh)
       })
 
-      scene.add(group)
+      _this.scene.add(group)
 
       group.rotateX(this.rotateX * Math.PI / 180) // 将组对象绕Z轴旋转
       group.rotateY(this.rotateY * Math.PI / 180) // 将组对象绕Z轴旋转
@@ -217,11 +221,11 @@ export default {
       // 点光源
       var point = new THREE.PointLight(0xffffff)
       point.position.set(0, 800, -500) // 点光源位置
-      scene.add(point) // 点光源添加到场景中
+      _this.scene.add(point) // 点光源添加到场景中
 
       // 环境光
       var ambient = new THREE.AmbientLight(0xffffff, 0.3)
-      scene.add(ambient)
+      _this.scene.add(ambient)
       // 方向光
       var directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
       // 设置光源的方向：通过光源position属性和目标指向对象的position属性计算
@@ -229,7 +233,7 @@ export default {
       directionalLight.position.set(0, -2500, 1000)
       // 方向光指向对象，可以不设置，默认的位置是0,0,0
       directionalLight.target = bridgeMesh
-      scene.add(directionalLight)
+      _this.scene.add(directionalLight)
 
       // 辅助光源
       // var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
@@ -242,31 +246,31 @@ export default {
       var k = width / height // 窗口宽高比
       var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象s
-      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -100000, 100000)
+      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -10000, 10000)
       camera.position.set(0, -400, 0) // 设置相机位置 正视图
       // camera.position.set(0, 0, 100) // 设置相机位置 俯视图
       // camera.position.set(-23000, -17600, 20600) // 设置相机位置 俯视图
-      camera.lookAt(scene.position)
+      camera.lookAt(0, 0, 0)
       /**
      * 创建渲染器对象
      */
-      var renderer = new THREE.WebGLRenderer({
+      _this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
         canvas: container.querySelector('canvas')
       })
-      renderer.setSize(width, height)// 设置渲染区域尺寸
+      _this.renderer.setSize(width, height)// 设置渲染区域尺寸
       // renderer.setClearColor(0xb9d3ff, 1) // 设置背景颜色
 
       // 渲染函数
       function render () {
-        renderer.render(scene, camera) // 执行渲染操作
+        _this.renderer.render(_this.scene, camera) // 执行渲染操作
         requestAnimationFrame(render)
       }
       render()
       // 创建控件对象  相机对象camera作为参数   控件可以监听鼠标的变化，改变相机对象的属性
       // eslint-disable-next-line no-unused-vars
-      var controls = new OrbitControls(camera, renderer.domElement)
+      var controls = new OrbitControls(camera, _this.renderer.domElement)
       // controls.enabled = false // 控制器是否被启用
       // controls.enableRotate = true // 是否启用旋转
       // controls.enableZoom = false // 是否启用缩放
@@ -364,7 +368,13 @@ export default {
       this.rotateX = x
       this.rotateY = y
       this.rotateZ = z
-      this.drawThreeD()
+      this.$nextTick(() => {
+        if (this.scene && this.renderer) {
+          this.scene.remove()
+          this.renderer.dispose()
+          this.drawThreeD()
+        }
+      })
     }
   }
 
