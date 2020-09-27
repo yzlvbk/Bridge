@@ -37,7 +37,6 @@
           </vue-seamless-scroll>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -52,6 +51,7 @@ export default {
   mounted () {
     // 获取初始化数据
     this.getInitData()
+    console.log('Home Two')
   },
 
   data () {
@@ -86,7 +86,6 @@ export default {
     async getInitData () {
       const data = await reqBridgeSafetyLevel() // 桥梁安全等级
       this.safetyLevelList = data.data
-
       // 绘制echarts
       this.drawSafetyLevel()
     },
@@ -326,9 +325,16 @@ export default {
       flex-direction: column;
       flex-basis: 80%;
       margin-right: 20px;
-      background: linear-gradient(to left, #003BCF, #003BCF) left top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left top no-repeat, linear-gradient(to left, #003BCF, #003BCF) right top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) right top no-repeat, linear-gradient(to left, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat;
+      background: linear-gradient(to left, #003bcf, #003bcf) left top no-repeat,
+        linear-gradient(to bottom, #003bcf, #003bcf) left top no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) right top no-repeat,
+        linear-gradient(to bottom, #003bcf, #003bcf) right top no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) left bottom no-repeat,
+        linear-gradient(to bottom, #003bcf, #003bcf) left bottom no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) right bottom no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) right bottom no-repeat;
       background-size: 2px 10px, 10px 2px, 2px 10px, 10px 2px;
-      background-color: #0B0F2A;
+      background-color: #0b0f2a;
 
       .homeTwo_safety_chart {
         flex-basis: 60%;
@@ -380,7 +386,6 @@ export default {
         }
       }
     }
-
   }
 }
 </style>

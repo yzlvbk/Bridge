@@ -66,17 +66,20 @@ import {
   reqAllBridgeNotice
 } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  created () {
+    // 获取桥梁轮播信息，由于computed中需要依赖，所以放于created，先执行
+  },
+  async mounted () {
     // 获取天气数据
     this.getWeatherData()
 
-    // 获取桥梁轮播信息、所有桥梁信息
-    this.getAllBridgeNotices()
+    // 所有桥梁信息
+    await this.getAllBridgeNotices()
     this.getAllBridgeInfo()
 
     // 初始化郑州地图
     this.$nextTick(function () {
-      // this.drawZhengZhouMap()
+      this.drawZhengZhouMap()
     })
   },
 
@@ -142,10 +145,16 @@ export default {
     // 3D地图scatter数据
     scatterData () {
       const config = []
-      console.log(this.allBridgeInfo)
+      console.log('allBridgeInfo', this.allBridgeInfo)
+      const allBridgeNoticesData = this.allBridgeNoticesData
+
       this.allBridgeInfo.forEach(item => {
+        // 查询轮播列表中桥梁的评分
+        const bridge = allBridgeNoticesData.filter(obj => obj.BridgeName === item.BridgeName)
+        // 拼接经纬度
         const value = [item.Longitude, item.Latitude, 100]
         item.value = value
+        item.HealthScore = bridge[0].HealthScore
         config.push(item)
       })
       return config
@@ -221,6 +230,7 @@ export default {
     async getAllBridgeNotices () {
       const data = await reqAllBridgeNotice()
       this.allBridgeNoticesData = data.data
+      console.log('allBridgeNoticesData', this.allBridgeNoticesData)
     },
 
     // 绘制3D地图
@@ -229,7 +239,63 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.querySelector('.main_middle_map'))
       var scatterData = this.scatterData
+      const mockScatterData = [
+        { value: [1.92, 44.37, 100] },
+        { value: [13.92, 44.37, 100] },
+        { value: [12.92, 44.37, 100] },
+        { value: [3.92, 44.37, 100] },
+        { value: [0.92, 44.37, 100] },
+        { value: [1.92, 44.37, 100] },
+        { value: [9.92, 44.37, 100] },
+        { value: [10.92, 44.37, 100] },
+        { value: [8.92, 44.37, 100] },
+        { value: [7.92, 44.37, 100] }]
       console.log('111', scatterData)
+      const series = []
+      scatterData.forEach(item => {
+        let color = ''
+        if (item.HealthScore < 60) {
+          color = '#f56c6c'
+        } else if (item.HealthScore > 80) {
+          color = '#67c23a'
+        } else {
+          color = '#e6a23c'
+        }
+        series.push({
+          type: 'scatter3D',
+          coordinateSystem: 'geo3D',
+          data: [item, ...mockScatterData],
+          symbol: 'pin',
+          symbolSize: 30,
+          itemStyle: {
+            color,
+            borderColor: '#fff',
+            borderWidth: 1
+          },
+          label: {
+            show: true,
+            formatter: function (params) {
+              if (params.data) {
+                return params.data.BridgeName
+              } else {
+                return ''
+              }
+            },
+            position: 'top',
+            textStyle: {
+              color: '#000',
+              backgroundColor: '#fff'
+            }
+          },
+          emphasis: {
+            itemStyle: {
+              color: '#eee',
+              borderColor: '#fff',
+              borderWidth: 1
+            }
+          }
+        })
+      })
       fetch('json/zhengzhou.json').then(response => response.json()).then(res => {
         // 注册地图名字和数据
         _this.$echarts.registerMap('zhengzhou', res)
@@ -243,10 +309,11 @@ export default {
             trigger: 'item',
             formatter: function (params) {
               return '编号：' + params.data.BridgeCode + '<br>' +
-              '类型：' + params.data.BridgeType + '<br>' +
-              '材质：' + params.data.MainMaterial + '<br>' +
-              '建筑年限：' + params.data.BuildYear + '<br>' +
-              '载重：' + params.data.LoadWeight
+                '类型：' + params.data.BridgeType + '<br>' +
+                '材质：' + params.data.MainMaterial + '<br>' +
+                '建筑年限：' + params.data.BuildYear + '<br>' +
+                '载重：' + params.data.LoadWeight + '<br>' +
+                '评分：' + params.data.HealthScore
             }
           },
           geo3D: {
@@ -340,38 +407,7 @@ export default {
             }
           },
 
-          series: [
-            {
-              type: 'scatter3D',
-              coordinateSystem: 'geo3D',
-              data: scatterData,
-              symbol: 'pin',
-              symbolSize: 30,
-              itemStyle: {
-                color: 'red',
-                borderColor: '#fff',
-                borderWidth: 1
-              },
-              label: {
-                show: true,
-                formatter: function (params) {
-                  return params.data.BridgeName
-                },
-                position: 'top',
-                textStyle: {
-                  color: '#000',
-                  backgroundColor: '#fff'
-                }
-              },
-              emphasis: {
-                itemStyle: {
-                  color: 'pink',
-                  borderColor: '#fff',
-                  borderWidth: 1
-                }
-              }
-            }
-          ]
+          series
         }
         myChart.setOption(option)
 
@@ -434,15 +470,15 @@ export default {
       z-index: 100;
     }
 
-    .header_weather_warp{
+    .header_weather_warp {
       .header_weather {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      right: 10px;
-      top: 40px;
-      height: 60px;
-      text-align: left;
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 10px;
+        top: 40px;
+        height: 60px;
+        text-align: left;
 
         .iconfont {
           font-size: 40px;
@@ -460,7 +496,6 @@ export default {
         }
       }
     }
-
   }
 
   .main {
@@ -486,16 +521,33 @@ export default {
     .main_middle_item {
       cursor: pointer;
     }
-
   }
-  .icontianqi-shachenbao { color: rgb(131,210,248); }
-  .icontianqi-zhongyu { color: rgb(20, 84, 122); }
-  .icontianqi-wu { color: rgb(218, 223, 227); }
-  .icontianqi-qing { color: rgb(254, 202, 76);}
-  .icontianqi-bingbao { color: rgb(218, 223, 227); }
-  .icontianqi-xiaoxue { color: rgb(218, 223, 227); }
-  .icontianqi-leidiantianqi { color: rgb(125, 125, 137); }
-  .icontianqi-yin { color: rgb(20, 84, 122); }
-  .icontianqi-duoyun { color: rgb(218, 223, 227);}
+  .icontianqi-shachenbao {
+    color: rgb(131, 210, 248);
+  }
+  .icontianqi-zhongyu {
+    color: rgb(20, 84, 122);
+  }
+  .icontianqi-wu {
+    color: rgb(218, 223, 227);
+  }
+  .icontianqi-qing {
+    color: rgb(254, 202, 76);
+  }
+  .icontianqi-bingbao {
+    color: rgb(218, 223, 227);
+  }
+  .icontianqi-xiaoxue {
+    color: rgb(218, 223, 227);
+  }
+  .icontianqi-leidiantianqi {
+    color: rgb(125, 125, 137);
+  }
+  .icontianqi-yin {
+    color: rgb(20, 84, 122);
+  }
+  .icontianqi-duoyun {
+    color: rgb(218, 223, 227);
+  }
 }
 </style>

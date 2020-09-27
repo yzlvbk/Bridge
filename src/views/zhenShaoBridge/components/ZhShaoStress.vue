@@ -9,9 +9,8 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-
       <div class="three_d_model" style="width: 60%;">
-        <Stress/>
+        <Stress />
         <!-- <canvas class="bridge_stress" :width="canvasWidth" :height="canvasHeight"></canvas> -->
       </div>
 
@@ -31,31 +30,15 @@
             height="100%"
             style="width: 100%; border: none;"
             :row-style="{ height: '60px' }"
-            :row-class-name="tableRowClassName">
-            <el-table-column
-              prop="id"
-              align="center"
-              label="编号">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              align="center"
-              label="名称">
-            </el-table-column>
-            <el-table-column
-              prop="material"
-              align="center"
-              label="主题材质">
-            </el-table-column>
-            <el-table-column
-              prop="level"
-              align="center"
-              label="安全级别">
-            </el-table-column>
+            :row-class-name="tableRowClassName"
+          >
+            <el-table-column prop="id" align="center" label="编号"></el-table-column>
+            <el-table-column prop="name" align="center" label="名称"></el-table-column>
+            <el-table-column prop="material" align="center" label="主题材质"></el-table-column>
+            <el-table-column prop="level" align="center" label="安全级别"></el-table-column>
           </el-table>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -75,10 +58,10 @@ export default {
     const div = document.querySelector('.vsplitter')
     div.addEventListener('mousedown', this.mouseResize)
 
-    /* 渲染3D模型 */
-    this.$nextTick(() => {
-      this.drawChart()
-    })
+    /* 渲染chart */
+    // this.$nextTick(() => {
+    //   this.drawChart()
+    // })
   },
   data () {
     return {
@@ -426,18 +409,18 @@ export default {
       flex-direction: column;
 
       .stress_chart {
-      position: relative;
-      flex-basis: 50%;
-      border-bottom: 5px solid var(--BgColor);
-      overflow: hidden;
+        position: relative;
+        flex-basis: 50%;
+        border-bottom: 5px solid var(--BgColor);
+        overflow: hidden;
       }
 
       .stress_data {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      flex-basis: 50%;
-      border-top: 5px solid var(--BgColor);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        flex-basis: 50%;
+        border-top: 5px solid var(--BgColor);
       }
     }
   }
@@ -452,6 +435,6 @@ export default {
 }
 /* 修改字体颜色 */
 .stress_data .el-table .success-row {
-    color: red !important;
+  color: red !important;
 }
 </style>

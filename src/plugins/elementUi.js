@@ -22,7 +22,9 @@ import {
   Cascader,
   DatePicker,
   Input,
-  Dialog
+  Dialog,
+  Form,
+  FormItem
 } from 'element-ui'
 
 Vue.use(Button)
@@ -46,5 +48,7 @@ Vue.use(Cascader)
 Vue.use(DatePicker)
 Vue.use(Input)
 Vue.use(Dialog)
+Vue.use(Form)
+Vue.use(FormItem)
 
 Vue.prototype.$message = Message

@@ -5,7 +5,7 @@
       <el-breadcrumb-item>郑少高速桥</el-breadcrumb-item>
       <el-breadcrumb-item>工程概况</el-breadcrumb-item>
       <el-breadcrumb-item>基本信息</el-breadcrumb-item>
-    </el-breadcrumb> -->
+    </el-breadcrumb>-->
 
     <!-- 内容区域 -->
     <div class="contain">
@@ -17,8 +17,8 @@
               v-for="item in options"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"
+            ></el-option>
           </el-select>
         </div>
 
@@ -31,42 +31,15 @@
             height="100%"
             style="width: 100%; border: none;"
             :row-style="{ height: '60px' }"
-            :row-class-name="tableRowClassName">
-            <el-table-column
-              prop="Type"
-              align="center"
-              label="传感器类型">
-            </el-table-column>
-            <el-table-column
-              prop="Id"
-              align="center"
-              label="编号">
-            </el-table-column>
-            <el-table-column
-              prop="Name"
-              align="center"
-              label="构件名">
-            </el-table-column>
-            <el-table-column
-              prop="X"
-              align="center"
-              label="X">
-            </el-table-column>
-            <el-table-column
-              prop="Y"
-              align="center"
-              label="Y">
-            </el-table-column>
-            <el-table-column
-              prop="Z"
-              align="center"
-              label="Z">
-            </el-table-column>
-            <el-table-column
-              prop="Description"
-              align="center"
-              label="状态">
-            </el-table-column>
+            :row-class-name="tableRowClassName"
+          >
+            <el-table-column prop="Type" align="center" label="传感器类型"></el-table-column>
+            <el-table-column prop="Id" align="center" label="编号"></el-table-column>
+            <el-table-column prop="Name" align="center" label="构件名"></el-table-column>
+            <el-table-column prop="X" align="center" label="X"></el-table-column>
+            <el-table-column prop="Y" align="center" label="Y"></el-table-column>
+            <el-table-column prop="Z" align="center" label="Z"></el-table-column>
+            <el-table-column prop="Description" align="center" label="状态"></el-table-column>
           </el-table>
         </div>
       </div>
@@ -163,17 +136,26 @@ export default {
       }
     }
   }
-}
 
-/* 设置el-table高度响应式 */
-.sernor_info .el-table {
-  position: absolute;
-  top: 0px;
-  bottom: 0;
-  overflow-y: scroll !important;
-}
-/* 修改字体颜色 */
-.sernor_info .el-table .success-row {
+  /* 修改input长度 */
+  .el-input__inner {
+    width: 120px;
+  }
+  .el-date-editor.el-input,
+  .el-date-editor.el-input__inner {
+    width: 120px;
+  }
+
+  /* 设置el-table高度响应式 */
+  .sernor_info .el-table {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    overflow-y: scroll !important;
+  }
+  /* 修改字体颜色 */
+  .sernor_info .el-table .success-row {
     color: red !important;
+  }
 }
 </style>
