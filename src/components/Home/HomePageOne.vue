@@ -40,19 +40,6 @@
       <div class="main_middle">
         <div class="main_middle_title">
           <!-- 子系统标题 -->
-          <div
-            class="main_middle_item_warp"
-            v-if="false"
-            @mouseover="middleItemOver"
-            @mouseout="middleItemOut"
-            @click="middleItemClick('zhenShaoBridge')"
-          >
-            <dv-decoration-11
-              class="main_middle_item"
-              style="width:200px;height:60px;"
-              :color="activeColor"
-            >郑州桥监测系统</dv-decoration-11>
-          </div>
         </div>
         <div class="main_middle_map"></div>
       </div>
@@ -66,14 +53,11 @@ import {
   reqAllBridgeNotice
 } from '@/request/ZhShao/api.js'
 export default {
-  created () {
-    // 获取桥梁轮播信息，由于computed中需要依赖，所以放于created，先执行
-  },
   async mounted () {
     // 获取天气数据
     this.getWeatherData()
 
-    // 所有桥梁信息
+    // 所有桥梁轮播信息,所有桥梁信息
     await this.getAllBridgeNotices()
     this.getAllBridgeInfo()
 

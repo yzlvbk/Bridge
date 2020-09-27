@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+Vue.use(VueRouter)
 const Home = () => import(/* webpackChunkName: "Home" */ '../views/Home.vue')
 const Login = () => import(/* webpackChunkName: "Login" */ '../views/Login.vue')
 const ZhShaoBridge = () =>
@@ -59,8 +60,6 @@ const ZhShaoProjectImg = () =>
     /* webpackChunkName: "ZhShaoProjectImg" */ '../views/zhenShaoBridge/components/ZhShaoProjectImg.vue'
   )
 
-Vue.use(VueRouter)
-
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/login', name: 'Login', component: Login },
@@ -94,6 +93,11 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 router.beforeEach((to, from, next) => {
   console.log(to, from)
