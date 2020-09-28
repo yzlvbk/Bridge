@@ -373,7 +373,7 @@ export default {
       var width = window.innerWidth // 窗口宽度
       var height = window.innerHeight // 窗口高度
       var k = width / height // 窗口宽高比
-      var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
+      var s = 5000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象
       var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -100000, 100000)
       camera.position.set(0, -4000, 0) // 设置相机位置
@@ -422,9 +422,10 @@ export default {
 
     // 函数防抖
     debounce (sliderValue) {
-      if (this.timer !== null) clearTimeout(this.timer)
-      this.timer = setTimeout(function () {
-        this.getMeshDeformData(sliderValue)
+      const _this = this
+      if (_this.timer !== null) clearTimeout(_this.timer)
+      _this.timer = setTimeout(function () {
+        _this.getMeshDeformData(sliderValue)
       }, 500)
     }
   },

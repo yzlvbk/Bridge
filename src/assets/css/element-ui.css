@@ -173,6 +173,9 @@
   background-color: rgb(24, 43, 65);
   border-top: none;
 }
+.el-input__icon {
+  line-height: 32px;
+}
 
 /* el-dialog弹出框 */
 .el-dialog {

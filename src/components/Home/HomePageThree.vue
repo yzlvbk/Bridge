@@ -37,7 +37,6 @@
           </vue-seamless-scroll>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -47,10 +46,11 @@
 import vueSeamlessScroll from 'vue-seamless-scroll'
 import {
   reqBridgeSafetyLevel,
-  reqAllBridgeSafetyScore
+  reqAllBridgeSafetyScore,
+  reqBridgeOneVehicalCount
 } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  async mounted () {
     // 获取初始化数据
     this.getInitData()
   },
@@ -60,7 +60,10 @@ export default {
       // 桥梁安全等级
       safetyLevelList: [],
       // 桥梁安全评分
-      SafetyScoreList: []
+      SafetyScoreList: [],
+
+      // 车辆统计
+      carNumStatistics: []
     }
   },
   computed: {
@@ -87,10 +90,13 @@ export default {
     getInitData () {
       const promise1 = reqBridgeSafetyLevel() // 桥梁安全等级
       const promise2 = reqAllBridgeSafetyScore() // 桥梁安全评分
+      const promise3 = reqBridgeOneVehicalCount('2020-08-16 00:00:00', '2020-08-17 00:00:00')
 
-      Promise.all([promise1, promise2]).then((res) => {
+      Promise.all([promise1, promise2, promise3]).then((res) => {
         this.safetyLevelList = res[0].data
         this.SafetyScoreList = res[1].data
+        this.carNumStatistics = res[2].data
+        console.log(this.carNumStatistics)
         // 绘制echarts
         this.drawVehicleNum()
       })
@@ -98,6 +104,7 @@ export default {
 
     // 绘制车辆统计图
     drawVehicleNum () {
+      const seriseData = this.carNumStatistics
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.homeThree_vehicle_chart'))
 
@@ -142,17 +149,7 @@ export default {
             // 如果radius是百分比则必须加引号
             radius: ['10%', '70%'],
             center: ['50%', '50%'],
-            roseType: 'radius',
-            data: [
-              { value: 20, name: '卡车' },
-              { value: 26, name: '轿车' },
-              { value: 24, name: '挂车' },
-              { value: 25, name: '拖车' },
-              { value: 20, name: '农用车' },
-              { value: 25, name: '大卡车' },
-              { value: 30, name: '出租车' },
-              { value: 42, name: '摩托车' }
-            ],
+            data: seriseData,
             // 修饰饼形图文字相关的样式 label对象
             label: {
               fontSize: 13
@@ -235,9 +232,16 @@ export default {
       flex-direction: column;
       flex-basis: 80%;
       margin-left: 20px;
-      background: linear-gradient(to left, #003BCF, #003BCF) left top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left top no-repeat, linear-gradient(to left, #003BCF, #003BCF) right top no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) right top no-repeat, linear-gradient(to left, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to bottom, #003BCF, #003BCF) left bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat, linear-gradient(to left, #003BCF, #003BCF) right bottom no-repeat;
+      background: linear-gradient(to left, #003bcf, #003bcf) left top no-repeat,
+        linear-gradient(to bottom, #003bcf, #003bcf) left top no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) right top no-repeat,
+        linear-gradient(to bottom, #003bcf, #003bcf) right top no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) left bottom no-repeat,
+        linear-gradient(to bottom, #003bcf, #003bcf) left bottom no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) right bottom no-repeat,
+        linear-gradient(to left, #003bcf, #003bcf) right bottom no-repeat;
       background-size: 2px 10px, 10px 2px, 2px 10px, 10px 2px;
-      background-color: #0B0F2A;
+      background-color: #0b0f2a;
 
       .homeThree_vehicle_chart {
         flex-basis: 60%;

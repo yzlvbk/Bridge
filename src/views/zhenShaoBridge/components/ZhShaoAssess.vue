@@ -16,7 +16,12 @@
           <!-- 添加轴距/轴重 -->
           <div class="asseee_chart_bottom_add">
             <div class="asseee_chart_bottom_add_item">
-              <el-input type="number" v-model.trim="distanceValue" :disabled="edit.index === 0" placeholder="请输入轴距"></el-input>
+              <el-input
+                type="number"
+                v-model.trim="distanceValue"
+                :disabled="edit.index === 0"
+                placeholder="请输入轴距"
+              ></el-input>
             </div>
             <div class="asseee_chart_bottom_add_item">
               <el-input type="number" v-model.trim="weightValue" placeholder="请输入轴重"></el-input>
@@ -30,35 +35,41 @@
           <!-- 轴距/轴重表格 -->
           <div class="asseee_chart_bottom_table_warp">
             <table class="asseee_chart_bottom_table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>轴距(m)</th>
-                <th>轴重(KN)</th>
-                <th>状态</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in wheelList" :key="index">
-                <td>{{index + 1}}</td>
-                <td>{{item.distance}}</td>
-                <td>{{item.weight}}</td>
-                <td>
-                  <el-button size="mini" type="info" @click="editWheelItem(index)">修改</el-button>
-                  <el-button v-if="index !== 0" size="mini" type="warning" @click="deleteWheelItem(index)">删除</el-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>轴距(m)</th>
+                  <th>轴重(KN)</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in wheelList" :key="index">
+                  <td>{{index + 1}}</td>
+                  <td>{{item.distance}}</td>
+                  <td>{{item.weight}}</td>
+                  <td>
+                    <el-button size="mini" type="info" @click="editWheelItem(index)">修改</el-button>
+                    <el-button
+                      v-if="index !== 0"
+                      size="mini"
+                      type="warning"
+                      @click="deleteWheelItem(index)"
+                    >删除</el-button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-
         </div>
       </div>
 
       <!-- 空隙模块 -- 控制模块拖动 -->
       <div class="vsplitter" ref="vsplitter"></div>
 
-      <div class="assess_result" style="width: 40%;"></div>
+      <div class="assess_result" style="width: 40%;">
+        <el-button type="primary">车载评估</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -331,7 +342,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../../assets/css/reset.css";
+@import '../../../assets/css/reset.css';
 .assess {
   height: 100%;
 
@@ -415,6 +426,12 @@ export default {
       }
     }
 
+    .assess_result {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .vsplitter {
       height: calc(100% - 110px);
       width: 14px;
@@ -424,7 +441,12 @@ export default {
 }
 
 // 去掉input type=number的 + -
-input[type='number']{-moz-appearance:textfield;}
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;margin: 0;}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>

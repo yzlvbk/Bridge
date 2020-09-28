@@ -25,7 +25,8 @@ import {
   Dialog,
   Form,
   FormItem,
-  Slider
+  Slider,
+  Loading
 } from 'element-ui'
 
 Vue.use(Button)
@@ -54,3 +55,4 @@ Vue.use(FormItem)
 Vue.use(Slider)
 
 Vue.prototype.$message = Message
+Vue.prototype.$loading = Loading

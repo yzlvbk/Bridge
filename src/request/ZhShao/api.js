@@ -12,6 +12,9 @@ export const reqBridgeSafetyLevel = () => http('/v10/summary/GetAllBridgeSafetyL
 /* 系统首页获取桥梁安全评分 */
 export const reqAllBridgeSafetyScore = () => http('/v10/summary/GetAllBridgeSafetyScore', {}, 'GET')
 
+/* 系统首页获取桥1车辆统计 */
+export const reqBridgeOneVehicalCount = (startTime, endTime) => http('/v10/bridgeOne/GetVehicalCount', { startTime, endTime }, 'GET')
+
 /* 郑少高速跨线桥 */
 /* 桥梁系统1-3D数据 */
 export const reqBridgeOne3D = () => http('/v10/bridgeOne/Get3D', {}, 'GET')
@@ -69,3 +72,6 @@ export const reqBridgeOneGetWorkLog = () => http('/v10/bridgeOne/GetWorkLog', {}
 
 /* 桥梁系统1-上传日志 */
 export const reqBridgeOnePostWorkLog = (User, CreateTime, Content) => http('/v10/bridgeOne/PostWorkLog', { User, CreateTime, Content }, 'POST')
+
+/* 桥梁系统1-获取报表 */
+export const reqBridgeOneGetReport = (type, startTime, endTime) => http('/v10/bridgeOne/GetReport', { type, startTime, endTime }, 'GET')

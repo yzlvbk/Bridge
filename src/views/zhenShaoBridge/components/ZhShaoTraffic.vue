@@ -73,14 +73,6 @@ export default {
         }
       },
 
-      // '/img/img4.9191ad80.jpg',
-      //   '/img/img5.2fcd2559.jpg',
-      //   '/img/img6.454310f3.jpg',
-      //   '/img/img7.b0f7a3ff.jpg',
-      //   '/img/img8.81665a87.jpg',
-      //   '/img/img9.790795ce.jpg',
-      //   '/img/img10.f9ae28a4.jpg'
-
       imgList: [], // 照片数组
 
       currentImg: '', // 当前展示的照片
@@ -123,11 +115,6 @@ export default {
 
     handle (img) {
       this.currentImg = img
-    },
-
-    addImg () {
-      this.imgList.push('image/img4.jpg')
-      this.currentImg = 'image/img4.jpg'
     }
   },
   components: {

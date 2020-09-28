@@ -18,16 +18,16 @@
       <el-aside :width="isCollapse ? '64px' : '210px'">
         <!-- 折叠按钮 -->
         <div class="collapse" @click="isCollapse = !isCollapse">| | |</div>
-        <!-- 导航菜单栏 -->
+        <!-- 导航菜单栏 rgba(14,27,43,1)-->
         <el-menu
-        :default-active="activePath"
-        background-color="rgba(14,27,43,1)"
-        text-color="#eee"
-        router
-        :collapse="isCollapse"
-        :collapse-transition="false"
-        :unique-opened="true"
-        active-text-color=rgb(58,255,251)
+          :default-active="activePath"
+          background-color="rgba(14,27,43,1)"
+          text-color="#eee"
+          router
+          :collapse="isCollapse"
+          :collapse-transition="false"
+          :unique-opened="true"
+          active-text-color="rgb(58,255,251)"
         >
           <el-menu-item index="/ZhShaoMonitor">
             <i class="el-icon-message-solid"></i>
@@ -86,8 +86,12 @@
               <!-- <el-menu-item index="/ZhShaoProjectImg">图片、视频</el-menu-item> -->
             </el-menu-item-group>
           </el-submenu>
-
         </el-menu>
+
+        <div class="bottom_logo">
+          <img src="../../assets/image/nav-logo.png" style="height:40px; width: 40px" alt />
+          <a class="bottom_logo_text">仕达得尔智能科技</a>
+        </div>
       </el-aside>
 
       <!-- 主题内容 -->
@@ -100,7 +104,7 @@
         <!-- <footer class="footer_logo">
           <img class="footer_logo_img" src="../../assets/LOGO.svg" alt="">
           <a href="javascript:;" class="footer_title">仕达得尔智能科技</a>
-        </footer> -->
+        </footer>-->
       </el-main>
     </el-container>
   </div>
@@ -158,22 +162,41 @@ export default {
   }
 }
 
-.collapse {
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  font-size: 15px;
-  background-color:rgba(14,27,43,1);
-  cursor: pointer;
+.el-aside {
+  height: calc(100% - 65px);
 
-  &:hover {
-    color: rgb(15,200,224);
+  .collapse {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 15px;
+    background-color: rgba(14, 27, 43, 1);
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(15, 200, 224);
+    }
+  }
+
+  .el-menu {
+    height: calc(100% - 30px - 40px);
+  }
+
+  .bottom_logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    margin-left: 15px;
+
+    .bottom_logo_text {
+      margin-left: 9px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
   }
 }
 
-.el-menu {
-  height: calc(100% - 30px);
-}
 .el-container {
   height: 100%;
 }
