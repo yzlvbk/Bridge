@@ -10,6 +10,29 @@
     <!-- 内容区域 -->
     <div class="contain">
       <div class="three_d_model" style="width: 60%;">
+        <!-- 颜色差值区域 -->
+        <div class="three_d_model_color" v-if="true">
+          <span class="three_d_model_color_item">2</span>
+          <span class="three_d_model_color_item">40</span>
+          <span class="three_d_model_color_item">80</span>
+          <span class="three_d_model_color_item">120</span>
+          <span class="three_d_model_color_item">160</span>
+          <span class="three_d_model_color_item">200</span>
+          <span class="three_d_model_color_item">240</span>
+          <span class="three_d_model_color_item">280</span>
+          <span class="three_d_model_color_item">&gt;280</span>
+        </div>
+        <!--
+          style="background-color: #9B30FF"
+style="background-color: #AB82FF"
+style="background-color: #8a2be2"
+style="background-color: #ff00ff"
+style="background-color: #33FF00"
+style="background-color: #8b008b"
+style="background-color: #3366FF"
+style="background-color: #FFFF00"
+style="background-color: #FF3333"
+        -->
         <Stress />
         <!-- <canvas class="bridge_stress" :width="canvasWidth" :height="canvasHeight"></canvas> -->
       </div>
@@ -393,9 +416,32 @@ export default {
     }
 
     .three_d_model {
+      position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .three_d_model_color {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        left: 20px;
+        background-image: linear-gradient(
+          #ff0000,
+          #d8e703,
+          #03e729,
+          #03e7dc,
+          #6200ff
+        );
+
+        .three_d_model_color_item {
+          width: 40px;
+          height: 20px;
+          // border: 1px solid #fff;
+          line-height: 20px;
+          text-align: center;
+        }
+      }
     }
 
     .vsplitter {

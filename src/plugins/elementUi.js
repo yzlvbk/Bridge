@@ -24,7 +24,8 @@ import {
   Input,
   Dialog,
   Form,
-  FormItem
+  FormItem,
+  Slider
 } from 'element-ui'
 
 Vue.use(Button)
@@ -50,5 +51,6 @@ Vue.use(Input)
 Vue.use(Dialog)
 Vue.use(Form)
 Vue.use(FormItem)
+Vue.use(Slider)
 
 Vue.prototype.$message = Message

@@ -555,7 +555,7 @@ export default {
       var width = window.innerWidth // 窗口宽度
       var height = window.innerHeight // 窗口高度
       var k = width / height // 窗口宽高比
-      var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
+      var s = 5000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象
       var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -100000, 100000)
       camera.position.set(0, -4000, 0) // 设置相机位置
@@ -631,23 +631,23 @@ export default {
       console.log(stress)
       let color
       if (stress < 2) {
-        color = '#ff7f50'
+        color = 'rgb(240,27,16)'
       } else if (stress < 40) {
-        color = '#ff6347'
+        color = 'rgb(221,133,20)'
       } else if (stress < 80) {
-        color = '#ff1493'
+        color = 'rgb(72,231,25)'
       } else if (stress < 120) {
-        color = '#8b008b'
+        color = 'rgb(37,232,32)'
       } else if (stress < 160) {
-        color = '#4b0082'
+        color = 'rgb(41,230,109)'
       } else if (stress < 200) {
-        color = '#ff00ff'
+        color = 'rgb(46,229,168)'
       } else if (stress < 240) {
-        color = '#8a2be2'
+        color = 'rgb(46,188,219)'
       } else if (stress < 280) {
-        color = '#8b008b'
+        color = 'rgb(43,145,228)'
       } else {
-        color = '#4b0082'
+        color = 'rgb(61,27,248)'
       }
       // 材质对象
       var material = new THREE.MeshPhongMaterial({

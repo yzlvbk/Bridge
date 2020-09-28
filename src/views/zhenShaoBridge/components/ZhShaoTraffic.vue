@@ -8,33 +8,27 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-
       <div class="three_d_model" style="width: 60%;">
         <!-- <button @click="addImg">添加照片</button> -->
         <div class="showImg">
-          <img :src="currentImg" width="500px" heigth="500px">
+          <img :src="currentImg" width="500px" heigth="500px" />
         </div>
 
-        <swiper class="swiper"
-        :options="swiperOption"
-        ref="mySwiper">
-
+        <swiper class="swiper" :options="swiperOption" ref="mySwiper">
           <swiperSlide v-for="(item, index) in imgList" :key="index">
-            <img class="swiper_img" :src="item" @click="handle(item)" width="100%">
-            </swiperSlide>
+            <img class="swiper_img" :src="item" @click="handle(item)" width="100%" />
+          </swiperSlide>
 
           <!-- <div class="swiper-button-next"></div>
           <div class="swiper-button-prev"></div>
-          <div class="swiper-pagination" slot="pagination"></div> -->
+          <div class="swiper-pagination" slot="pagination"></div>-->
         </swiper>
       </div>
 
       <!-- 空隙模块 -- 控制模块拖动 -->
       <div class="vsplitter" ref="vsplitter"></div>
 
-      <div class="chart" style="width: 40%;">
-      </div>
-
+      <div class="chart" style="width: 40%;"></div>
     </div>
   </div>
 </template>
@@ -44,13 +38,14 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import { reqBridgeOneTrafficPic } from '@/request/ZhShao/api.js'
 export default {
-  async mounted () {
+  async activated () {
+    console.log('activated')
     // 获取车流图片数据
     this.getTrafficImg()
-    var timer = setInterval(this.getTrafficImg, 2000)
+    this.timer = setInterval(this.getTrafficImg, 2000)
 
     setTimeout(() => {
-      clearInterval(timer)
+      clearInterval(this.timer)
     }, 20000)
 
     /* 添加移动内容区域窗口大小事件 */
@@ -61,6 +56,7 @@ export default {
   },
   data () {
     return {
+      timer: '',
       swiperOption: {
         slidesPerView: 5,
         spaceBetween: 30,
@@ -137,6 +133,10 @@ export default {
   components: {
     swiper,
     swiperSlide
+  },
+  deactivated () {
+    console.log('deactivated')
+    clearInterval(this.timer)
   }
 }
 </script>
@@ -164,7 +164,7 @@ export default {
       align-items: center;
 
       .showImg {
-        width:500px;
+        width: 500px;
         height: 500px;
         margin-bottom: 40px;
 
@@ -194,7 +194,7 @@ export default {
 }
 /* 修改字体颜色 */
 .stress_data .el-table .success-row {
-    color: red !important;
+  color: red !important;
 }
 
 /* swiper */

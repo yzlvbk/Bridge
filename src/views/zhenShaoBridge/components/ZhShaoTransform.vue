@@ -10,7 +10,15 @@
     <!-- 内容区域 -->
     <div class="contain">
       <div class="three_d_model" style="width: 60%;">
-        <TransForm></TransForm>
+        <TransForm :sliderValue="sliderValue"></TransForm>
+        <el-slider
+          class="bridge_stress_slider"
+          v-model="sliderValue"
+          :min="5000"
+          :max="20000"
+          :step="3000"
+          show-stops
+        ></el-slider>
         <!-- <canvas class="bridge_stress" :width="canvasWidth" :height="canvasHeight"></canvas> -->
       </div>
 
@@ -68,6 +76,9 @@ export default {
     return {
       canvasWidth: '', // 应力图宽度
       canvasHeight: '', // 应力图高度度
+
+      // 滑块值
+      sliderValue: 0,
 
       /* 表格数据 */
       tableData: [
@@ -395,9 +406,17 @@ export default {
     }
 
     .three_d_model {
+      position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .bridge_stress_slider {
+        position: absolute;
+        bottom: 10%;
+        left: center;
+        width: 200px;
+      }
     }
 
     .vsplitter {

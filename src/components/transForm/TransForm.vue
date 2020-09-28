@@ -17,6 +17,7 @@ export default {
     // 处理Mesh数据
     this.getMeshData()
   },
+  props: ['sliderValue'],
   data () {
     return {
       // 面板
@@ -214,7 +215,13 @@ export default {
       bar5DeformList: [],
       bar6DeformList: [],
       bar7DeformList: [],
-      bar8DeformList: []
+      bar8DeformList: [],
+
+      scene: '',
+      renderer: '',
+
+      // 防抖定时器
+      timer: null
     }
   },
   methods: {
@@ -251,7 +258,7 @@ export default {
         this.bar8List.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
 
-      this.getMeshDeformData(10000) // 10000表示放大10000倍
+      // this.getMeshDeformData(10000) // 10000表示放大10000倍
     },
 
     // 请求变形Mesh数据
@@ -259,7 +266,16 @@ export default {
       const data = await reqBridgeOneMeshDeform('2020-01-09 10:24:02', '2020-01-09 10:34:02')
       this.deformMeshObj = await data.data.Mesh.JointArray.Joint['2020/1/9 10:24:02']
       // console.log(this.deformMeshObj)
-
+      this.panelDeformList = []
+      this.vaultedDeformList = []
+      this.bar1DeformList = []
+      this.bar2DeformList = []
+      this.bar3DeformList = []
+      this.bar4DeformList = []
+      this.bar5DeformList = []
+      this.bar6DeformList = []
+      this.bar7DeformList = []
+      this.bar8DeformList = []
       this.panel.forEach(item => {
         // if (!this.deformMeshObj[item]) return
         // console.log(Number(MeshPointObj[item].Z))
@@ -303,40 +319,41 @@ export default {
 
     /* 绘制应力图 */
     drawStress () {
+      const _this = this
       const container = document.querySelector('.threeD_stress')
 
       /**
      * 创建场景对象Scene
      */
-      var scene = new THREE.Scene()
+      _this.scene = new THREE.Scene()
 
       // 桥面板部分
-      this.drawMeshPart(this.panelList, scene, '#fff')
+      this.drawMeshPart(this.panelList, _this.scene, '#fff')
       // 拱形部分
-      this.drawMeshPart(this.vaultedList, scene, '#fff')
+      this.drawMeshPart(this.vaultedList, _this.scene, '#fff')
       // 支柱部分
-      this.drawMeshPart(this.bar1List, scene, '#fff')
-      this.drawMeshPart(this.bar2List, scene, '#fff')
-      this.drawMeshPart(this.bar3List, scene, '#fff')
-      this.drawMeshPart(this.bar4List, scene, '#fff')
-      this.drawMeshPart(this.bar5List, scene, '#fff')
-      this.drawMeshPart(this.bar6List, scene, '#fff')
-      this.drawMeshPart(this.bar7List, scene, '#fff')
-      this.drawMeshPart(this.bar8List, scene, '#fff')
+      this.drawMeshPart(this.bar1List, _this.scene, '#fff')
+      this.drawMeshPart(this.bar2List, _this.scene, '#fff')
+      this.drawMeshPart(this.bar3List, _this.scene, '#fff')
+      this.drawMeshPart(this.bar4List, _this.scene, '#fff')
+      this.drawMeshPart(this.bar5List, _this.scene, '#fff')
+      this.drawMeshPart(this.bar6List, _this.scene, '#fff')
+      this.drawMeshPart(this.bar7List, _this.scene, '#fff')
+      this.drawMeshPart(this.bar8List, _this.scene, '#fff')
 
       // 桥面板变形部分
-      this.drawMeshPart(this.panelDeformList, scene, 'red')
+      this.drawMeshPart(this.panelDeformList, _this.scene, 'red')
       // 拱形变形部分
-      this.drawMeshPart(this.vaultedDeformList, scene, 'red')
+      this.drawMeshPart(this.vaultedDeformList, _this.scene, 'red')
       // 支柱变形部分
-      this.drawMeshPart(this.bar1DeformList, scene, 'red')
-      this.drawMeshPart(this.bar2DeformList, scene, 'red')
-      this.drawMeshPart(this.bar3DeformList, scene, 'red')
-      this.drawMeshPart(this.bar4DeformList, scene, 'red')
-      this.drawMeshPart(this.bar5DeformList, scene, 'red')
-      this.drawMeshPart(this.bar6DeformList, scene, 'red')
-      this.drawMeshPart(this.bar7DeformList, scene, 'red')
-      this.drawMeshPart(this.bar8DeformList, scene, 'red')
+      this.drawMeshPart(this.bar1DeformList, _this.scene, 'red')
+      this.drawMeshPart(this.bar2DeformList, _this.scene, 'red')
+      this.drawMeshPart(this.bar3DeformList, _this.scene, 'red')
+      this.drawMeshPart(this.bar4DeformList, _this.scene, 'red')
+      this.drawMeshPart(this.bar5DeformList, _this.scene, 'red')
+      this.drawMeshPart(this.bar6DeformList, _this.scene, 'red')
+      this.drawMeshPart(this.bar7DeformList, _this.scene, 'red')
+      this.drawMeshPart(this.bar8DeformList, _this.scene, 'red')
 
       /**
      * 光源设置
@@ -344,10 +361,10 @@ export default {
       // 点光源
       var point = new THREE.PointLight(0xffff)
       point.position.set(0, 4000, 0) // 点光源位置
-      scene.add(point) // 点光源添加到场景中
+      _this.scene.add(point) // 点光源添加到场景中
       // 环境光
       var ambient = new THREE.AmbientLight(0x444444)
-      scene.add(ambient)
+      _this.scene.add(ambient)
       // console.log(scene)
       // console.log(scene.children)
       /**
@@ -360,28 +377,28 @@ export default {
       // 创建相机对象
       var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -100000, 100000)
       camera.position.set(0, -4000, 0) // 设置相机位置
-      camera.lookAt(scene.position) // 设置相机方向(指向的场景对象)
+      camera.lookAt(_this.scene.position) // 设置相机方向(指向的场景对象)
       /**
      * 创建渲染器对象
      */
 
-      var renderer = new THREE.WebGLRenderer({
+      _this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
         canvas: container.querySelector('canvas')
       })
-      renderer.setSize(width, height)// 设置渲染区域尺寸
+      _this.renderer.setSize(width, height)// 设置渲染区域尺寸
       // renderer.setClearColor(0xb9d3ff, 1) // 设置背景颜色
 
       // 渲染函数
       function render () {
-        renderer.render(scene, camera) // 执行渲染操作
+        _this.renderer.render(_this.scene, camera) // 执行渲染操作
         requestAnimationFrame(render)
       }
       render()
       // 创建控件对象  相机对象camera作为参数   控件可以监听鼠标的变化，改变相机对象的属性
       // eslint-disable-next-line no-unused-vars
-      var controls = new OrbitControls(camera, renderer.domElement)
+      var controls = new OrbitControls(camera, _this.renderer.domElement)
     },
 
     // 绘制Mesh部分
@@ -401,6 +418,28 @@ export default {
       var line = new Line2(geometry, material)// 线条模型对象
       line.computeLineDistances()
       scene.add(line)// 线条对象添加到场景中
+    },
+
+    // 函数防抖
+    debounce (sliderValue) {
+      if (this.timer !== null) clearTimeout(this.timer)
+      this.timer = setTimeout(function () {
+        this.getMeshDeformData(sliderValue)
+      }, 500)
+    }
+  },
+
+  watch: {
+    sliderValue (newname, name) {
+      if (this.scene && this.renderer) {
+        this.scene.remove()
+        this.renderer.dispose()
+        this.debounce(newname)
+        // this.getMeshDeformData(newname)
+      } else {
+        console.log(22)
+        this.getMeshDeformData(newname)
+      }
     }
   }
 }
