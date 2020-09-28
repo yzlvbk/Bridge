@@ -398,7 +398,7 @@ export default {
           width: 80%;
           height: calc(100% - 32px);
           margin-top: 20px;
-          overflow-y: scroll;
+          overflow-y: auto;
 
           .asseee_chart_bottom_table {
             width: 100%;

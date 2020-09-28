@@ -452,7 +452,7 @@ export default {
       // this.drawMeshPart(this.panel6List, scene, 'red', 3)
       // this.drawMeshPart(this.panel7List, scene, 'red', 3)
       // this.drawMeshPart(this.panel8List, scene, 'red', 3)
-      // this.drawMeshPart(this.panel9List190, scene, 'red', 3)
+      // this.drawMeshPart(this.panel9List, scene, 'red', 3)
       // this.drawMeshPart(this.panel10List, scene, 'red', 3)
       // this.drawMeshPart(this.panel11List, scene, 'red', 3)
       // this.drawMeshPart(this.panel12List, scene, 'red', 3)
@@ -537,13 +537,6 @@ export default {
       this.drawMeshRect(this.bar7List, scene, this.stressDataObj.bar7)
       this.drawMeshRect(this.bar8List, scene, this.stressDataObj.bar8)
 
-      // var geometry = new THREE.BoxGeometry(1000, 1000, 1000) // 创建一个立方体几何对象Geometry
-      // var material = new THREE.MeshLambertMaterial({
-      //   color: 0x00ff00
-      // }) // 材质对象Material
-      // var mesh = new THREE.Mesh(geometry, material) // 网格模型对象Mesh
-      // scene.add(mesh) // 网格模型添加到场景中
-
       /**
      * 光源设置
      */
@@ -564,7 +557,7 @@ export default {
       var k = width / height // 窗口宽高比
       var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象
-      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -10000, 10000)
+      var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -1000000, 1000000)
       camera.position.set(0, -4000, 0) // 设置相机位置
       camera.lookAt(scene.position) // 设置相机方向(指向的场景对象)
       /**
@@ -637,25 +630,25 @@ export default {
 
       // console.log(stress)
       let color
-      if (stress < 2) {
-        color = '#f01b10'
-      } else if (stress < 40) {
-        color = '#dd8514'
-      } else if (stress < 80) {
-        color = '#48e719'
-      } else if (stress < 120) {
-        color = '#25ca20'
-      } else if (stress < 160) {
-        color = '#29e66d'
-      } else if (stress < 200) {
-        color = '#2ee5a8'
-      } else if (stress < 240) {
-        color = '#2ebcbd'
-      } else if (stress < 280) {
-        color = '#2b91e4'
-      } else {
-        color = '#3d1bf8'
-      }
+      // if (stress < 2) {
+      //   color = '#f01b10'
+      // } else if (stress < 40) {
+      //   color = '#dd8514'
+      // } else if (stress < 80) {
+      //   color = '#48e719'
+      // } else if (stress < 120) {
+      //   color = '#25ca20'
+      // } else if (stress < 160) {
+      //   color = '#29e66d'
+      // } else if (stress < 200) {
+      //   color = '#2ee5a8'
+      // } else if (stress < 240) {
+      //   color = '#2ebcbd'
+      // } else if (stress < 280) {
+      //   color = '#2b91e4'
+      // } else {
+      //   color = '#3d1bf8'
+      // }
       // if (stress < 2) {
       //   color = 'red'
       // } else if (stress < 40) {
@@ -677,8 +670,8 @@ export default {
       // }
       console.log(color)
       // 材质对象
-      var material = new THREE.MeshBasicMaterial({
-        color, // 三角面颜色
+      var material = new THREE.MeshPhongMaterial({
+        color: 'pink', // 三角面颜色
         side: THREE.DoubleSide // 两面可见
       })
       var mesh = new THREE.Mesh(geometry, material) // 网格模型对象Mesh

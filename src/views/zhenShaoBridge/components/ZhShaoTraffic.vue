@@ -172,18 +172,6 @@ export default {
   }
 }
 
-/* 设置el-table高度响应式 */
-.stress_data .el-table {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  overflow-y: scroll !important;
-}
-/* 修改字体颜色 */
-.stress_data .el-table .success-row {
-  color: red !important;
-}
-
 /* swiper */
 .swiper {
   height: 100px;

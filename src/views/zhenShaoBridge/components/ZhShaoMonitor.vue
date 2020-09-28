@@ -1,6 +1,5 @@
 <template>
   <div class="monitor">
-
     <!-- 安全等级评分 -->
     <!-- <div class="ranking">安全等级评分:<i :class="safetyLevelClass">{{totalScore}}</i></div> -->
 
@@ -13,25 +12,13 @@
           stripe
           :row-class-name="tableRowClassName"
           style="width: 100%; border: none;"
-          :row-style="{ height: '60px' }">
-          <el-table-column
-            prop="MemberId"
-            align="center"
-            label="编号">
-          </el-table-column>
-          <el-table-column
-            prop="MemberName"
-            align="center"
-            label="名称">
-          </el-table-column>
-          <el-table-column
-            prop="SafetyLevel"
-            align="center"
-            label="安全级别">
-          </el-table-column>
+          :row-style="{ height: '60px' }"
+        >
+          <el-table-column prop="MemberId" align="center" label="编号"></el-table-column>
+          <el-table-column prop="MemberName" align="center" label="名称"></el-table-column>
+          <el-table-column prop="SafetyLevel" align="center" label="安全级别"></el-table-column>
         </el-table>
       </div>
-
     </div>
 
     <!-- 车辆称重 -->
@@ -248,7 +235,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../../assets/css/reset.css";
+@import '../../../assets/css/reset.css';
 .monitor {
   display: flex;
   // flex-direction: column;
@@ -256,14 +243,14 @@ export default {
 
   .ranking {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     font-size: 26px;
     flex-basis: 10%;
     border-bottom: 10px solid var(--BgColor);
 
     i {
-      margin-left:10px;
+      margin-left: 10px;
       font-size: 40px;
     }
   }
@@ -283,7 +270,7 @@ export default {
     }
 
     .component-table {
-      display:flex;
+      display: flex;
       justify-content: center;
       flex-grow: 1;
       position: relative;
@@ -301,11 +288,11 @@ export default {
   position: absolute;
   top: 0;
   bottom: 0;
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
 }
 /* 修改字体颜色 */
 .monitor .el-table .success-row {
-    color: red !important;
+  color: red !important;
 }
 
 .weight_chart {

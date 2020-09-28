@@ -111,7 +111,7 @@ export default {
   height: calc(100% - 116px);
   box-sizing: border-box;
   background-color: var(--ContainBgColor);
-  overflow-y: scroll;
+  overflow-y: auto;
 
   .contain_stateItem {
     position: relative;

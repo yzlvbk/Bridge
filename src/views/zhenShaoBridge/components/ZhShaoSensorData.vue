@@ -813,7 +813,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../../assets/css/reset.css";
+@import '../../../assets/css/reset.css';
 .sernor_data_show {
   display: flex;
   flex-direction: column;
@@ -867,7 +867,7 @@ export default {
         }
 
         .component-table {
-          display:flex;
+          display: flex;
           justify-content: center;
           flex-grow: 1;
           position: relative;
@@ -876,7 +876,6 @@ export default {
       }
     }
   }
-
 }
 
 /* 设置el-table高度响应式 */
@@ -884,7 +883,7 @@ export default {
   position: absolute;
   top: 0;
   bottom: 0;
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
 }
 /* 修改字体颜色 */
 .sernor_data_show .el-table .success-row {

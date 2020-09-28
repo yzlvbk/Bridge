@@ -89,7 +89,7 @@
         </el-menu>
 
         <div class="bottom_logo">
-          <img src="../../assets/image/nav-logo.png" style="height:40px; width: 40px" alt />
+          <img src="../../assets/LOGO.svg" style="height:30px; width: 30px" alt />
           <a class="bottom_logo_text">仕达得尔智能科技</a>
         </div>
       </el-aside>
@@ -187,12 +187,17 @@ export default {
     justify-content: center;
     align-items: center;
     height: 40px;
-    margin-left: 15px;
+    margin-left: 25px;
 
     .bottom_logo_text {
-      margin-left: 9px;
+      margin-left: 15px;
       white-space: nowrap;
       overflow: hidden;
+      cursor: pointer;
+
+      &:hover {
+        color: aquamarine;
+      }
     }
   }
 }

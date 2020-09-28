@@ -151,7 +151,7 @@ export default {
     position: absolute;
     top: 0px;
     bottom: 0;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
   }
   /* 修改字体颜色 */
   .sernor_info .el-table .success-row {

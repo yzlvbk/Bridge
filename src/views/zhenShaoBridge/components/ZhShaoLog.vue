@@ -130,7 +130,7 @@ export default {
     padding: 10px 20px;
     box-sizing: border-box;
     background-color: var(--ContainBgColor);
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .contain_top {
       display: flex;
@@ -151,7 +151,7 @@ export default {
 
     .contain_table {
       height: calc(100% - 60px - 50px);
-      overflow-y: scroll;
+      overflow-y: auto;
     }
 
     .contain_pagination {
