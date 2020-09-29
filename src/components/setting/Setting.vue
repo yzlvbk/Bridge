@@ -6,14 +6,8 @@
     </div>
 
     <!-- 时序图设置面板 -->
-    <div class="setting_panel"
-     v-show="isShowPanel && activeName === 'time'">
-      <el-cascader
-        v-model="timeValue"
-        :options="Options"
-        :show-all-levels="false"
-        >
-      </el-cascader>
+    <div class="setting_panel" v-show="isShowPanel && activeName === 'time'">
+      <el-cascader v-model="timeValue" :options="Options" :show-all-levels="false"></el-cascader>
 
       <!-- 确认和取消按钮 -->
       <div class="confirm_cancel_button">
@@ -23,34 +17,25 @@
     </div>
 
     <!-- 相关性分析图设置面板 -->
-    <div class="setting_panel"
-     v-show="isShowPanel && activeName === 'relation'">
+    <div class="setting_panel" v-show="isShowPanel && activeName === 'relation'">
       <div>
         <el-cascader
           v-model="relationValue"
           :options="Options"
           :props="relationProps"
           collapse-tags
-          clearable>
-        </el-cascader>
+          clearable
+        ></el-cascader>
       </div>
 
       <!-- 起始时间 -->
       <div>
-        <el-date-picker
-          v-model="relationStartTime"
-          type="datetime"
-          placeholder="选择日期时间">
-      </el-date-picker>
+        <el-date-picker v-model="relationStartTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
       </div>
 
       <!-- 结束时间 -->
       <div>
-        <el-date-picker
-          v-model="relationEndTime"
-          type="datetime"
-          placeholder="选择日期时间">
-        </el-date-picker>
+        <el-date-picker v-model="relationEndTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
       </div>
 
       <!-- 确认和取消按钮 -->
@@ -61,34 +46,25 @@
     </div>
 
     <!-- 历史分析图设置面板 -->
-    <div class="setting_panel"
-      v-show="isShowPanel && activeName === 'history'">
+    <div class="setting_panel" v-show="isShowPanel && activeName === 'history'">
       <div>
         <el-cascader
           v-model="historyValue"
           :options="Options"
           :props="historyProps"
           collapse-tags
-          clearable>
-        </el-cascader>
+          clearable
+        ></el-cascader>
       </div>
 
       <!-- 起始时间 -->
       <div>
-        <el-date-picker
-          v-model="historyStartTime"
-          type="datetime"
-          placeholder="选择日期时间">
-      </el-date-picker>
+        <el-date-picker v-model="historyStartTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
       </div>
 
       <!-- 结束时间 -->
       <div>
-        <el-date-picker
-          v-model="historyEndTime"
-          type="datetime"
-          placeholder="选择日期时间">
-        </el-date-picker>
+        <el-date-picker v-model="historyEndTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
       </div>
 
       <!-- 确认和取消按钮 -->
@@ -99,14 +75,8 @@
     </div>
 
     <!-- 传感器数据设置面板 -->
-    <div class="setting_panel"
-     v-show="isShowPanel && activeName === 'sensorData'">
-      <el-cascader
-        v-model="sensorDataValue"
-        :options="sensorDataOptions"
-        :show-all-levels="false"
-        >
-      </el-cascader>
+    <div class="setting_panel" v-show="isShowPanel && activeName === 'sensorData'">
+      <el-cascader v-model="sensorDataValue" :options="sensorDataOptions" :show-all-levels="false"></el-cascader>
 
       <!-- 确认和取消按钮 -->
       <div class="confirm_cancel_button">
@@ -114,7 +84,6 @@
         <el-button type="info" size="mini" @click="hidePanel">取消</el-button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -373,54 +342,53 @@ export default {
 @import '../../assets/css/reset.css';
 .setting_component {
   position: relative;
-    /* 设置按钮 */
-    .setting_button {
-      position: absolute;
-      right: 0px;
-      width: 50px;
-      height: 25px;
-      font-size: 13px;
-      cursor: pointer;
-      &:hover {
-        color: var(--LightTextColor);;
-      }
-
-      .setting_text {
-        line-height:25px;
-        margin-left: 3px;
-      }
-      .el-icon-s-tools {
-        vertical-align: middle;
-      }
+  /* 设置按钮 */
+  .setting_button {
+    position: absolute;
+    right: 0px;
+    width: 50px;
+    height: 25px;
+    font-size: 13px;
+    cursor: pointer;
+    &:hover {
+      color: var(--LightTextColor);
     }
 
-    /* 设置面板 */
-    .setting_panel {
-      // width: 200px;
-      margin-top: 25px;
-      padding: 10px 15px;
-      background-color: rgb(19, 63, 105);
+    .setting_text {
+      line-height: 25px;
+      margin-left: 3px;
     }
-
-    /* el-select样式 */
-    .el-date-editor.el-input {
-      width: 145px;
+    .el-icon-s-tools {
+      vertical-align: middle;
     }
-    .el-input__inner {
-        width: 145px !important;
-        height: 32px;
-        margin-bottom: 10px;
-        line-height: 32px;
-        color: #eee !important;
-        font-weight: 600;
-        border: none;
-        // background-color: #fff !important;
-    }
+  }
 
-    /* 确认和取消按钮 */
-    // .confirm_cancel_button {
+  /* 设置面板 */
+  .setting_panel {
+    // width: 200px;
+    margin-top: 25px;
+    padding: 10px 15px;
+    background-color: rgb(19, 63, 105);
+  }
 
-    // }
+  /* el-select样式 */
+  .el-date-editor.el-input {
+    width: 145px;
+  }
+  .el-input__inner {
+    width: 145px !important;
+    height: 32px;
+    margin-bottom: 10px;
+    line-height: 32px;
+    color: #eee !important;
+    font-weight: 600;
+    border: none;
+    // background-color: #fff !important;
+  }
+
+  /* 确认和取消按钮 */
+  // .confirm_cancel_button {
+
+  // }
 }
-
 </style>

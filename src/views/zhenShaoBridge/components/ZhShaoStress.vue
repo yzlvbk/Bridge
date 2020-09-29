@@ -22,19 +22,7 @@
           <span class="three_d_model_color_item">280</span>
           <span class="three_d_model_color_item">&gt;280</span>
         </div>
-        <!--
-          style="background-color: #9B30FF"
-style="background-color: #AB82FF"
-style="background-color: #8a2be2"
-style="background-color: #ff00ff"
-style="background-color: #33FF00"
-style="background-color: #8b008b"
-style="background-color: #3366FF"
-style="background-color: #FFFF00"
-style="background-color: #FF3333"
-        -->
         <Stress />
-        <!-- <canvas class="bridge_stress" :width="canvasWidth" :height="canvasHeight"></canvas> -->
       </div>
 
       <!-- 空隙模块 -- 控制模块拖动 -->

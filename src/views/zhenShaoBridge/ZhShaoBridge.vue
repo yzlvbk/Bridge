@@ -8,7 +8,7 @@
       <div class="header_user">
         <div class="header_user_name">您好，admin</div>
         <div class="logout">
-          <el-button type="info" size="mini">退出</el-button>
+          <el-button type="info" size="mini" @click="logout">退出</el-button>
         </div>
       </div>
     </div>
@@ -124,6 +124,12 @@ export default {
     return {
       activePath: '', // 当前路径
       isCollapse: false // 控制侧边栏是否折叠
+    }
+  },
+  methods: {
+    logout () {
+      window.sessionStorage.removeItem('token')
+      this.$router.replace('/')
     }
   }
 }

@@ -277,10 +277,6 @@ export default {
       this.bar7DeformList = []
       this.bar8DeformList = []
       this.panel.forEach(item => {
-        // if (!this.deformMeshObj[item]) return
-        // console.log(Number(MeshPointObj[item].Z))
-        // console.log((Number(this.deformMeshObj[item].Z) * s))
-        // console.log()
         MeshPointObj[item] && this.deformMeshObj[item] && this.panelDeformList.push((Number(MeshPointObj[item].X) + (Number(this.deformMeshObj[item].X) * s)), (Number(MeshPointObj[item].Y) + (Number(this.deformMeshObj[item].Y) * s)), (Number(MeshPointObj[item].Z) + (Number(this.deformMeshObj[item].Z) * s)))
       })
 

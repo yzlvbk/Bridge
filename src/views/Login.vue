@@ -101,8 +101,8 @@ export default {
 }
 .login_btn {
   width: 100%;
-  background-color: rgb(78, 156, 210);
-  border-color: rgb(78, 156, 210);
+  /* background-color: rgb(78, 156, 210);
+  border-color: rgb(78, 156, 210); */
 }
 .login_form >>> input::-webkit-input-placeholder {
   color: rgb(114, 121, 130);

@@ -98,88 +98,7 @@ export default {
       accelTableData: [],
 
       /* 应变片表格数据 */
-      strainTableData: [],
-
-      tableData: [
-        {
-          id: '01',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '02',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '03',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '04',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '05',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '06',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '07',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '08',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '09',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '10',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '11',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '12',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        },
-        {
-          id: '13',
-          name: '桥面板1',
-          material: '混凝土',
-          level: '6.0'
-        }
-      ]
+      strainTableData: []
     }
   },
   computed: {
@@ -215,10 +134,14 @@ export default {
     drawTimeChart () {
       // 保存vuex中数据, 设置X、Y轴数据
       const object = Object.values(this.timeChartData)[0]
+      // 根据传感器不同显示不同单位
+      const yAxisName = Object.keys(this.timeChartData)[0].startsWith('SR') ? '倾角(deg)' : '微应变(micro strain)'
+      // 处理X轴数据
       const dataX = []
       object.Time.forEach((item) => {
         dataX.push(item.split('T')[1])
       })
+      // 处理series数据
       const series = []
       for (const key in object) {
         if (key !== 'Time') {
@@ -256,9 +179,6 @@ export default {
       var fontColor = 'rgb(15, 200, 224)'
       var lineColor = '#CACACA'
 
-      // moocX轴数据
-      // const dataX = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00']
-
       // 1.初始化echarts
       var myChart = this.$echarts.init(document.querySelector('.time_chart'))
       // 2.配置option
@@ -277,7 +197,7 @@ export default {
         },
         grid: {
           left: '4%',
-          right: '12%',
+          right: '6%',
           bottom: '5%',
           containLabel: true
         },
@@ -341,7 +261,7 @@ export default {
         },
         yAxis: [
           {
-            name: '倾角(deg)',
+            name: yAxisName,
             nameTextStyle: {
               color: lineColor
             },
@@ -404,7 +324,8 @@ export default {
     drawRelationChart () {
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.relationChartData.x
-      console.log('1', dataX)
+      // 根据传感器不同显示不同单位
+      const yAxisName = Object.keys(this.relationChartData.y)[0].startsWith('SR') ? '倾角(deg)' : '微应变(micro strain)'
       const series = []
       const yObject = this.relationChartData.y
       for (const key in yObject) {
@@ -464,7 +385,7 @@ export default {
         },
         grid: {
           left: '4%',
-          right: '12%',
+          right: '6%',
           bottom: '5%',
           containLabel: true
         },
@@ -528,7 +449,7 @@ export default {
         },
         yAxis: [
           {
-            name: '倾角(deg)',
+            name: yAxisName,
             nameTextStyle: {
               color: lineColor
             },
@@ -592,6 +513,8 @@ export default {
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.historyChartData.x
       const yObject = this.historyChartData.y
+      // 根据传感器不同显示不同单位
+      const yAxisName = Object.keys(this.historyChartData.y)[0].startsWith('SR') ? '倾角(deg)' : '微应变(micro strain)'
       const series = []
       for (const key in yObject) {
         series.push({
@@ -650,7 +573,7 @@ export default {
         },
         grid: {
           left: '4%',
-          right: '12%',
+          right: '6%',
           bottom: '5%',
           containLabel: true
         },
@@ -714,7 +637,7 @@ export default {
         },
         yAxis: [
           {
-            name: '倾角(deg)',
+            name: yAxisName,
             nameTextStyle: {
               color: lineColor
             },
@@ -794,7 +717,6 @@ export default {
         })
       } else if (type === 'history') {
         // 重新绘制历史图图
-        console.log(this.historyChartData)
         this.$nextTick(() => {
           this.drawHistoryChart()
         })
