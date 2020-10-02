@@ -33,7 +33,47 @@
 <script>
 import * as THREE from 'three'
 import OrbitControls from 'three-orbitcontrols'
-import { bridgeVertex, bridgeFaceIndex, sensorVertex } from './three_js_vertex.js'
+import {
+  sensorVertex,
+  panel1Vertex,
+  panel1Index,
+
+  panel2Vertex,
+  panel2Index,
+
+  bar1Vertex,
+  bar1Index,
+
+  bar2Vertex,
+  bar2Index,
+
+  bar3Vertex,
+  bar3Index,
+
+  bar4Vertex,
+  bar4Index,
+
+  bar5Vertex,
+  bar5Index,
+
+  bar6Vertex,
+  bar6Index,
+
+  bar7Vertex,
+  bar7Index,
+
+  bar8Vertex,
+  bar8Index,
+
+  vaultedVertex,
+  vaultedIndex,
+
+  baseSupport1Vertex,
+  baseSupport1Index,
+
+  baseSupport2Vertex,
+  baseSupport2Index
+} from './three_js_vertex.js'
 export default {
   mounted() {
     /* 渲染3D模型 */
@@ -98,7 +138,25 @@ export default {
       rotateZ: 0,
 
       scene: '',
-      renderer: ''
+      renderer: '',
+
+      // 桥梁部分映射
+      bridgePartMap: {
+        panel1: false,
+        panel2: true,
+        bar1: false,
+        bar2: false,
+        bar3: false,
+        bar4: false,
+        bar5: false,
+        bar6: true,
+        bar7: false,
+        bar8: false,
+        vaulted: false,
+        baseSupport1: false,
+        baseSupport2: false
+      }
+
     }
   },
   methods: {
@@ -192,9 +250,77 @@ export default {
       /* 创建组对象group */
       var group = new THREE.Group()
 
-      /* 绘制桥梁模型 */
-      const bridgeMesh = this.drawBridged(_this.scene)
-      group.add(bridgeMesh)
+      const bridgeMap = {
+        panel1: [panel1Vertex, panel1Index],
+        panel2: [panel2Vertex, panel2Index],
+        bar1: [bar1Vertex, bar1Index],
+        bar2: [bar2Vertex, bar2Index],
+        bar3: [bar3Vertex, bar3Index],
+        bar4: [bar4Vertex, bar4Index],
+        bar5: [bar5Vertex, bar5Index],
+        bar6: [bar6Vertex, bar6Index],
+        bar7: [bar7Vertex, bar7Index],
+        bar8: [bar8Vertex, bar8Index],
+        vaulted: [vaultedVertex, vaultedIndex],
+        baseSupport1: [baseSupport1Vertex, baseSupport1Index],
+        baseSupport2: [baseSupport2Vertex, baseSupport2Index]
+      }
+      /* 绘制桥梁模型 -- 按部分绘制 */
+      Object.keys(_this.bridgePartMap).forEach(item => {
+        // 传入第四个参数，表示该部分被选中，需要变色
+        group.add(_this.drawBridged(bridgeMap[item][0], bridgeMap[item][1], _this.scene, _this.bridgePartMap[item]))
+      })
+      // console.log(panel1Vertex, panel1Index)
+      // console.log(panel2Vertex, panel2Index)
+      // console.log(bar1Vertex, bar1Index)
+      // console.log(bar2Vertex, bar2Index)
+      // console.log(bar3Vertex, bar3Index)
+      // console.log(bar4Vertex, bar4Index)
+      // console.log(bar5Vertex, bar5Index)
+      // console.log(bar6Vertex, bar6Index)
+      // console.log(bar7Vertex, bar7Index)
+      // console.log(bar8Vertex, bar8Index)
+      // console.log(vaultedVertex, vaultedIndex)
+      // console.log(baseSupport1Vertex, baseSupport1Index)
+      // console.log(baseSupport2Vertex, baseSupport2Index)
+      // const panel1 = this.drawBridged(panel1Vertex, panel1Index, _this.scene)
+      group.add(this.drawBridged(panel1Vertex, panel1Index, _this.scene))
+
+      // const panel2 = this.drawBridged(panel2Vertex, panel2Index, _this.scene)
+      // group.add(panel2)
+
+      // const bar1 = this.drawBridged(bar1Vertex, bar1Index, _this.scene)
+      // group.add(bar1)
+
+      // const bar2 = this.drawBridged(bar2Vertex, bar2Index, _this.scene)
+      // group.add(bar2)
+
+      // const bar3 = this.drawBridged(bar3Vertex, bar3Index, _this.scene)
+      // group.add(bar3)
+
+      // const bar4 = this.drawBridged(bar4Vertex, bar4Index, _this.scene)
+      // group.add(bar4)
+
+      // const bar5 = this.drawBridged(bar5Vertex, bar5Index, _this.scene)
+      // group.add(bar5)
+
+      // const bar6 = this.drawBridged(bar6Vertex, bar6Index, _this.scene)
+      // group.add(bar6)
+
+      // const bar7 = this.drawBridged(bar7Vertex, bar7Index, _this.scene)
+      // group.add(bar7)
+
+      // const bar8 = this.drawBridged(bar8Vertex, bar8Index, _this.scene)
+      // group.add(bar8)
+
+      // const vaulted = this.drawBridged(vaultedVertex, vaultedIndex, _this.scene)
+      // group.add(vaulted)
+
+      // const baseSupport1 = this.drawBridged(baseSupport1Vertex, baseSupport1Index, _this.scene)
+      // group.add(baseSupport1)
+
+      // const baseSupport2 = this.drawBridged(baseSupport2Vertex, baseSupport2Index, _this.scene)
+      // group.add(baseSupport2)
 
       /* 绘制传感器模型 */
       this.sensorNameList.forEach((item, index) => {
@@ -232,7 +358,7 @@ export default {
       // 注意：位置属性在这里不代表方向光的位置，你可以认为方向光没有位置
       directionalLight.position.set(0, 2000, 500)
       // 方向光指向对象，可以不设置，默认的位置是0,0,0
-      directionalLight.target = bridgeMesh
+      // directionalLight.target = bridgeMesh
       _this.scene.add(directionalLight)
 
       // 辅助光源
@@ -283,32 +409,37 @@ export default {
     },
 
     // 绘制桥梁模型
-    drawBridged(scene) {
+    drawBridged(vertex, index, scene, isSelected) {
       /* 创建网格模型 */
       var geometry = new THREE.Geometry()
 
       /* 顶点数组 */
       var bridgeVerticesArry = []
       /* 向顶点数组中循环添加THREE.Vector3 */
-      for (let i = 0; i < bridgeVertex.length; i += 3) {
-        bridgeVerticesArry.push(new THREE.Vector3(bridgeVertex[i], bridgeVertex[i + 1], bridgeVertex[i + 2]))
+      for (let i = 0; i < vertex.length; i += 3) {
+        bridgeVerticesArry.push(new THREE.Vector3(vertex[i], vertex[i + 1], vertex[i + 2]))
       }
       geometry.vertices = bridgeVerticesArry
 
       /*  Face3三角面数组 */
       var facesArry = []
       /* 三角面数组中循环添加THREE.Face3 */
-      for (let i = 0; i < bridgeFaceIndex.length; i += 3) {
-        facesArry.push(new THREE.Face3(bridgeFaceIndex[i], bridgeFaceIndex[i + 1], bridgeFaceIndex[i + 2]))
+      for (let i = 0; i < index.length; i += 3) {
+        facesArry.push(new THREE.Face3(index[i], index[i + 1], index[i + 2]))
       }
       geometry.faces = facesArry
 
       /* 计算所有面法向量 */
       geometry.computeFaceNormals()
 
+      // 定义颜色， 默认#eee
+      let color = '#eee'
+      if (isSelected) {
+        color = 'lightgreen'
+      }
       // 材质对象(网格)渲染模式
       var material = new THREE.MeshPhongMaterial({
-        color: 'white', // 三角面颜色
+        color, // 三角面颜色
         side: THREE.DoubleSide // 两面可见
       })
       var bridgeMesh = new THREE.Mesh(geometry, material) // 网格模型对象Mesh

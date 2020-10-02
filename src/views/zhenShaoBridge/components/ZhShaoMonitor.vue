@@ -11,6 +11,7 @@
           :data="memberSafetyLevelData"
           stripe
           :row-class-name="tableRowClassName"
+          @row-click="tableRowClick"
           style="width: 100%; border: none;"
           :row-style="{ height: '60px' }"
         >
@@ -52,7 +53,7 @@ export default {
     this.drawWeightChart()
   },
   activated() {
-    // 每隔60s请求一次实时车辆载重数据
+    // 每隔5s请求一次实时车辆载重数据
     this.timer = setInterval(async () => {
       await this.getVehicalWeight()
       this.drawWeightChart()
@@ -139,6 +140,13 @@ export default {
       } else {
         return 'warning'
       }
+    },
+
+    /* 表格某一行被点击 */
+    tableRowClick(row, column, event) {
+      console.log(row)
+      console.log(column)
+      console.log(event)
     },
 
     /* 绘制车辆载重图 */

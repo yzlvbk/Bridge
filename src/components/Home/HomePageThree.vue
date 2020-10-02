@@ -1,39 +1,49 @@
 <template>
-<div class="homeThree">
-  <div class="homeThree_header">郑州桥梁展示系统</div>
-  <div class="homeThree_content">
-    <img class="homeThree_content_img" src="../../assets/image/title.png" alt />
+  <div class="homeThree">
+    <div class="homeThree_header">郑州桥梁展示系统</div>
+    <div class="homeThree_content">
+      <img class="homeThree_content_img" src="../../assets/image/title.png" alt />
 
-    <!-- 桥梁车辆统计模块 -->
-    <div class="homeThree_vehicle">
-      <!-- Echarts图表区域 -->
-      <div class="homeThree_vehicle_chart"></div>
-      <!-- 无缝滚动区域 -->
-      <div class="homeThree_vehicle_form">
-        <div class="homeThree_vehicle_form_title">
-          <ul>
-            <li>编号</li>
-            <li>名称</li>
-            <li>类型</li>
-            <li>健康分值</li>
-            <li>安全级别</li>
-          </ul>
+      <!-- 桥梁车辆统计模块 -->
+      <div class="homeThree_vehicle">
+        <!-- Echarts图表区域 -->
+        <div class="homeThree_vehicle_chart"></div>
+        <!-- 无缝滚动区域 -->
+        <div class="homeThree_vehicle_form">
+          <div class="homeThree_vehicle_form_title">
+            <ul>
+              <li>编号</li>
+              <li>名称</li>
+              <li>类型</li>
+              <li>健康分值</li>
+              <li>安全级别</li>
+            </ul>
+          </div>
+          <vue-seamless-scroll
+            :data="safetyLevelList"
+            class="seamless_scroll"
+            :class-option="classOption"
+            :style="'max-height: ' + seamlessMaxHeight"
+          >
+            <ul class="seamless_scroll_ul">
+              <li
+                class="seamless_scroll_ul_li"
+                v-for="item in safetyLevelList"
+                :key="item.BridgeId"
+                :id="item.BridgeName"
+              >
+                <span v-text="item.BridgeId"></span>
+                <span v-text="item.BridgeName"></span>
+                <span v-text="item.BridgeType"></span>
+                <span v-text="item.HealthScore"></span>
+                <span v-text="item.SafetyLevel"></span>
+              </li>
+            </ul>
+          </vue-seamless-scroll>
         </div>
-        <vue-seamless-scroll :data="safetyLevelList" class="seamless_scroll" :class-option="classOption" :style="'max-height: ' + seamlessMaxHeight">
-          <ul class="seamless_scroll_ul">
-            <li class="seamless_scroll_ul_li" v-for="item in safetyLevelList" :key="item.BridgeId" @click="togglePieChart(item.BridgeName)">
-              <span v-text="item.BridgeId"></span>
-              <span v-text="item.BridgeName"></span>
-              <span v-text="item.BridgeType"></span>
-              <span v-text="item.HealthScore"></span>
-              <span v-text="item.SafetyLevel"></span>
-            </li>
-          </ul>
-        </vue-seamless-scroll>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -48,6 +58,14 @@ export default {
   mounted() {
     // 获取初始化数据
     this.getInitData()
+
+    // 延迟给滚动列表添加事件，否则会点击失效
+    setTimeout(() => {
+      const lis = document.querySelectorAll('.seamless_scroll_ul_li')
+      lis.forEach(li => {
+        li.addEventListener('click', this.togglePieChart(li.id), false)
+      })
+    }, 2000)
   },
 
   data() {
@@ -243,15 +261,26 @@ export default {
 
     // 点击无缝滚动列表，切换饼图
     togglePieChart(BridgeName) {
-      console.log(this.mockcarNumStatistics[BridgeName])
-      this.carNumStatistics = this.mockcarNumStatistics[BridgeName]
-      // 重新绘制echarts
-      this.drawVehicleNum(BridgeName)
+      return () => {
+        this.carNumStatistics = this.mockcarNumStatistics[BridgeName]
+        // 重新绘制echarts
+        this.drawVehicleNum(BridgeName)
+      }
+    },
+
+    mousedown1111() {
+      console.log('click')
     }
   },
 
   components: {
     vueSeamlessScroll
+  },
+  beforeDestroy() {
+    const lis = document.querySelectorAll('.seamless_scroll_ul_li')
+    lis.forEach(li => {
+      li.removeEventListener('click', this.togglePieChart(li.id), false)
+    })
   }
 }
 </script>
@@ -344,6 +373,7 @@ export default {
             flex-basis: 20%;
             text-align: center;
             font-size: 14px;
+            z-index: 9999;
           }
         }
 
