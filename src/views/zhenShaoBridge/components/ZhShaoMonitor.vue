@@ -23,6 +23,11 @@
 
     <!-- 车辆称重 -->
     <div class="weight">
+      <div class="weight_num" :class="lastestWeightClass">
+        当前载重:
+        <br />
+        {{lastestWeight}} t
+      </div>
       <div class="weight_chart"></div>
     </div>
   </div>
@@ -37,7 +42,7 @@ import {
 } from '@/request/ZhShao/api.js'
 export default {
   name: 'ZhShaoMonitor',
-  async mounted () {
+  async mounted() {
     // 获取桥梁系统1-构件安全级别数据
     this.getMemberSafetyLevel()
     // 获取桥梁系统1-车辆载重时序图数据
@@ -46,18 +51,18 @@ export default {
     // 绘制车辆载重时序图数据 --- 获取数据为异步，设置定时器，获取之后绘制
     this.drawWeightChart()
   },
-  activated () {
+  activated() {
     // 每隔60s请求一次实时车辆载重数据
-    this.timer = setInterval(() => {
-      this.getVehicalWeight()
+    this.timer = setInterval(async () => {
+      await this.getVehicalWeight()
       this.drawWeightChart()
     }, 5000)
   },
-  deactivated () {
+  deactivated() {
     // 清除定时器
     clearInterval(this.timer)
   },
-  data () {
+  data() {
     return {
       /* 桥梁总体安全等级评分 */
       totalScore: 0,
@@ -66,13 +71,14 @@ export default {
       /* 车辆载重实时数据 */
       vehicalTime: [],
       vehicalWeight: [],
+      lastestWeight: '', // 当前最新车重
       // 请求实时载重定时器
       timer: null
     }
   },
   methods: {
     /* 请求桥梁系统1-构件安全级别数据 */
-    async getMemberSafetyLevel () {
+    async getMemberSafetyLevel() {
       const data = await reqBridgeOneGetMemberSafetyLevel()
       // 请求数据成功
       if (data.statusCode === 200) {
@@ -87,7 +93,7 @@ export default {
     },
 
     /* 请求桥梁系统1-车辆载重时序图数据 */
-    async getVehicalWeight () {
+    async getVehicalWeight() {
       const data = await reqBridgeOneVehicalWeight()
       // 请求数据成功
       if (data.statusCode === 200) {
@@ -99,13 +105,32 @@ export default {
           this.vehicalWeight.push(item.Weight)
         })
 
-        // console.log(this.vehicalTime)
-        // console.log(this.vehicalWeight)
+        // 计算最新车重
+        const arry = []
+        for (let i = (this.vehicalWeight.length - 1); i >= 0; i--) {
+          // 从后往前寻找不为0的最新值
+          if (this.vehicalWeight[i] !== 0) {
+            // 从不为0的值开始找，将这一组的放入数组，然后筛选最大值
+            for (let j = i; j >= 0; j--) {
+              if (this.vehicalWeight[j] !== 0) {
+                arry.push(this.vehicalWeight[j])
+              } else {
+                this.lastestWeight = Math.max(...arry).toFixed(2)
+                return
+              }
+            }
+          }
+        }
+        // 如果都为0，则最新载重为0
+        this.lastestWeight = 0
       }
     },
 
     /* 表行添加类名 */
-    tableRowClassName ({ row, rowIndex }) {
+    tableRowClassName({
+      row,
+      rowIndex
+    }) {
       // 安全等级评分颜色 <6 为红色， 6~8 为黄色，>8 为绿色
       if (row.SafetyLevel < 6) {
         return 'danger'
@@ -117,7 +142,7 @@ export default {
     },
 
     /* 绘制车辆载重图 */
-    drawWeightChart () {
+    drawWeightChart() {
       // 定义颜色
       const fontColor = 'rgb(15, 200, 224)'
       const lineColor = '#CACACA'
@@ -129,7 +154,7 @@ export default {
       const option = {
         color: ['rgb(15,200,224)'], // 线条颜色
         title: {
-          text: '车辆载重',
+          text: '车辆实时载重',
           textStyle: {
             color: '#eee',
             fontSize: '14',
@@ -153,7 +178,9 @@ export default {
             dataView: {
               show: false
             },
-            saveAsImage: {}
+            saveAsImage: {
+              show: false
+            }
           },
           iconStyle: {
             borderColor: lineColor
@@ -178,6 +205,7 @@ export default {
           nameTextStyle: {
             color: lineColor
           },
+          max: 70,
           type: 'value',
           splitNumber: 5,
           axisLine: {
@@ -220,7 +248,7 @@ export default {
   },
   computed: {
     // 总体安全等级评分动态class
-    safetyLevelClass () {
+    safetyLevelClass() {
       // 安全等级评分颜色 <60 为红色， 60~80 为黄色，>80 为绿色
       if (this.totalScore < 60) {
         return 'danger'
@@ -229,6 +257,18 @@ export default {
       } else {
         return 'warning'
       }
+    },
+
+    // 最新车辆载重动态class
+    lastestWeightClass() {
+      // 最新车辆载重颜色 <20 为绿色， 20 - 50 为黄色，>50 为绿色
+      if (Number(this.lastestWeight) < 20) {
+        return 'safety'
+      } else if (Number(this.lastestWeight) < 50) {
+        return 'warning'
+      } else {
+        return 'danger'
+      }
     }
   }
 }
@@ -236,6 +276,7 @@ export default {
 
 <style lang="less">
 @import '../../../assets/css/reset.css';
+
 .monitor {
   display: flex;
   // flex-direction: column;
@@ -279,7 +320,15 @@ export default {
   }
 
   .weight {
+    position: relative;
     flex-basis: 50%;
+
+    .weight_num {
+      position: absolute;
+      right: 10px;
+      top: 13px;
+      font-size: 15px;
+    }
   }
 }
 
@@ -290,6 +339,7 @@ export default {
   bottom: 0;
   overflow-y: auto !important;
 }
+
 /* 修改字体颜色 */
 .monitor .el-table .success-row {
   color: red !important;

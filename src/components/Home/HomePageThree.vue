@@ -1,44 +1,39 @@
 <template>
-  <div class="homeThree">
-    <div class="homeThree_header">郑州桥梁展示系统</div>
-    <div class="homeThree_content">
-      <img class="homeThree_content_img" src="../../assets/image/title.png" alt />
+<div class="homeThree">
+  <div class="homeThree_header">郑州桥梁展示系统</div>
+  <div class="homeThree_content">
+    <img class="homeThree_content_img" src="../../assets/image/title.png" alt />
 
-      <!-- 桥梁车辆统计模块 -->
-      <div class="homeThree_vehicle">
-        <!-- Echarts图表区域 -->
-        <div class="homeThree_vehicle_chart"></div>
-        <!-- 无缝滚动区域 -->
-        <div class="homeThree_vehicle_form">
-          <div class="homeThree_vehicle_form_title">
-            <ul>
-              <li>编号</li>
-              <li>名称</li>
-              <li>类型</li>
-              <li>健康分值</li>
-              <li>安全级别</li>
-            </ul>
-          </div>
-          <vue-seamless-scroll
-            :data="safetyLevelList"
-            class="seamless_scroll"
-            :class-option="classOption"
-            :style="'max-height: ' + seamlessMaxHeight"
-          >
-            <ul class="seamless_scroll_ul">
-              <li v-for="item in safetyLevelList" :key="item.BridgeId">
-                <span v-text="item.BridgeId"></span>
-                <span v-text="item.BridgeName"></span>
-                <span v-text="item.BridgeType"></span>
-                <span v-text="item.HealthScore"></span>
-                <span v-text="item.SafetyLevel"></span>
-              </li>
-            </ul>
-          </vue-seamless-scroll>
+    <!-- 桥梁车辆统计模块 -->
+    <div class="homeThree_vehicle">
+      <!-- Echarts图表区域 -->
+      <div class="homeThree_vehicle_chart"></div>
+      <!-- 无缝滚动区域 -->
+      <div class="homeThree_vehicle_form">
+        <div class="homeThree_vehicle_form_title">
+          <ul>
+            <li>编号</li>
+            <li>名称</li>
+            <li>类型</li>
+            <li>健康分值</li>
+            <li>安全级别</li>
+          </ul>
         </div>
+        <vue-seamless-scroll :data="safetyLevelList" class="seamless_scroll" :class-option="classOption" :style="'max-height: ' + seamlessMaxHeight">
+          <ul class="seamless_scroll_ul">
+            <li class="seamless_scroll_ul_li" v-for="item in safetyLevelList" :key="item.BridgeId" @click="togglePieChart(item.BridgeName)">
+              <span v-text="item.BridgeId"></span>
+              <span v-text="item.BridgeName"></span>
+              <span v-text="item.BridgeType"></span>
+              <span v-text="item.HealthScore"></span>
+              <span v-text="item.SafetyLevel"></span>
+            </li>
+          </ul>
+        </vue-seamless-scroll>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -50,12 +45,12 @@ import {
   reqBridgeOneVehicalCount
 } from '@/request/ZhShao/api.js'
 export default {
-  async mounted () {
+  mounted() {
     // 获取初始化数据
     this.getInitData()
   },
 
-  data () {
+  data() {
     return {
       // 桥梁安全等级
       safetyLevelList: [],
@@ -63,16 +58,88 @@ export default {
       SafetyScoreList: [],
 
       // 车辆统计
-      carNumStatistics: []
+      carNumStatistics: [],
+
+      // 模拟5座桥车辆统计
+      mockcarNumStatistics: {
+        桥1: [{
+          name: '自行车',
+          value: 429
+        }, {
+          name: '小汽车',
+          value: 617
+        }, {
+          name: '卡车',
+          value: 6
+        }, {
+          name: '公交车',
+          value: 34
+        }],
+        桥2: [{
+          name: '自行车',
+          value: 229
+        }, {
+          name: '小汽车',
+          value: 317
+        }, {
+          name: '摩托车',
+          value: 26
+        }, {
+          name: '公交车',
+          value: 54
+        }, {
+          name: '卡车',
+          value: 6
+        }],
+        桥3: [{
+          name: '行人',
+          value: 329
+        }, {
+          name: '小汽车',
+          value: 417
+        }, {
+          name: '卡车',
+          value: 26
+        }, {
+          name: '公交车',
+          value: 74
+        }],
+        桥4: [{
+          name: '电动车',
+          value: 429
+        }, {
+          name: '小汽车',
+          value: 817
+        }, {
+          name: '卡车',
+          value: 60
+        }, {
+          name: '公交车',
+          value: 134
+        }],
+        桥5: [{
+          name: '自行车',
+          value: 929
+        }, {
+          name: '小汽车',
+          value: 617
+        }, {
+          name: '卡车',
+          value: 106
+        }, {
+          name: '公交车',
+          value: 340
+        }]
+      }
     }
   },
   computed: {
     // 第二屏无缝滚动最大高度
-    seamlessMaxHeight () {
+    seamlessMaxHeight() {
       return this.safetyLevelList.length * 45 + 'px'
     },
 
-    classOption () {
+    classOption() {
       return {
         step: 0.5 // 数值越大速度滚动越快
         // limitMoveNum: 3 // 开始无缝滚动的数据量 this.dataList.length
@@ -87,7 +154,7 @@ export default {
   },
   methods: {
     // 请求初始化数据
-    getInitData () {
+    getInitData() {
       const promise1 = reqBridgeSafetyLevel() // 桥梁安全等级
       const promise2 = reqAllBridgeSafetyScore() // 桥梁安全评分
       const promise3 = reqBridgeOneVehicalCount('2020-08-16 00:00:00', '2020-08-17 00:00:00')
@@ -98,12 +165,12 @@ export default {
         this.carNumStatistics = res[2].data
         console.log(this.carNumStatistics)
         // 绘制echarts
-        this.drawVehicleNum()
+        this.drawVehicleNum('桥1')
       })
     },
 
     // 绘制车辆统计图
-    drawVehicleNum () {
+    drawVehicleNum(BridgeName) {
       const seriseData = this.carNumStatistics
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.homeThree_vehicle_chart'))
@@ -111,7 +178,7 @@ export default {
       // 2.配置option
       const option = {
         title: {
-          text: '车辆统计',
+          text: `${BridgeName}车辆统计`,
           textStyle: {
             color: '#c0c3cd'
           },
@@ -142,36 +209,44 @@ export default {
           '#32c5e9',
           '#1d9dff'
         ],
-        series: [
-          {
-            name: '车型统计',
-            type: 'pie',
-            // 如果radius是百分比则必须加引号
-            radius: ['10%', '70%'],
-            center: ['50%', '50%'],
-            data: seriseData,
-            // 修饰饼形图文字相关的样式 label对象
-            label: {
-              fontSize: 13
-            },
-            // 修饰引导线样式
-            labelLine: {
-              // 连接到图形的线长度
-              length: 10,
-              // 连接到文字的线长度
-              length2: 12
-            }
+        series: [{
+          name: '车型统计',
+          type: 'pie',
+          // 如果radius是百分比则必须加引号
+          radius: ['10%', '70%'],
+          center: ['50%', '50%'],
+          data: seriseData,
+          // 修饰饼形图文字相关的样式 label对象
+          label: {
+            show: true,
+            formatter: '{b}：{c}辆\n占比：{d}%',
+            fontSize: 13
+          },
+          // 修饰引导线样式
+          labelLine: {
+            // 连接到图形的线长度
+            length: 10,
+            // 连接到文字的线长度
+            length2: 12
           }
-        ]
+        }]
       }
 
       // 3.将配置项给实例
-      myChart.setOption(option)
+      myChart.setOption(option, true)
 
       // 4.跟随屏幕自适应
       window.addEventListener('resize', function () {
         myChart.resize()
       })
+    },
+
+    // 点击无缝滚动列表，切换饼图
+    togglePieChart(BridgeName) {
+      console.log(this.mockcarNumStatistics[BridgeName])
+      this.carNumStatistics = this.mockcarNumStatistics[BridgeName]
+      // 重新绘制echarts
+      this.drawVehicleNum(BridgeName)
     }
   },
 
@@ -264,6 +339,7 @@ export default {
             height: 100%;
             align-items: center;
           }
+
           li {
             flex-basis: 20%;
             text-align: center;
@@ -279,6 +355,12 @@ export default {
               display: flex;
               justify-content: space-around;
               height: 45px;
+              line-height: 45px;
+
+              &:hover {
+                cursor: pointer;
+                background-color: rgb(4, 62, 117);
+              }
 
               span {
                 flex-basis: 20%;

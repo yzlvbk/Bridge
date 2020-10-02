@@ -31,10 +31,6 @@ const ZhShaoTransform = () =>
   import(
     /* webpackChunkName: "ZhShaoTransform" */ '../views/zhenShaoBridge/components/ZhShaoTransform.vue'
   )
-const ZhShaoMesh = () =>
-  import(
-    /* webpackChunkName: "ZhShaoMesh" */ '../views/zhenShaoBridge/components/ZhShaoMesh.vue'
-  )
 const ZhShaoTraffic = () =>
   import(
     /* webpackChunkName: "ZhShaoTraffic" */ '../views/zhenShaoBridge/components/ZhShaoTraffic.vue'
@@ -54,10 +50,6 @@ const ZhShaoLog = () =>
 const ZhShaoProjectInfo = () =>
   import(
     /* webpackChunkName: "ZhShaoProjectInfo" */ '../views/zhenShaoBridge/components/ZhShaoProjectInfo.vue'
-  )
-const ZhShaoProjectImg = () =>
-  import(
-    /* webpackChunkName: "ZhShaoProjectImg" */ '../views/zhenShaoBridge/components/ZhShaoProjectImg.vue'
   )
 
 const routes = [
@@ -79,13 +71,11 @@ const routes = [
       },
       { path: '/ZhShaoStress', component: ZhShaoStress },
       { path: '/ZhShaoTransform', component: ZhShaoTransform },
-      { path: '/ZhShaoMesh', component: ZhShaoMesh },
       { path: '/ZhShaoTraffic', component: ZhShaoTraffic },
       { path: '/ZhShaoAssess', component: ZhShaoAssess },
       { path: '/ZhShaoStatement', component: ZhShaoStatement },
       { path: '/ZhShaoLog', component: ZhShaoLog },
-      { path: '/ZhShaoProjectInfo', component: ZhShaoProjectInfo },
-      { path: '/ZhShaoProjectImg', component: ZhShaoProjectImg }
+      { path: '/ZhShaoProjectInfo', component: ZhShaoProjectInfo }
     ]
   }
 ]

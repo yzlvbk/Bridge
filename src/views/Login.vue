@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 登录表单绑定数据
       loginForm: {
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     // 点击登录按钮
-    login () {
+    login() {
       // 验证表单
       this.$refs.loginFormRef.validate(valid => {
         if (valid) {

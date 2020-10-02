@@ -2,19 +2,19 @@
   <div class="three_d">
     <div class="threed_icon">
       <!-- 斜视图 -->
-      <span class="threed_icon_item" @click="changeView(15, 0, 45)">
+      <span class="threed_icon_item" @click="changeView(210, 0, 45)">
         <img src="./threeDicon/obliqueView.png" alt />
       </span>
       <!-- 正视图 -->
-      <span class="threed_icon_item" @click="changeView(0, 0, 0)">
+      <span class="threed_icon_item" @click="changeView(210, 0, 0)">
         <img src="./threeDicon/frontView.png" alt />
       </span>
       <!-- 俯视图 -->
-      <span class="threed_icon_item" @click="changeView(90, 0, 0)">
+      <span class="threed_icon_item" @click="changeView(270, 0, 0)">
         <img src="./threeDicon/topView.png" alt />
       </span>
       <!-- 侧视图 -->
-      <span class="threed_icon_item" @click="changeView(0, 0, 90)">
+      <span class="threed_icon_item" @click="changeView(0, 180, 90)">
         <img src="./threeDicon/sideView.png" alt />
       </span>
       <!-- 旋转 -->
@@ -35,13 +35,13 @@ import * as THREE from 'three'
 import OrbitControls from 'three-orbitcontrols'
 import { bridgeVertex, bridgeFaceIndex, sensorVertex } from './three_js_vertex.js'
 export default {
-  mounted () {
+  mounted() {
     /* 渲染3D模型 */
     this.$nextTick(() => {
       this.drawThreeD()
     })
   },
-  data () {
+  data() {
     return {
       // 传感器名称列表
       sensorNameList: [
@@ -91,18 +91,18 @@ export default {
       ],
 
       // X轴旋转值
-      rotateX: 15,
+      rotateX: 210,
       // Y轴旋转值
       rotateY: 0,
       // Z轴旋转值
-      rotateZ: 45,
+      rotateZ: 0,
 
       scene: '',
       renderer: ''
     }
   },
   methods: {
-    drawThreeD () {
+    drawThreeD() {
       const _this = this
       var container = document.querySelector('.three_d')
 
@@ -110,7 +110,7 @@ export default {
       this.scene = new THREE.Scene()
 
       // 获取事件操作对象
-      function getSelsectOBj (mouse, raycaster, e) {
+      function getSelsectOBj(mouse, raycaster, e) {
         // 将html坐标系转化为webgl坐标系，并确定鼠标点击位置
         mouse.x = e.offsetX / container.querySelector('canvas').clientWidth * 2 - 1
 
@@ -148,7 +148,7 @@ export default {
       }
 
       // 重置传感器颜色
-      function resetMaterials () {
+      function resetMaterials() {
         const name = currentMesh.geometry.name
         let color = ''
         if (name.startsWith('SR')) {
@@ -214,13 +214,13 @@ export default {
       // 俯视图 90, 0, 0
 
       // 辅助坐标系   老版本AxisHelper 新版本AxesHelper
-      // var axisHelper = new THREE.AxisHelper(1000)
-      // scene.add(axisHelper)
+      var axisHelper = new THREE.AxisHelper(1000)
+      _this.scene.add(axisHelper)
 
       /* 光源设置 */
       // 点光源
       var point = new THREE.PointLight(0xffffff)
-      point.position.set(0, 800, -500) // 点光源位置
+      point.position.set(0, -800, 500) // 点光源位置
       _this.scene.add(point) // 点光源添加到场景中
 
       // 环境光
@@ -230,14 +230,14 @@ export default {
       var directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
       // 设置光源的方向：通过光源position属性和目标指向对象的position属性计算
       // 注意：位置属性在这里不代表方向光的位置，你可以认为方向光没有位置
-      directionalLight.position.set(0, -2500, 1000)
+      directionalLight.position.set(0, 2000, 500)
       // 方向光指向对象，可以不设置，默认的位置是0,0,0
       directionalLight.target = bridgeMesh
       _this.scene.add(directionalLight)
 
       // 辅助光源
-      // var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
-      // scene.add(directionalLightHelper)
+      var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
+      _this.scene.add(directionalLightHelper)
       /**
      * 相机设置
      */
@@ -247,7 +247,7 @@ export default {
       var s = 4000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象s
       var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -10000, 10000)
-      camera.position.set(0, -400, 0) // 设置相机位置 正视图
+      camera.position.set(0, 10, 0) // 设置相机位置 正视图
       // camera.position.set(0, 0, 100) // 设置相机位置 俯视图
       // camera.position.set(-23000, -17600, 20600) // 设置相机位置 俯视图
       camera.lookAt(0, 0, 0)
@@ -263,7 +263,7 @@ export default {
       // renderer.setClearColor(0xb9d3ff, 1) // 设置背景颜色
 
       // 渲染函数
-      function render () {
+      function render() {
         _this.renderer.render(_this.scene, camera) // 执行渲染操作
         requestAnimationFrame(render)
       }
@@ -275,6 +275,7 @@ export default {
       // controls.enableRotate = true // 是否启用旋转
       // controls.enableZoom = false // 是否启用缩放
       // controls.enablePan = false // 是否启用平移
+      controls.minPolarAngle = -Infinity
 
       // 监听鼠标事件
       container.addEventListener('mousemove', mouseMoveFuc)
@@ -282,7 +283,7 @@ export default {
     },
 
     // 绘制桥梁模型
-    drawBridged (scene) {
+    drawBridged(scene) {
       /* 创建网格模型 */
       var geometry = new THREE.Geometry()
 
@@ -316,7 +317,7 @@ export default {
     },
 
     // 绘制传感器模型
-    drawSensor (num, name, scene) {
+    drawSensor(num, name, scene) {
       var sensorGeometry = new THREE.Geometry() // 创建一个Buffer类型几何体对象
       sensorGeometry.name = name
 
@@ -364,7 +365,7 @@ export default {
     },
 
     // 改变视图
-    changeView (x, y, z) {
+    changeView(x, y, z) {
       this.rotateX = x
       this.rotateY = y
       this.rotateZ = z

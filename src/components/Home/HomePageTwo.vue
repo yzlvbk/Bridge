@@ -1,44 +1,39 @@
 <template>
-  <div class="homeTwo">
-    <div class="homeTwo_header">郑州桥梁展示系统</div>
-    <div class="homeTwo_content">
-      <img class="homeTwo_content_img" src="../../assets/image/title.png" alt />
+<div class="homeTwo">
+  <div class="homeTwo_header">郑州桥梁展示系统</div>
+  <div class="homeTwo_content">
+    <img class="homeTwo_content_img" src="../../assets/image/title.png" alt />
 
-      <!-- 桥梁安全级别统计模块 -->
-      <div class="homeTwo_safety">
-        <!-- Echarts图表区域 -->
-        <div class="homeTwo_safety_chart"></div>
-        <!-- 无缝滚动区域 -->
-        <div class="homeTwo_safety_form">
-          <div class="homeTwo_safety_form_title">
-            <ul>
-              <li>编号</li>
-              <li>名称</li>
-              <li>类型</li>
-              <li>健康分值</li>
-              <li>安全级别</li>
-            </ul>
-          </div>
-          <vue-seamless-scroll
-            :data="safetyLevelList"
-            :class-option="classOption"
-            class="seamless_scroll"
-            :style="'max-height: ' + seamlessMaxHeight"
-          >
-            <ul class="seamless_scroll_ul">
-              <li v-for="item in safetyLevelList" :key="item.BridgeId">
-                <span v-text="item.BridgeId"></span>
-                <span v-text="item.BridgeName"></span>
-                <span v-text="item.BridgeType"></span>
-                <span v-text="item.HealthScore"></span>
-                <span v-text="item.SafetyLevel"></span>
-              </li>
-            </ul>
-          </vue-seamless-scroll>
+    <!-- 桥梁安全级别统计模块 -->
+    <div class="homeTwo_safety">
+      <!-- Echarts图表区域 -->
+      <div class="homeTwo_safety_chart"></div>
+      <!-- 无缝滚动区域 -->
+      <div class="homeTwo_safety_form">
+        <div class="homeTwo_safety_form_title">
+          <ul>
+            <li>编号</li>
+            <li>名称</li>
+            <li>类型</li>
+            <li>健康分值</li>
+            <li>安全级别</li>
+          </ul>
         </div>
+        <vue-seamless-scroll :data="safetyLevelList" :class-option="classOption" class="seamless_scroll" :style="'max-height: ' + seamlessMaxHeight">
+          <ul class="seamless_scroll_ul">
+            <li v-for="item in safetyLevelList" :key="item.BridgeId">
+              <span v-text="item.BridgeId"></span>
+              <span v-text="item.BridgeName"></span>
+              <span v-text="item.BridgeType"></span>
+              <span v-text="item.HealthScore"></span>
+              <span v-text="item.SafetyLevel"></span>
+            </li>
+          </ul>
+        </vue-seamless-scroll>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -48,12 +43,12 @@ import {
   reqBridgeSafetyLevel
 } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  mounted() {
     // 获取初始化数据
     this.getInitData()
   },
 
-  data () {
+  data() {
     return {
       // 桥梁安全等级
       safetyLevelList: [],
@@ -63,11 +58,11 @@ export default {
   },
   computed: {
     // 第二屏无缝滚动最大高度
-    seamlessMaxHeight () {
+    seamlessMaxHeight() {
       return this.safetyLevelList.length * 45 + 'px'
     },
 
-    classOption () {
+    classOption() {
       return {
         step: 0.5 // 数值越大速度滚动越快
         // limitMoveNum: 3 // 开始无缝滚动的数据量 this.dataList.length
@@ -82,7 +77,7 @@ export default {
   },
   methods: {
     // 请求初始化数据
-    async getInitData () {
+    async getInitData() {
       const data = await reqBridgeSafetyLevel() // 桥梁安全等级
       this.safetyLevelList = data.data
       // 绘制echarts
@@ -90,7 +85,7 @@ export default {
     },
 
     // 绘制安全统计级别
-    drawSafetyLevel () {
+    drawSafetyLevel() {
       const _this = this
       // 不同等级不同颜色
       const colorArr = {
@@ -364,6 +359,7 @@ export default {
             height: 100%;
             align-items: center;
           }
+
           li {
             flex-basis: 20%;
             text-align: center;
@@ -379,6 +375,12 @@ export default {
               display: flex;
               justify-content: space-around;
               height: 45px;
+              line-height: 45px;
+
+              &:hover {
+                cursor: pointer;
+                background-color: rgb(4, 62, 117);
+              }
 
               span {
                 flex-basis: 20%;

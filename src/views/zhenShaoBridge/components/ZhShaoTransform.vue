@@ -56,7 +56,7 @@
 import elementResizeDetectorMaker from 'element-resize-detector'
 import TransForm from '../../../components/transForm/TransForm'
 export default {
-  async mounted () {
+  async mounted() {
     // 获取Mesh数据
     // this.getMeshData()
     /* 获取canvas的宽高 */
@@ -72,7 +72,7 @@ export default {
     //   this.drawChart()
     // })
   },
-  data () {
+  data() {
     return {
       canvasWidth: '', // 应力图宽度
       canvasHeight: '', // 应力图高度度
@@ -154,7 +154,7 @@ export default {
   methods: {
 
     /* 绘制echarts图表 */
-    drawChart () {
+    drawChart() {
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'
       var lineColor = '#CACACA'
@@ -349,7 +349,7 @@ export default {
     },
 
     /* 表行添加类名 */
-    tableRowClassName ({ row, rowIndex }) {
+    tableRowClassName({ row, rowIndex }) {
       if (rowIndex === 1) {
         return 'warning-row'
       } else if (rowIndex === 3) {
@@ -359,7 +359,7 @@ export default {
     },
 
     /* 鼠标点击改变尺寸 */
-    mouseResize (e) {
+    mouseResize(e) {
       const startX = e.clientX // 初始鼠标位置
       const left = document.querySelector('.three_d_model')
       const right = document.querySelector('.chart')

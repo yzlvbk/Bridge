@@ -76,16 +76,10 @@
             <span slot="title">日志</span>
           </el-menu-item>
 
-          <el-submenu index="8">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>工程概况</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="/ZhShaoProjectInfo">基本信息</el-menu-item>
-              <!-- <el-menu-item index="/ZhShaoProjectImg">图片、视频</el-menu-item> -->
-            </el-menu-item-group>
-          </el-submenu>
+          <el-menu-item index="/ZhShaoProjectInfo">
+            <i class="el-icon-location"></i>
+            <span slot="title">工程概况</span>
+          </el-menu-item>
         </el-menu>
 
         <div class="bottom_logo">
