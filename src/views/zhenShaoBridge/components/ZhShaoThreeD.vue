@@ -63,10 +63,14 @@ export default {
 
     // 监听传感器点击事件，显示选中传感器信息
     this.$bus.$on('selectSensor', (selectName) => {
+      // 如果传感器表格数据还没有 直接返回
+      if (this.iclTableData.length === 0) return
       // 判断哪种类型传感器
       if (selectName.startsWith('SR')) {
         const iclData = this.iclTableData.filter(item => item.Name === selectName)[0]
         const accelData = this.accelTableData.filter(item => item.Name === selectName)[0]
+        console.log(this.iclTableData.length !== 0)
+        console.log(this.iclTableData)
         this.sensorName = iclData.Name
         this.sensorType = '姿态盒'
         this.iclX = iclData.IclX

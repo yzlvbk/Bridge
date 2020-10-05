@@ -80,6 +80,11 @@
             <i class="el-icon-location"></i>
             <span slot="title">工程概况</span>
           </el-menu-item>
+
+          <el-menu-item index="/ZhShaoWarning">
+            <i class="el-icon-location"></i>
+            <span slot="title">预警系统</span>
+          </el-menu-item>
         </el-menu>
 
         <div class="bottom_logo">
@@ -106,7 +111,7 @@
 
 <script>
 export default {
-  created () {
+  created() {
     this.activePath = this.$route.path
 
     // 浏览器宽度<1280px,默认折叠侧边栏
@@ -114,14 +119,14 @@ export default {
       this.isCollapse = true
     }
   },
-  data () {
+  data() {
     return {
       activePath: '', // 当前路径
       isCollapse: false // 控制侧边栏是否折叠
     }
   },
   methods: {
-    logout () {
+    logout() {
       window.sessionStorage.removeItem('token')
       this.$router.replace('/')
     }

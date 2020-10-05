@@ -336,6 +336,11 @@ export default {
       top: 13px;
       font-size: 15px;
     }
+
+    .weight_chart {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 
@@ -350,10 +355,5 @@ export default {
 /* 修改字体颜色 */
 .monitor .el-table .success-row {
   color: red !important;
-}
-
-.weight_chart {
-  width: 100%;
-  height: 100%;
 }
 </style>

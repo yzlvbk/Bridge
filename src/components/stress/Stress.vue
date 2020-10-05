@@ -13,11 +13,11 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { MeshPointObj } from './bridgePointData'
 import { reqBridgeOneMemberForce } from '@/request/ZhShao/api.js'
 export default {
-  async mounted () {
+  async mounted() {
     // 获取Mesh数据
     this.getStressData()
   },
-  data () {
+  data() {
     return {
       // 面板
       panel1: [
@@ -300,7 +300,7 @@ export default {
   },
   methods: {
     // 请求应变值并处理
-    async getStressData () {
+    async getStressData() {
       const data = await reqBridgeOneMemberForce()
       if (data.statusCode !== 200) return
       this.stressDataObj = data.data
@@ -434,7 +434,7 @@ export default {
     },
 
     /* 绘制应力图 */
-    drawStress () {
+    drawStress() {
       const container = document.querySelector('.transform_mesh')
 
       /**
@@ -580,7 +580,7 @@ export default {
       // renderer.setClearColor(0xb9d3ff, 1) // 设置背景颜色
 
       // 渲染函数
-      function render () {
+      function render() {
         renderer.render(scene, camera) // 执行渲染操作
         requestAnimationFrame(render)
       }
@@ -591,7 +591,7 @@ export default {
     },
 
     // 绘制Mesh部分
-    drawMeshPart (part, scene, color, linewidth) {
+    drawMeshPart(part, scene, color, linewidth) {
       /* 创建网格模型 */
       var geometry = new LineGeometry() // 创建一个Buffer类型几何体对象
 
@@ -610,7 +610,7 @@ export default {
     },
 
     // 绘制Mesh矩形
-    drawMeshRect (vertexAry, scene, stress) {
+    drawMeshRect(vertexAry, scene, stress) {
       /**
      * 创建网格模型
      */
@@ -656,26 +656,6 @@ export default {
       } else {
         color = '#3d1bf8'
       }
-      // if (stress < 2) {
-      //   color = 'red'
-      // } else if (stress < 40) {
-      //   color = 'green'
-      // } else if (stress < 80) {
-      //   color = 'blue'
-      // } else if (stress < 120) {
-      //   color = 'yellow'
-      // } else if (stress < 160) {
-      //   color = 'purple'
-      // } else if (stress < 200) {
-      //   color = '#ff00ff'
-      // } else if (stress < 240) {
-      //   color = '#8a2be2'
-      // } else if (stress < 280) {
-      //   color = '#8b008b'
-      // } else {
-      //   color = '#4b0082'
-      // }
-      console.log(color)
       // 材质对象
       var material = new THREE.MeshBasicMaterial({
         color, // 三角面颜色

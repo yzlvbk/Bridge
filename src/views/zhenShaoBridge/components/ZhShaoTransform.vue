@@ -9,7 +9,7 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-      <div class="three_d_model" style="width: 60%;">
+      <div class="three_d_model" style="width: 100%;">
         <TransForm :sliderValue="sliderValue"></TransForm>
         <el-slider
           class="bridge_stress_slider"
@@ -23,9 +23,9 @@
       </div>
 
       <!-- 空隙模块 -- 控制模块拖动 -->
-      <div class="vsplitter" ref="vsplitter"></div>
+      <!-- <div class="vsplitter" ref="vsplitter"></div> -->
 
-      <div class="chart" style="width: 40%;">
+      <div class="chart" style="width: 40%;" v-if="false">
         <!-- echarts图 -->
         <div v-if="false" class="stress_chart"></div>
 
@@ -65,8 +65,8 @@ export default {
     this.canvasHeight = window.getComputedStyle(wrapDiv, null).getPropertyValue('height')
 
     /* 添加移动内容区域窗口大小事件 */
-    const div = document.querySelector('.vsplitter')
-    div.addEventListener('mousedown', this.mouseResize)
+    // const div = document.querySelector('.vsplitter')
+    // div.addEventListener('mousedown', this.mouseResize)
 
     // this.$nextTick(() => {
     //   this.drawChart()

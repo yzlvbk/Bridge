@@ -3,7 +3,7 @@
     <!-- 面包屑导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>郑少高速桥</el-breadcrumb-item>
-      <el-breadcrumb-item>车流分析1</el-breadcrumb-item>
+      <el-breadcrumb-item>车流分析</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 内容区域 -->
@@ -38,7 +38,7 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import { reqBridgeOneTrafficPic } from '@/request/ZhShao/api.js'
 export default {
-  async activated () {
+  async activated() {
     console.log('activated')
     // 获取车流图片数据
     this.getTrafficImg()
@@ -54,7 +54,7 @@ export default {
 
     // this.$refs.mySwiper.on('click', this.handleClickSlide)
   },
-  data () {
+  data() {
     return {
       timer: '',
       swiperOption: {
@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     /* 请求车流图片 */
-    async getTrafficImg () {
+    async getTrafficImg() {
       const data = await reqBridgeOneTrafficPic(this.reqImgId)
       console.log(data)
       if (data.data.length === 0) return
@@ -91,7 +91,7 @@ export default {
     },
 
     /* 鼠标点击改变尺寸 */
-    mouseResize (e) {
+    mouseResize(e) {
       const startX = e.clientX // 初始鼠标位置
       const left = document.querySelector('.three_d_model')
       const right = document.querySelector('.chart')
@@ -113,7 +113,7 @@ export default {
       }
     },
 
-    handle (img) {
+    handle(img) {
       this.currentImg = img
     }
   },
@@ -121,7 +121,7 @@ export default {
     swiper,
     swiperSlide
   },
-  deactivated () {
+  deactivated() {
     console.log('deactivated')
     clearInterval(this.timer)
   }

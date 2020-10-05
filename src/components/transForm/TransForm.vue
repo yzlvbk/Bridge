@@ -13,12 +13,12 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { reqBridgeOneMeshDeform } from '@/request/ZhShao/api.js'
 import { MeshPointObj } from './bridgePointData'
 export default {
-  mounted () {
+  mounted() {
     // 处理Mesh数据
     this.getMeshData()
   },
   props: ['sliderValue'],
-  data () {
+  data() {
     return {
       // 面板
       panel: [
@@ -226,7 +226,7 @@ export default {
   },
   methods: {
     // 请求Mesh数据
-    getMeshData () {
+    getMeshData() {
       this.panel.forEach(item => {
         this.panelList.push(MeshPointObj[item].X, MeshPointObj[item].Y, MeshPointObj[item].Z)
       })
@@ -262,7 +262,7 @@ export default {
     },
 
     // 请求变形Mesh数据
-    async getMeshDeformData (s) {
+    async getMeshDeformData(s) {
       const data = await reqBridgeOneMeshDeform('2020-01-09 10:24:02', '2020-01-09 10:34:02')
       this.deformMeshObj = await data.data.Mesh.JointArray.Joint['2020/1/9 10:24:02']
       // console.log(this.deformMeshObj)
@@ -314,7 +314,7 @@ export default {
     },
 
     /* 绘制应力图 */
-    drawStress () {
+    drawStress() {
       const _this = this
       const container = document.querySelector('.threeD_stress')
 
@@ -369,7 +369,7 @@ export default {
       var width = window.innerWidth // 窗口宽度
       var height = window.innerHeight // 窗口高度
       var k = width / height // 窗口宽高比
-      var s = 5000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
+      var s = 3000 // 三维场景显示范围控制系数，系数越大，显示的范围越大
       // 创建相机对象
       var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, -100000, 100000)
       camera.position.set(0, -4000, 0) // 设置相机位置
@@ -387,7 +387,7 @@ export default {
       // renderer.setClearColor(0xb9d3ff, 1) // 设置背景颜色
 
       // 渲染函数
-      function render () {
+      function render() {
         _this.renderer.render(_this.scene, camera) // 执行渲染操作
         requestAnimationFrame(render)
       }
@@ -398,7 +398,7 @@ export default {
     },
 
     // 绘制Mesh部分
-    drawMeshPart (part, scene, color) {
+    drawMeshPart(part, scene, color) {
       /* 创建网格模型 */
       var geometry = new LineGeometry() // 创建一个Buffer类型几何体对象
 
@@ -417,7 +417,7 @@ export default {
     },
 
     // 函数防抖
-    debounce (sliderValue) {
+    debounce(sliderValue) {
       const _this = this
       if (_this.timer !== null) clearTimeout(_this.timer)
       _this.timer = setTimeout(function () {
@@ -427,7 +427,7 @@ export default {
   },
 
   watch: {
-    sliderValue (newname, name) {
+    sliderValue(newname, name) {
       if (this.scene && this.renderer) {
         this.scene.remove()
         this.renderer.dispose()

@@ -51,6 +51,10 @@ const ZhShaoProjectInfo = () =>
   import(
     /* webpackChunkName: "ZhShaoProjectInfo" */ '../views/zhenShaoBridge/components/ZhShaoProjectInfo.vue'
   )
+const ZhShaoWarning = () =>
+  import(
+    /* webpackChunkName: "ZhShaoWarning" */ '../views/zhenShaoBridge/components/ZhShaoWarning.vue'
+  )
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -75,7 +79,8 @@ const routes = [
       { path: '/ZhShaoAssess', component: ZhShaoAssess },
       { path: '/ZhShaoStatement', component: ZhShaoStatement },
       { path: '/ZhShaoLog', component: ZhShaoLog },
-      { path: '/ZhShaoProjectInfo', component: ZhShaoProjectInfo }
+      { path: '/ZhShaoProjectInfo', component: ZhShaoProjectInfo },
+      { path: '/ZhShaoWarning', component: ZhShaoWarning }
     ]
   }
 ]
@@ -85,7 +90,7 @@ const router = new VueRouter({
 })
 
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
