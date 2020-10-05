@@ -19,6 +19,8 @@ Vue.use(VueFullpage)
 
 Vue.prototype.$http = axios
 Vue.prototype.$echarts = echarts
+Vue.prototype.$bus = new Vue() // 创建一个事件总线，兄弟组件传值
+
 Vue.config.productionTip = false
 
 new Vue({

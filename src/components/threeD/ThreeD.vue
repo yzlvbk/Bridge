@@ -80,6 +80,20 @@ export default {
     this.$nextTick(() => {
       this.drawThreeD()
     })
+
+    // 注册监听点击table事件，选中桥梁部分变色
+    this.$bus.$on('tableRowClick', (MemberId) => {
+      console.log('tableRowClick', MemberId)
+      if (MemberId === 10004) {
+        this.bridgePartMap.panel1 = !this.bridgePartMap.panel1
+      } else if (MemberId === 10008) {
+        this.bridgePartMap.bar8 = !this.bridgePartMap.bar8
+      } else if (MemberId === 20005) {
+        this.bridgePartMap.vaulted = !this.bridgePartMap.vaulted
+      }
+
+      this.drawThreeD()
+    })
   },
   data() {
     return {
@@ -143,13 +157,13 @@ export default {
       // 桥梁部分映射
       bridgePartMap: {
         panel1: false,
-        panel2: true,
+        panel2: false,
         bar1: false,
         bar2: false,
         bar3: false,
         bar4: false,
         bar5: false,
-        bar6: true,
+        bar6: false,
         bar7: false,
         bar8: false,
         vaulted: false,
@@ -197,6 +211,10 @@ export default {
               color: 'lightgreen', // 三角面颜色
               side: THREE.DoubleSide // 两面可见
             })
+
+            // console.log(currentMesh)
+            // console.log(currentMesh.position.y)
+            // console.log(currentMesh)
           } else if (currentMesh) {
             resetMaterials()
           }
@@ -223,33 +241,22 @@ export default {
       }
 
       // 鼠标点击事件
-      // var mouseDownFuc = async (e) => {
-      //   const raycaster = new THREE.Raycaster() // 光线投射，用于确定鼠标点击位置
-      //   const mouse = new THREE.Vector2() // 创建二维平面
-      //   const intersects = getSelsectOBj(mouse, raycaster, e)
-      //   if (intersects.length > 0) {
-      //     for (var i = 0; i < intersects.length; i++) {
-      //       if (intersects[i].object.material.name === 'yingbianji') {
-      //         // 发送请求获取信息
-      //         const ids = _this.threeDInfo.id
-      //         // 1 获取时序图
-      //         const { data } = await post(ometerTime, { ids })
-      //         // 存储时序图Echarts数据
-      //         this.firstEchartsDataX = data.times
-      //         this.firstEchartsDataYs = data // 需删除里面times属性
-
-      //         // 绘制echarts
-      //         this.$nextTick(function () {
-      //           this.drawFirstEcharts()
-      //         })
-      //       }
-      //     }
-      //   }
-      // }
+      var mouseDownFuc = async (e) => {
+        const raycaster = new THREE.Raycaster() // 光线投射，用于确定鼠标点击位置
+        const mouse = new THREE.Vector2() // 创建二维平面
+        const intersects = getSelsectOBj(mouse, raycaster, e)
+        if (intersects.length > 0) {
+          if (intersects[0].object.geometry.name) {
+            // 点击传感器，通知setting组件，选中当前传感器
+            _this.$bus.$emit('selectSensor', intersects[0].object.geometry.name)
+          }
+        }
+      }
 
       /* 创建组对象group */
       var group = new THREE.Group()
 
+      // 映射桥梁part顶点和索引
       const bridgeMap = {
         panel1: [panel1Vertex, panel1Index],
         panel2: [panel2Vertex, panel2Index],
@@ -270,57 +277,7 @@ export default {
         // 传入第四个参数，表示该部分被选中，需要变色
         group.add(_this.drawBridged(bridgeMap[item][0], bridgeMap[item][1], _this.scene, _this.bridgePartMap[item]))
       })
-      // console.log(panel1Vertex, panel1Index)
-      // console.log(panel2Vertex, panel2Index)
-      // console.log(bar1Vertex, bar1Index)
-      // console.log(bar2Vertex, bar2Index)
-      // console.log(bar3Vertex, bar3Index)
-      // console.log(bar4Vertex, bar4Index)
-      // console.log(bar5Vertex, bar5Index)
-      // console.log(bar6Vertex, bar6Index)
-      // console.log(bar7Vertex, bar7Index)
-      // console.log(bar8Vertex, bar8Index)
-      // console.log(vaultedVertex, vaultedIndex)
-      // console.log(baseSupport1Vertex, baseSupport1Index)
-      // console.log(baseSupport2Vertex, baseSupport2Index)
-      // const panel1 = this.drawBridged(panel1Vertex, panel1Index, _this.scene)
-      group.add(this.drawBridged(panel1Vertex, panel1Index, _this.scene))
-
-      // const panel2 = this.drawBridged(panel2Vertex, panel2Index, _this.scene)
-      // group.add(panel2)
-
-      // const bar1 = this.drawBridged(bar1Vertex, bar1Index, _this.scene)
-      // group.add(bar1)
-
-      // const bar2 = this.drawBridged(bar2Vertex, bar2Index, _this.scene)
-      // group.add(bar2)
-
-      // const bar3 = this.drawBridged(bar3Vertex, bar3Index, _this.scene)
-      // group.add(bar3)
-
-      // const bar4 = this.drawBridged(bar4Vertex, bar4Index, _this.scene)
-      // group.add(bar4)
-
-      // const bar5 = this.drawBridged(bar5Vertex, bar5Index, _this.scene)
-      // group.add(bar5)
-
-      // const bar6 = this.drawBridged(bar6Vertex, bar6Index, _this.scene)
-      // group.add(bar6)
-
-      // const bar7 = this.drawBridged(bar7Vertex, bar7Index, _this.scene)
-      // group.add(bar7)
-
-      // const bar8 = this.drawBridged(bar8Vertex, bar8Index, _this.scene)
-      // group.add(bar8)
-
-      // const vaulted = this.drawBridged(vaultedVertex, vaultedIndex, _this.scene)
-      // group.add(vaulted)
-
-      // const baseSupport1 = this.drawBridged(baseSupport1Vertex, baseSupport1Index, _this.scene)
-      // group.add(baseSupport1)
-
-      // const baseSupport2 = this.drawBridged(baseSupport2Vertex, baseSupport2Index, _this.scene)
-      // group.add(baseSupport2)
+      // group.add(this.drawBridged(panel1Vertex, panel1Index, _this.scene))
 
       /* 绘制传感器模型 */
       this.sensorNameList.forEach((item, index) => {
@@ -340,8 +297,8 @@ export default {
       // 俯视图 90, 0, 0
 
       // 辅助坐标系   老版本AxisHelper 新版本AxesHelper
-      var axisHelper = new THREE.AxisHelper(1000)
-      _this.scene.add(axisHelper)
+      // var axisHelper = new THREE.AxisHelper(1000)
+      // _this.scene.add(axisHelper)
 
       /* 光源设置 */
       // 点光源
@@ -362,8 +319,8 @@ export default {
       _this.scene.add(directionalLight)
 
       // 辅助光源
-      var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
-      _this.scene.add(directionalLightHelper)
+      // var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 1)
+      // _this.scene.add(directionalLightHelper)
       /**
      * 相机设置
      */
@@ -405,7 +362,7 @@ export default {
 
       // 监听鼠标事件
       container.addEventListener('mousemove', mouseMoveFuc)
-      // container.addEventListener('mousedown', mouseDownFuc)
+      container.addEventListener('mousedown', mouseDownFuc)
     },
 
     // 绘制桥梁模型

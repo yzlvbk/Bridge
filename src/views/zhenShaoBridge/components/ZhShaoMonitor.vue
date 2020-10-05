@@ -143,10 +143,9 @@ export default {
     },
 
     /* 表格某一行被点击 */
-    tableRowClick(row, column, event) {
-      console.log(row)
-      console.log(column)
-      console.log(event)
+    tableRowClick(row) {
+      this.$bus.$emit('tableRowClick', row.MemberId)
+      console.log(row.MemberId)
     },
 
     /* 绘制车辆载重图 */

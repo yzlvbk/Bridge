@@ -84,21 +84,13 @@ import {
   reqBridgeOneAccelTable
 } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  mounted() {
     // 获取表格数据
     this.getTableData()
   },
-  data () {
+  data() {
     return {
-      activeName: 'time',
-      /* 姿态盒倾角表格数据 */
-      iclTableData: [],
-
-      /* 姿态盒加速度表格数据 */
-      accelTableData: [],
-
-      /* 应变片表格数据 */
-      strainTableData: []
+      activeName: 'time'
     }
   },
   computed: {
@@ -106,32 +98,38 @@ export default {
       'timeChartData',
       'relationChartData',
       'historyChartData',
-      'activeTableName'
+      'activeTableName', // 当前tab栏名称
+      'iclTableData', // 姿态盒倾角表格数据
+      'accelTableData', // 姿态盒加速度表格数据
+      'strainTableData' // 应变片表格数据
     ])
   },
   methods: {
     // 请求表格数据
-    async getTableData () {
+    async getTableData() {
       const data1 = await reqBridgeOneIclTable()
       if (data1.statusCode === 200) {
-        this.iclTableData = data1.data
+        // 保存数据至vuex
+        this.setIclTableData(data1.data)
       }
 
       const data2 = await reqBridgeOneStrainTable()
       if (data2.statusCode === 200) {
-        this.strainTableData = data2.data
+        // 保存数据至vuex
+        this.setStrainTableData(data2.data)
       }
 
       const data3 = await reqBridgeOneAccelTable()
       if (data3.statusCode === 200) {
-        this.accelTableData = data3.data
+        // 保存数据至vuex
+        this.setAccelTableData(data3.data)
       }
     },
 
-    ...mapMutations('ZhShaoSetting', ['toggleActiveName']),
+    ...mapMutations('ZhShaoSetting', ['toggleActiveName', 'setIclTableData', 'setAccelTableData', 'setStrainTableData']),
 
     /* 绘制时序图 */
-    drawTimeChart () {
+    drawTimeChart() {
       // 保存vuex中数据, 设置X、Y轴数据
       const object = Object.values(this.timeChartData)[0]
       // 根据传感器不同显示不同单位
@@ -321,7 +319,7 @@ export default {
     },
 
     /* 绘制相关性分析图 */
-    drawRelationChart () {
+    drawRelationChart() {
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.relationChartData.x
       // 根据传感器不同显示不同单位
@@ -509,7 +507,7 @@ export default {
     },
 
     /* 绘制历史图 */
-    drawHistoryChart () {
+    drawHistoryChart() {
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.historyChartData.x
       const yObject = this.historyChartData.y
@@ -697,12 +695,12 @@ export default {
     },
 
     /* 表格跳转到指定位置 */
-    location () {
+    location() {
       this.$refs.tableList.$el.scrollTop = 300
     },
 
     // 设置变化, 重新绘制chart
-    reDrawChart (type) {
+    reDrawChart(type) {
       if (type === 'time') {
         // 重新绘制时序图
         // console.log(this.timeChartData)
@@ -726,7 +724,7 @@ export default {
   components: {
     Setting
   },
-  beforeDestroy () {
+  beforeDestroy() {
     /* 移除监听事件 */
     // const erd = elementResizeDetectorMaker()
     // erd.removeAllListeners(document.querySelector('.time_chart'))

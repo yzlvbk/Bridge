@@ -99,15 +99,51 @@ import {
   reqBridgeOneAccelRelation // 姿态盒加速度相关性分析图
 } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  mounted() {
     this.getSensorBaseInfo()
 
     // 初始化绘制
     this.timeConfirm()
     this.relationConfirm()
     this.historyConfirm()
+
+    // 注册监听点击传感器事件
+    this.$bus.$on('selectSensor', (selectName) => {
+      // 如果当前路由非传感器系统数据显示 return
+      if (this.$route.path !== '/ZhShaoSensorData') return
+      // 判断当前选中的tab，绘制tab中的echarts
+      switch (this.activeName) {
+        case 'time':
+          // 判断选中哪种类型传感器
+          selectName.startsWith('SR') ? this.timeValue = ['姿态盒倾角', selectName] : this.timeValue = ['应变片', selectName]
+          // 绘制时序图
+          this.timeConfirm()
+          break
+
+        case 'relation':
+          // 判断选中哪种类型传感器
+          selectName.startsWith('SR') ? this.relationValue = [['姿态盒倾角', selectName]] : this.relationValue = [['应变片', selectName]]
+          // 绘制相关性分析图
+          this.relationConfirm()
+          break
+
+        case 'history':
+          // 判断选中哪种类型传感器
+          selectName.startsWith('SR') ? this.historyValue = [['姿态盒倾角', selectName]] : this.historyValue = [['应变片', selectName]]
+          // 绘制历史图
+          this.historyConfirm()
+          break
+
+        case 'sensorData':
+          // 判断选中哪种类型传感器
+          selectName.startsWith('SR') ? this.sensorDataValue = ['姿态盒倾角'] : this.sensorDataValue = ['应变片']
+          // 绘制数据表格
+          this.sensorDataConfirm()
+          break
+      }
+    })
   },
-  data () {
+  data() {
     return {
       // 是否显示设置面板
       isShowPanel: false,
@@ -167,7 +203,7 @@ export default {
   },
   methods: {
     // 请求传感器位置数据
-    async getSensorBaseInfo () {
+    async getSensorBaseInfo() {
       const data = await reqBridgeOneSensorBaseInfo()
       // 请求数据成功
       if (data.statusCode === 200) {
@@ -184,23 +220,23 @@ export default {
     },
 
     // 显示与隐藏设置面板
-    togglePanel () {
+    togglePanel() {
       this.isShowPanel = !this.isShowPanel
     },
 
     // 鼠标离开点击
-    mouseLeaveClick () {
+    mouseLeaveClick() {
       document.addEventListener('click', this.hidePanel, false)
     },
 
     // 隐藏设置面板
-    hidePanel () {
+    hidePanel() {
       this.isShowPanel = false
       document.removeEventListener('click', this.hidePanel)
     },
 
     // 时序图确认
-    async timeConfirm () {
+    async timeConfirm() {
       // 如果没有选中内容，则返回
       if (this.timeValue.length === 0) return
       // console.log(this.timeValue)
@@ -232,11 +268,10 @@ export default {
     },
 
     // 相关性分析图确认
-    async relationConfirm () {
+    async relationConfirm() {
       // 如果没有选中内容，则返回
       if (this.relationValue.length === 0 || !this.relationStartTime || !this.relationEndTime) return
       this.isShowPanel = false
-
       // 配置请求参数格式
       const Ids = []
       this.relationValue.forEach(item => {
@@ -271,7 +306,7 @@ export default {
     },
 
     // 历史图确认
-    async historyConfirm () {
+    async historyConfirm() {
       // 如果没有选中内容，则返回
       if (this.historyValue.length === 0 || !this.historyStartTime || !this.historyEndTime) return
       this.isShowPanel = false
@@ -310,8 +345,9 @@ export default {
     },
 
     // 传感器数据确认
-    sensorDataConfirm () {
+    sensorDataConfirm() {
       this.isShowPanel = false
+      console.log(this.sensorDataValue)
       if (this.sensorDataValue[0] === '姿态盒倾角') {
         this.toggleTableName('iclTable')
       } else if (this.sensorDataValue[0] === '姿态盒加速度') {
@@ -322,7 +358,7 @@ export default {
     },
 
     // 改变日期格式 例如: 2020-09-01T00:00
-    formatDate (value) {
+    formatDate(value) {
       var time = new Date(value)
       var year = time.getFullYear()
       var month = time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1
