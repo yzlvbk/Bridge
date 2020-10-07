@@ -16,12 +16,22 @@
 
           <!-- 颜色差值区域 -->
           <div class="stress_chart_color">
-            <span class="stress_chart_color_item">0</span>
-            <span class="stress_chart_color_item">-1</span>
-            <span class="stress_chart_color_item">-2</span>
-            <span class="stress_chart_color_item">-3</span>
-            <span class="stress_chart_color_item">-4</span>
-            <span class="stress_chart_color_item">-5</span>
+            <span class="stress_chart_color_item">{{ 0 }}</span>
+            <span
+              class="stress_chart_color_item"
+            >{{currentWeight !== 0 ? (-1 * (30 / currentWeight)).toFixed(1) : -1}}</span>
+            <span
+              class="stress_chart_color_item"
+            >{{currentWeight !== 0 ? (-2 * (30 / currentWeight)).toFixed(1) : -2}}</span>
+            <span
+              class="stress_chart_color_item"
+            >{{currentWeight !== 0 ? (-3 * (30 / currentWeight)).toFixed(1) : -3}}</span>
+            <span
+              class="stress_chart_color_item"
+            >{{currentWeight !== 0 ? (-4 * (30 / currentWeight)).toFixed(1) : -4}}</span>
+            <span
+              class="stress_chart_color_item"
+            >{{currentWeight !== 0 ? (-5 * (30 / currentWeight)).toFixed(1) : -5}}</span>
           </div>
         </div>
 
@@ -97,7 +107,8 @@ export default {
       // 请求实时载重定时器
       timer: null,
 
-      isPlayStressAnimation: false
+      isPlayStressAnimation: false,
+      currentWeight: 0
     }
   },
   methods: {
@@ -119,6 +130,8 @@ export default {
           if (this.vehicalWeight.some(item => item !== 0)) {
             // 开启应力动画
             console.log(this.vehicalWeight.some(item => item !== 0))
+            console.log(parseInt(Math.max(...this.vehicalWeight)))
+            this.currentWeight = parseInt(Math.max(...this.vehicalWeight))
             this.playStressAnimation()
           }
         }
@@ -236,7 +249,7 @@ export default {
       const timer = setInterval(() => {
         this.stressPictureSrc = `ZhenShao/arch/animation_arch_${this.currentNum}.png`
         this.currentNum += 1
-        console.log(this.currentNum)
+        // console.log(this.currentNum)
         if (this.currentNum === 53) {
           // 清除定时器，关闭动画状态
           clearInterval(timer)
@@ -322,7 +335,7 @@ export default {
         .stress_chart_color {
           position: absolute;
           display: flex;
-          height: 90%;
+          height: 80%;
           flex-direction: column;
           left: 20px;
           top: 50%;
@@ -340,8 +353,15 @@ export default {
             align-items: flex-end;
             justify-content: center;
             flex-basis: 16.7%;
-            width: 20px;
-            color: #000;
+            width: 25px;
+            color: #333;
+          }
+
+          &::after {
+            content: '×10-4';
+            position: absolute;
+            bottom: -20px;
+            right: -10px;
           }
         }
       }
