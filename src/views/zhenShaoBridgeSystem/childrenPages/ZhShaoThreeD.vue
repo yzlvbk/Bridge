@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import ThreeD from '../../../components/threeD/ThreeD'
+import ThreeD from '@/components/ZhenShao/threeD/ThreeD'
 import { mapState } from 'vuex'
 export default {
   mounted() {

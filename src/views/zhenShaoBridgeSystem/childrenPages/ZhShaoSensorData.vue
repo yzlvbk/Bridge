@@ -76,7 +76,7 @@
 <script>
 /* 监听图表div宽高变化 */
 import elementResizeDetectorMaker from 'element-resize-detector'
-import Setting from '../../../components/setting/Setting'
+import Setting from '@/components/ZhenShao/setting/Setting'
 import { mapState, mapMutations } from 'vuex'
 import {
   reqBridgeOneStrainTable,

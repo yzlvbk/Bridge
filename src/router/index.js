@@ -5,55 +5,55 @@ const Home = () => import(/* webpackChunkName: "Home" */ '../views/Home.vue')
 const Login = () => import(/* webpackChunkName: "Login" */ '../views/Login.vue')
 const ZhShaoBridge = () =>
   import(
-    /* webpackChunkName: "ZhShaoBridge" */ '../views/zhenShaoBridge/ZhShaoBridge.vue'
+    /* webpackChunkName: "ZhShaoBridge" */ '../views/zhenShaoBridgeSystem/ZhShaoBridgeHome.vue'
   )
 const ZhShaoThreeD = () =>
   import(
-    /* webpackChunkName: "ZhShaoThreeD" */ '../views/zhenShaoBridge/components/ZhShaoThreeD.vue'
+    /* webpackChunkName: "ZhShaoThreeD" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoThreeD.vue'
   )
 const ZhShaoMonitor = () =>
   import(
-    /* webpackChunkName: "ZhShaoMonitor" */ '../views/zhenShaoBridge/components/ZhShaoMonitor.vue'
+    /* webpackChunkName: "ZhShaoMonitor" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoMonitor.vue'
   )
 const ZhShaoSensorData = () =>
   import(
-    /* webpackChunkName: "ZhShaoSensorData" */ '../views/zhenShaoBridge/components/ZhShaoSensorData.vue'
+    /* webpackChunkName: "ZhShaoSensorData" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoSensorData.vue'
   )
 const ZhShaoSensorInfo = () =>
   import(
-    /* webpackChunkName: "ZhShaoSensorInfo" */ '../views/zhenShaoBridge/components/ZhShaoSensorInfo.vue'
+    /* webpackChunkName: "ZhShaoSensorInfo" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoSensorInfo.vue'
   )
 const ZhShaoStress = () =>
   import(
-    /* webpackChunkName: "ZhShaoStress" */ '../views/zhenShaoBridge/components/ZhShaoStress.vue'
+    /* webpackChunkName: "ZhShaoStress" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoStress.vue'
   )
 const ZhShaoTransform = () =>
   import(
-    /* webpackChunkName: "ZhShaoTransform" */ '../views/zhenShaoBridge/components/ZhShaoTransform.vue'
+    /* webpackChunkName: "ZhShaoTransform" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoTransform.vue'
   )
 const ZhShaoTraffic = () =>
   import(
-    /* webpackChunkName: "ZhShaoTraffic" */ '../views/zhenShaoBridge/components/ZhShaoTraffic.vue'
+    /* webpackChunkName: "ZhShaoTraffic" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoTraffic.vue'
   )
 const ZhShaoAssess = () =>
   import(
-    /* webpackChunkName: "ZhShaoAssess" */ '../views/zhenShaoBridge/components/ZhShaoAssess.vue'
+    /* webpackChunkName: "ZhShaoAssess" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoAssess.vue'
   )
 const ZhShaoStatement = () =>
   import(
-    /* webpackChunkName: "ZhShaoStatement" */ '../views/zhenShaoBridge/components/ZhShaoStatement.vue'
+    /* webpackChunkName: "ZhShaoStatement" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoStatement.vue'
   )
 const ZhShaoLog = () =>
   import(
-    /* webpackChunkName: "ZhShaoLog" */ '../views/zhenShaoBridge/components/ZhShaoLog.vue'
+    /* webpackChunkName: "ZhShaoLog" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoLog.vue'
   )
 const ZhShaoProjectInfo = () =>
   import(
-    /* webpackChunkName: "ZhShaoProjectInfo" */ '../views/zhenShaoBridge/components/ZhShaoProjectInfo.vue'
+    /* webpackChunkName: "ZhShaoProjectInfo" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoProjectInfo.vue'
   )
 const ZhShaoWarning = () =>
   import(
-    /* webpackChunkName: "ZhShaoWarning" */ '../views/zhenShaoBridge/components/ZhShaoWarning.vue'
+    /* webpackChunkName: "ZhShaoWarning" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoWarning.vue'
   )
 
 const routes = [

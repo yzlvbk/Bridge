@@ -54,7 +54,7 @@
 <script>
 /* 监听图表div宽高变化 */
 import elementResizeDetectorMaker from 'element-resize-detector'
-import TransForm from '../../../components/transForm/TransForm'
+import TransForm from '@/components/ZhenShao/transForm/TransForm'
 export default {
   async mounted() {
     // 获取Mesh数据

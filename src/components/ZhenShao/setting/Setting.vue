@@ -375,7 +375,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../assets/css/reset.css';
+@import '../../../assets/css/reset.css';
 .setting_component {
   position: relative;
   /* 设置按钮 */

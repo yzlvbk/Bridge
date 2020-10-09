@@ -65,7 +65,7 @@
 
 <script>
 /* 监听图表div宽高变化 */
-import Stress from '../../../components/stress/Stress'
+import Stress from '@/components/ZhenShao/stress/Stress'
 import {
   reqBridgeOneVehicalWeight
 } from '@/request/ZhShao/api.js'
