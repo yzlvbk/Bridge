@@ -30,7 +30,7 @@
                 class="seamless_scroll_ul_li"
                 v-for="item in safetyLevelList"
                 :key="item.BridgeId"
-                :id="item.BridgeName"
+                :id="item.BridgeId"
               >
                 <span v-text="item.BridgeId"></span>
                 <span v-text="item.BridgeName"></span>
@@ -65,7 +65,7 @@ export default {
       lis.forEach(li => {
         li.addEventListener('click', this.togglePieChart(li.id), false)
       })
-    }, 2000)
+    }, 100)
   },
 
   data() {
@@ -80,7 +80,7 @@ export default {
 
       // 模拟5座桥车辆统计
       mockcarNumStatistics: {
-        桥1: [{
+        'BC-01': [{
           name: '自行车',
           value: 429
         }, {
@@ -93,7 +93,7 @@ export default {
           name: '公交车',
           value: 34
         }],
-        桥2: [{
+        'BC-02': [{
           name: '自行车',
           value: 229
         }, {
@@ -109,7 +109,7 @@ export default {
           name: '卡车',
           value: 6
         }],
-        桥3: [{
+        'BC-03': [{
           name: '行人',
           value: 329
         }, {
@@ -122,7 +122,7 @@ export default {
           name: '公交车',
           value: 74
         }],
-        桥4: [{
+        'BC-04': [{
           name: '电动车',
           value: 429
         }, {
@@ -135,7 +135,7 @@ export default {
           name: '公交车',
           value: 134
         }],
-        桥5: [{
+        'BC-05': [{
           name: '自行车',
           value: 929
         }, {
@@ -181,14 +181,13 @@ export default {
         this.safetyLevelList = res[0].data
         this.SafetyScoreList = res[1].data
         this.carNumStatistics = res[2].data
-        console.log(this.carNumStatistics)
         // 绘制echarts
-        this.drawVehicleNum('桥1')
+        this.drawVehicleNum()
       })
     },
 
     // 绘制车辆统计图
-    drawVehicleNum(BridgeName) {
+    drawVehicleNum() {
       const seriseData = this.carNumStatistics
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.homeThree_vehicle_chart'))
@@ -196,7 +195,7 @@ export default {
       // 2.配置option
       const option = {
         title: {
-          text: `${BridgeName}车辆统计`,
+          text: '车辆统计',
           textStyle: {
             color: '#c0c3cd'
           },
@@ -262,14 +261,14 @@ export default {
     // 点击无缝滚动列表，切换饼图
     togglePieChart(BridgeName) {
       return () => {
-        this.carNumStatistics = this.mockcarNumStatistics[BridgeName]
-        // 重新绘制echarts
-        this.drawVehicleNum(BridgeName)
-      }
-    },
+        // 添加current类名，高亮显示
+        document.querySelectorAll('.seamless_scroll_ul_li').forEach(li => li.classList.remove('current'))
+        document.querySelectorAll('#' + BridgeName).forEach(li => li.classList.add('current'))
 
-    mousedown1111() {
-      console.log('click')
+        // 重新绘制echarts
+        this.carNumStatistics = this.mockcarNumStatistics[BridgeName]
+        this.drawVehicleNum()
+      }
     }
   },
 
@@ -290,7 +289,6 @@ export default {
   height: 100%;
   padding: 0 20px;
   background: url(../../assets/image/bg3.png) no-repeat;
-  // background-color: rgb(17, 30, 58);
   background-size: 100% 100%;
 
   .homeThree_header {
@@ -301,13 +299,11 @@ export default {
     padding-top: 20px;
     margin-bottom: 35px;
     font-size: 24px;
-    color: #fff;
   }
 
   .homeThree_title {
     text-indent: 35px;
     margin-top: 20px;
-    color: #fff;
     font-size: 24px;
     height: 33px;
     line-height: 33px;
@@ -400,6 +396,9 @@ export default {
                 white-space: nowrap;
                 font-size: 14px;
               }
+            }
+            .current {
+              background-color: rgb(4, 62, 117);
             }
           }
         }

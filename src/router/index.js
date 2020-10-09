@@ -96,8 +96,7 @@ VueRouter.prototype.push = function push(location) {
 
 /* 路由导航守卫 */
 router.beforeEach((to, from, next) => {
-  console.log(to, from)
-  // 如果非登录页或首页，进行拦截
+  // 如果去登录页或首页，放行，否则进行拦截
   if (to.path === '/Login' || to.path === '/Home' || to.path === '/') {
     next()
   } else {

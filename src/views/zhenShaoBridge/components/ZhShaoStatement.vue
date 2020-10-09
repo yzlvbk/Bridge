@@ -54,7 +54,7 @@
 <script>
 import { reqBridgeOneGetReport } from '@/request/ZhShao/api.js'
 export default {
-  data () {
+  data() {
     return {
       dayValue: '',
       weekValye: '',
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     // 点击生成日报表
-    async submitDayState () {
+    async submitDayState() {
       if (!this.dayValue) return this.$message.info('请选择日期')
       const type = '日'
       const startTime = this.formatDate(this.dayValue - 86400 * 1000)
@@ -74,19 +74,44 @@ export default {
       const data = await reqBridgeOneGetReport(type, startTime, endTime)
       loading.close()
       if (data.statusCode !== 200) return
-      console.log(1111)
       window.open(data.data.data)
       console.log(data.data.data)
     },
 
     // 点击生成周报表
-    submitWeekState () { },
+    async submitWeekState() {
+      if (!this.weekValye) return this.$message.info('请选择日期')
+      const type = '周'
+      const startTime = this.formatDate(this.weekValye - 86400 * 7 * 1000)
+      const endTime = this.formatDate(this.weekValye)
+      console.log(startTime, endTime)
+      const Dom = document.querySelector('.statement .contain')
+      const loading = this.$loading.service({ target: Dom, text: '正在生成报表', background: 'rgba(0,0,0,0.8)' })
+      const data = await reqBridgeOneGetReport(type, startTime, endTime)
+      loading.close()
+      console.log(data)
+      if (data.statusCode !== 200) return
+      window.open(data.data.data)
+    },
 
     // 点击生成月报表
-    submitMonthState () { },
+    async submitMonthState() {
+      if (!this.monthValue) return this.$message.info('请选择日期')
+      const type = '月'
+      const startTime = this.formatDate(this.monthValue - 86400 * 30 * 1000)
+      const endTime = this.formatDate(this.monthValue)
+      console.log(startTime, endTime)
+      const Dom = document.querySelector('.statement .contain')
+      const loading = this.$loading.service({ target: Dom, text: '正在生成报表', background: 'rgba(0,0,0,0.8)' })
+      const data = await reqBridgeOneGetReport(type, startTime, endTime)
+      loading.close()
+      console.log(data)
+      if (data.statusCode !== 200) return
+      window.open(data.data.data)
+    },
 
     // 改变日期格式 例如: 2020-09-01T00:00
-    formatDate (value) {
+    formatDate(value) {
       var time = new Date(value)
       var year = time.getFullYear()
       var month = time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1

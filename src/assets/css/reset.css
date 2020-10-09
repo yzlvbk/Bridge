@@ -1,12 +1,15 @@
 @charset "utf-8";
+
 html {
     font-size: 12px
 }
+
 html,
 body,
 #app {
     height: 100%;
 }
+
 body,
 ul,
 ol,
@@ -34,7 +37,7 @@ xmp {
     margin: 0;
     padding: 0
 }
- 
+
 body,
 input,
 textarea,
@@ -49,8 +52,8 @@ samp {
     /* line-height: 1.5; */
     font-family: tahoma, arial, "Hiragino Sans GB", simsun, sans-serif
 }
- 
- 
+
+
 h1,
 h2,
 h3,
@@ -59,41 +62,41 @@ h5,
 h6 {
     font-family: tahoma, arial, "Hiragino Sans GB", "微软雅黑", simsun, sans-serif
 }
- 
- 
- 
+
+
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
     text-align: left
 }
- 
+
 caption,
 th {
     text-align: inherit
 }
- 
+
 ul,
 ol,
 menu {
     list-style: none
 }
- 
+
 fieldset,
 img {
     border: 0
 }
- 
+
 img {
     vertical-align: middle
 }
- 
- 
+
+
 textarea {
     overflow: auto;
     resize: vertical
 }
- 
+
 input,
 textarea,
 button,
@@ -102,56 +105,56 @@ a {
     outline: 0 none;
     border: none;
 }
- 
+
 html {
     overflow-x: hidden;
     overflow-y: hidden;
     height: 100%;
     -webkit-tap-highlight-color: transparent;
 }
- 
+
 body {
     font-family: Arial, "Microsoft Yahei", "Helvetica Neue", Helvetica, sans-serif;
     color: #eee;
     /* line-height: 1; */
     -webkit-text-size-adjust: none;
-    
+
 }
 
 a {
-    color: rgb(15,200,224);
+    color: rgb(15, 200, 224);
     text-decoration: none;
 }
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-::-webkit-scrollbar
-{
-  width: 0px;
-  height:0px;
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
 }
- 
+
 /*定义滚动条轨道 圆角*/
-::-webkit-scrollbar-track
-{
-  border-radius: 0px;
-  background-color: rgba(0,0,0,0);
+::-webkit-scrollbar-track {
+    border-radius: 0px;
+    background-color: rgba(0, 0, 0, 0);
 }
+
 /*定义滑块 圆角*/
-::-webkit-scrollbar-thumb
-{
-  border-radius: 0px;
-  background-color: rgba(0,0,0,0);
+::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 /* 安全等级评分颜色 <60 为红色， 60~80 为黄色，>80 为绿色 */
 .safety {
-  color: #67c23a;
+    color: #67c23a;
 }
+
 .warning {
-  color: #e6a23c;
+    color: #e6a23c;
 }
+
 .danger {
-  color: #f56c6c;
+    color: #f56c6c;
 }
 
 
@@ -159,7 +162,6 @@ a {
     /* 背景颜色 */
     --BgColor: rgba(9, 22, 40, 1);
     /* 内容区模块颜色 */
-    /* --ContainBgColor: rgb(37, 42, 53); */
     --ContainBgColor: rgb(37, 42, 53, 0.75);
     /* 文字高亮颜色 */
     --LightTextColor: #0fc8e0;

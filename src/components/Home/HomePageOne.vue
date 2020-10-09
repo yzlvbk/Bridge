@@ -53,7 +53,7 @@ import {
   reqAllBridgeNotice
 } from '@/request/ZhShao/api.js'
 export default {
-  async mounted () {
+  async mounted() {
     // 获取天气数据
     this.getWeatherData()
 
@@ -67,7 +67,7 @@ export default {
     })
   },
 
-  data () {
+  data() {
     return {
       // 天气数据
       weatherData: {},
@@ -87,7 +87,7 @@ export default {
 
   computed: {
     // 轮播表配置
-    rebroadcastConfig () {
+    rebroadcastConfig() {
       const data = []
       this.allBridgeNoticesData.forEach((item) => {
         if (item.HealthScore < 60) {
@@ -127,7 +127,7 @@ export default {
     },
 
     // 3D地图scatter数据
-    scatterData () {
+    scatterData() {
       const config = []
       console.log('allBridgeInfo', this.allBridgeInfo)
       const allBridgeNoticesData = this.allBridgeNoticesData
@@ -147,7 +147,7 @@ export default {
 
   methods: {
     // 请求天气数据
-    async getWeatherData () {
+    async getWeatherData() {
       // xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
       const { data } = await this.$http.get('https://www.tianqiapi.com/api?version=v61&appid=13392814&appsecret=RfDCQz2U&city=郑州')
       this.weatherData = {
@@ -202,7 +202,7 @@ export default {
     },
 
     // 请求全部桥梁信息
-    async getAllBridgeInfo () {
+    async getAllBridgeInfo() {
       const data = await reqAllBridgeInfo()
       this.allBridgeInfo = data.data
       this.$nextTick(() => {
@@ -211,14 +211,14 @@ export default {
     },
 
     // 请求全部桥梁轮播信息
-    async getAllBridgeNotices () {
+    async getAllBridgeNotices() {
       const data = await reqAllBridgeNotice()
       this.allBridgeNoticesData = data.data
       console.log('allBridgeNoticesData', this.allBridgeNoticesData)
     },
 
     // 绘制3D地图
-    drawZhengZhouMap () {
+    drawZhengZhouMap() {
       const _this = this
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.querySelector('.main_middle_map'))
@@ -403,7 +403,8 @@ export default {
       })
 
       myChart.on('click', function (params) {
-        if (params.data.BridgeName === '桥1') {
+        console.log(params)
+        if (params.data.BridgeCode === 'BC-01') {
           _this.$router.push('zhenShaoBridge')
         }
       })
