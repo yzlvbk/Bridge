@@ -144,6 +144,17 @@ a {
     background-color: rgba(0, 0, 0, 0);
 }
 
+/* 去掉input type=number的 + - */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 /* 安全等级评分颜色 <60 为红色， 60~80 为黄色，>80 为绿色 */
 .safety {
     color: #67c23a;

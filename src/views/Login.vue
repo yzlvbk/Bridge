@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { reqPostUser } from '@/request/ZhShao/api.js'
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -49,17 +51,24 @@ export default {
     // 点击登录按钮
     login() {
       // 验证表单
-      this.$refs.loginFormRef.validate(valid => {
+      this.$refs.loginFormRef.validate(async valid => {
         if (valid) {
           // 请求接口
-
+          const data = await reqPostUser(this.loginForm.username, this.loginForm.password)
           // 请求接口成功
-          window.sessionStorage.setItem('token', 123456)
-          console.log('验证通过')
-          this.$router.push(this.$route.query.direction)
+          if (Array.isArray(data.data)) {
+            this.setUser(data.data[0])
+            window.sessionStorage.setItem('token', JSON.stringify(data.data[0]))
+            this.$router.push(this.$route.query.direction)
+          } else {
+            // 登录失败
+            this.$message.error('登录失败')
+          }
         }
       })
-    }
+    },
+
+    ...mapMutations('user', ['setUser'])
   }
 }
 </script>

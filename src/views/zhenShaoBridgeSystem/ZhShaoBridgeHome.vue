@@ -1,12 +1,15 @@
 <template>
   <div class="bridge">
     <div class="bridge_header">
-      <div class="header_title">
-        <router-link to="/">桥梁健康监测系统</router-link>
-      </div>
+      <div class="header_title">桥梁健康监测系统</div>
 
       <div class="header_user">
-        <div class="header_user_name">您好，admin</div>
+        <div class="header_user_name">您好，{{this.userInfo.UserName}}</div>
+        <div class="goHome" style="margin-right: 20px;">
+          <router-link to="/">
+            <el-button type="primary" size="mini">首页</el-button>
+          </router-link>
+        </div>
         <div class="logout">
           <el-button type="info" size="mini" @click="logout">退出</el-button>
         </div>
@@ -110,6 +113,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 export default {
   created() {
     this.activePath = this.$route.path
@@ -118,6 +122,12 @@ export default {
     if (window.innerWidth < 1280) {
       this.isCollapse = true
     }
+
+    // 获取用户数据
+    if (!this.userInfo) {
+      const userInfo = JSON.parse(window.sessionStorage.getItem('token'))
+      this.setUser(userInfo)
+    }
   },
   data() {
     return {
@@ -125,11 +135,16 @@ export default {
       isCollapse: false // 控制侧边栏是否折叠
     }
   },
+  computed: {
+    ...mapState('user', ['userInfo'])
+  },
   methods: {
     logout() {
       window.sessionStorage.removeItem('token')
       this.$router.replace('/')
-    }
+    },
+
+    ...mapMutations('user', ['setUser'])
   }
 }
 </script>
@@ -159,7 +174,6 @@ export default {
   position: absolute;
   right: 20px;
   align-items: center;
-  // background-color: black;
   font-size: 14px;
 
   .header_user_name {

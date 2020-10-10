@@ -35,7 +35,7 @@
         <el-pagination
           @current-change="currentPageChange"
           :current-page="currentPage"
-          :page-size="10"
+          :page-size="pageSize"
           background
           layout="total, prev, pager, next"
           :total="totalLogNum"
@@ -66,18 +66,20 @@
 <script>
 import { reqBridgeOneGetWorkLog, reqBridgeOnePostWorkLog } from '@/request/ZhShao/api.js'
 export default {
-  mounted () {
+  mounted() {
     this.getLog()
   },
-  data () {
+  data() {
     return {
       // 日期选择
       dateSelectValue: '',
 
       // 当前选中页
-      currentPage: 2,
+      currentPage: 1,
       // 日志总条数
-      totalLogNum: 20,
+      totalLogNum: 0,
+      // 每页数量
+      pageSize: 5,
 
       // 填写日志是否显示
       isDialogVisible: false,
@@ -93,18 +95,21 @@ export default {
   },
   methods: {
     // 获取日志
-    async getLog () {
-      const data = await reqBridgeOneGetWorkLog()
+    async getLog() {
+      const data = await reqBridgeOneGetWorkLog(this.currentPage, this.pageSize)
       if (data.statusCode !== 200) return
-      this.tableData = data.data
-      this.totalLogNum = this.tableData.length
+      this.tableData = data.data.data
+      this.totalLogNum = data.data.total
     },
 
     // 页码发生变化
-    currentPageChange () { },
+    currentPageChange(currentPage) {
+      this.currentPage = currentPage
+      this.getLog()
+    },
 
     // 点击提交日志
-    async submitLog () {
+    async submitLog() {
       this.isDialogVisible = false
       const data = await reqBridgeOnePostWorkLog('admmin22', this.logwWriteDate, this.logTextarea)
       console.log(data)
@@ -180,9 +185,15 @@ export default {
   .el-table td {
     border-bottom: 1px solid #626366;
     border-right: 1px solid #626366;
+    border-left: 1px solid #626366;
   }
   .el-table--border th {
+    border-top: 1px solid #626366;
     border-right: 1px solid #626366;
+    border-left: 1px solid #626366;
+  }
+  .el-table--border {
+    border: 1px solid transparent;
   }
 }
 </style>

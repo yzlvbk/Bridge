@@ -1,5 +1,8 @@
 import http from './http'
 
+/* 登录 */
+export const reqPostUser = (User, Password) => http('/v10/summary/PostUser', { User, Password }, 'POST')
+
 /* 系统首页获取桥梁轮播信息 */
 export const reqAllBridgeNotice = () => http('/v10/summary/GetNotice', {}, 'GET')
 
@@ -68,7 +71,7 @@ export const reqBridgeOneMeshDeform = (StartTime, EndTime) => http('/v10/bridgeO
 export const reqBridgeOneMemberForce = () => http('/v10/bridgeOne/GetMemberForce', {}, 'GET')
 
 /* 桥梁系统1-获取日志 */
-export const reqBridgeOneGetWorkLog = () => http('/v10/bridgeOne/GetWorkLog', {}, 'GET')
+export const reqBridgeOneGetWorkLog = (pageIndex, pageSize) => http('/v10/bridgeOne/GetWorkLog', { pageIndex, pageSize }, 'GET')
 
 /* 桥梁系统1-上传日志 */
 export const reqBridgeOnePostWorkLog = (User, CreateTime, Content) => http('/v10/bridgeOne/PostWorkLog', { User, CreateTime, Content }, 'POST')

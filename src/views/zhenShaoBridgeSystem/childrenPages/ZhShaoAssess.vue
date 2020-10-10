@@ -76,7 +76,7 @@
 
 <script>
 export default {
-  mounted () {
+  mounted() {
     /* 获取canvas的宽高 */
     const wrapDiv = document.querySelector('.asseee_chart_top')
     this.width = window.getComputedStyle(wrapDiv, null).getPropertyValue('width')
@@ -84,7 +84,7 @@ export default {
     console.log(this.width)
     this.drawDistanceChart()
   },
-  data () {
+  data() {
     return {
       width: '',
       height: '',
@@ -109,7 +109,7 @@ export default {
 
   methods: {
     // 添加轴重和轴距
-    addWheel () {
+    addWheel() {
       if (!this.distanceValue || !this.weightValue) return this.$message.warning('请输入正确的轴重和轴距')
 
       this.wheelList.push({ distance: this.distanceValue, weight: this.weightValue })
@@ -119,7 +119,7 @@ export default {
     },
 
     // 修改轴重和轴距
-    editWheelItem (index) {
+    editWheelItem(index) {
       // 输入框设置为修改的值
       this.distanceValue = this.wheelList[index].distance
       this.weightValue = this.wheelList[index].weight
@@ -129,7 +129,7 @@ export default {
     },
 
     // 点击修改按钮，完成修改
-    editWheel () {
+    editWheel() {
       console.log(this.distanceValue)
       console.log(!this.weightValue)
       if (this.distanceValue === '' || this.weightValue === '') return this.$message.warning('请输入正确的轴重和轴距')
@@ -141,7 +141,7 @@ export default {
     },
 
     // 删除轴重和轴距
-    deleteWheelItem (index) {
+    deleteWheelItem(index) {
       this.wheelList.splice(index, 1)
 
       // 重置轴距、轴重和取消修改状态
@@ -149,7 +149,7 @@ export default {
     },
 
     // 重置轴距、轴重和取消修改状态
-    resetInput () {
+    resetInput() {
       this.distanceValue = ''
       this.weightValue = ''
       this.edit.status = false
@@ -157,7 +157,7 @@ export default {
     },
 
     // 绘制轴重和轴距图
-    drawDistanceChart () {
+    drawDistanceChart() {
       // 距离放大20倍
       const ratio = 25
 
@@ -206,7 +206,7 @@ export default {
       drawTotalStatus()
 
       // 绘制轴距
-      function drawLine (_start, _end) {
+      function drawLine(_start, _end) {
         const start = _start * ratio
         const end = _end * ratio
 
@@ -255,7 +255,7 @@ export default {
       }
 
       // 绘制车轮和轴重
-      function drawWheel (_start, _end, weight) {
+      function drawWheel(_start, _end, weight) {
         // eslint-disable-next-line no-unused-vars
         const start = _start * ratio
         const end = _end * ratio
@@ -284,7 +284,7 @@ export default {
       }
 
       // 绘制车辆总长、总轴和总重量
-      function drawTotalStatus () {
+      function drawTotalStatus() {
         const start = 0
         const end = vehicleData.length * ratio
         ctx.beginPath()
@@ -333,7 +333,7 @@ export default {
   watch: {
     wheelList: {
       deep: true,
-      handler () {
+      handler() {
         this.drawDistanceChart()
       }
     }
@@ -438,15 +438,5 @@ export default {
       cursor: col-resize;
     }
   }
-}
-
-// 去掉input type=number的 + -
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 </style>
