@@ -55,6 +55,10 @@ const ZhShaoWarning = () =>
   import(
     /* webpackChunkName: "ZhShaoWarning" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoWarning.vue'
   )
+const ZhShaoCommunication = () =>
+  import(
+    /* webpackChunkName: "ZhShaoCommunication" */ '../views/zhenShaoBridgeSystem/childrenPages/ZhShaoCommunication.vue'
+  )
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -80,7 +84,8 @@ const routes = [
       { path: '/ZhShaoStatement', component: ZhShaoStatement },
       { path: '/ZhShaoLog', component: ZhShaoLog },
       { path: '/ZhShaoProjectInfo', component: ZhShaoProjectInfo },
-      { path: '/ZhShaoWarning', component: ZhShaoWarning }
+      { path: '/ZhShaoWarning', component: ZhShaoWarning },
+      { path: '/ZhShaoCommunication', component: ZhShaoCommunication }
     ]
   }
 ]
