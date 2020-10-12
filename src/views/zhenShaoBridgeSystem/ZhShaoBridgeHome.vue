@@ -146,6 +146,7 @@ export default {
   methods: {
     logout() {
       window.sessionStorage.removeItem('token')
+      window.sessionStorage.removeItem('user')
       this.$router.replace('/')
     },
 
