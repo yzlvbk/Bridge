@@ -89,10 +89,10 @@
             <span slot="title">预警系统</span>
           </el-menu-item>
 
-          <el-menu-item index="/ZhShaoCommunication">
+          <!-- <el-menu-item index="/ZhShaoCommunication">
             <i class="el-icon-s-comment"></i>
             <span slot="title">留言系统</span>
-          </el-menu-item>
+          </el-menu-item>-->
         </el-menu>
 
         <div class="bottom_logo">
@@ -130,7 +130,7 @@ export default {
 
     // 获取用户数据
     if (!this.userInfo) {
-      const userInfo = JSON.parse(window.sessionStorage.getItem('token'))
+      const userInfo = JSON.parse(window.sessionStorage.getItem('user'))
       this.setUser(userInfo)
     }
   },

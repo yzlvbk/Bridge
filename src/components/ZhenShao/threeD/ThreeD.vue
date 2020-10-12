@@ -18,13 +18,13 @@
         <img src="./threeDicon/sideView.png" alt />
       </span>
       <!-- 旋转 -->
-      <span class="threed_icon_item">
+      <!-- <span class="threed_icon_item">
         <img src="./threeDicon/rotate.png" alt />
-      </span>
+      </span>-->
       <!-- 平移 -->
-      <span class="threed_icon_item">
+      <!-- <span class="threed_icon_item">
         <img src="./threeDicon/pan.png" alt />
-      </span>
+      </span>-->
     </div>
     <canvas id="webgl"></canvas>
   </div>
@@ -151,6 +151,8 @@ export default {
       // Z轴旋转值
       rotateZ: 0,
 
+      zoom: 1, // 缩放比例
+
       scene: '',
       renderer: '',
 
@@ -253,6 +255,20 @@ export default {
         }
       }
 
+      // 鼠标滚动事件
+      var mouseWheelFuc = () => {
+        let timer
+        return () => {
+          if (timer !== null) clearTimeout(timer)
+          timer = setTimeout(() => {
+            // 记录上次缩放比例
+            _this.zoom = controls.object.zoom
+            clearTimeout(timer)
+            console.log(controls.object.zoom)
+          }, 500)
+        }
+      }
+
       /* 创建组对象group */
       var group = new THREE.Group()
 
@@ -334,6 +350,9 @@ export default {
       // camera.position.set(0, 0, 100) // 设置相机位置 俯视图
       // camera.position.set(-23000, -17600, 20600) // 设置相机位置 俯视图
       camera.lookAt(0, 0, 0)
+      // 设置缩放大小
+      camera.zoom = _this.zoom
+      camera.updateProjectionMatrix()
       /**
      * 创建渲染器对象
      */
@@ -358,11 +377,15 @@ export default {
       // controls.enableRotate = true // 是否启用旋转
       // controls.enableZoom = false // 是否启用缩放
       // controls.enablePan = false // 是否启用平移
-      controls.minPolarAngle = -Infinity
+      // controls.enableDamping = true
+      controls.zoomSpeed = 1
+      controls.panSpeed = 1
+      controls.rotateSpeed = 0.7
 
       // 监听鼠标事件
       container.addEventListener('mousemove', mouseMoveFuc)
       container.addEventListener('mousedown', mouseDownFuc)
+      container.querySelector('canvas').addEventListener('wheel', mouseWheelFuc(), false)
     },
 
     // 绘制桥梁模型

@@ -1,7 +1,7 @@
 import http from './http'
 
 /* 登录 */
-export const reqPostUser = (User, Password) => http('/v10/summary/PostUser', { User, Password }, 'POST')
+export const reqPostUser = (User, Password) => http('/v10/getToken/PostUser', { User, Password }, 'POST')
 
 /* 系统首页获取桥梁轮播信息 */
 export const reqAllBridgeNotice = () => http('/v10/summary/GetNotice', {}, 'GET')

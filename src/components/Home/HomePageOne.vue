@@ -52,6 +52,7 @@ import {
   reqAllBridgeInfo,
   reqAllBridgeNotice
 } from '@/request/ZhShao/api.js'
+import axios from 'axios'
 export default {
   async mounted() {
     // 获取天气数据
@@ -149,7 +150,7 @@ export default {
     // 请求天气数据
     async getWeatherData() {
       // xue、lei、shachen、wu、bingbao、yun、yu、yin、qing
-      const { data } = await this.$http.get('https://www.tianqiapi.com/api?version=v61&appid=13392814&appsecret=RfDCQz2U&city=郑州')
+      const { data } = await axios.get('https://www.tianqiapi.com/api?version=v61&appid=13392814&appsecret=RfDCQz2U&city=郑州')
       this.weatherData = {
         city: data.city,
         nowTem: data.tem,

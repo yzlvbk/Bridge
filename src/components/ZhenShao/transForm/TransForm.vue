@@ -434,7 +434,6 @@ export default {
         this.debounce(newname)
         // this.getMeshDeformData(newname)
       } else {
-        console.log(22)
         this.getMeshDeformData(newname)
       }
     }

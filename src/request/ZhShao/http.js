@@ -9,11 +9,14 @@ const baseUrl = 'http://118.190.216.205:8005/bridgeWeb'
 
 // 请求拦截
 axios.interceptors.request.use(config => {
+  if (config.url.startsWith('http://118.190.216.205:8005/bridgeWeb')) {
+    config.headers.Authorization = 'Basic ' + window.sessionStorage.getItem('token')
+  }
   // 在最后必须 return config
   return config
 })
 
-export default function http (url, data = {}, type = 'GET') {
+export default function http(url, data = {}, type = 'GET') {
   return new Promise((resolve, reject) => {
     let promise
 

@@ -55,11 +55,14 @@ export default {
         if (valid) {
           // 请求接口
           const data = await reqPostUser(this.loginForm.username, this.loginForm.password)
+          console.log(data)
           // 请求接口成功
           if (Array.isArray(data.data)) {
             this.setUser(data.data[0])
-            window.sessionStorage.setItem('token', JSON.stringify(data.data[0]))
-            this.$router.push(this.$route.query.direction)
+
+            window.sessionStorage.setItem('token', data.data[0].UserToken)
+            window.sessionStorage.setItem('user', JSON.stringify(data.data[0]))
+            this.$route.query.direction ? this.$router.push(this.$route.query.direction) : this.$router.push('/ZhShaoMonitor')
           } else {
             // 登录失败
             this.$message.error('登录失败')
