@@ -348,7 +348,7 @@ export default {
 
   .contain {
     display: flex;
-    height: calc(100% - 20px);
+    height: calc(100% - 8px);
 
     .asseee_chart,
     .assess_result {

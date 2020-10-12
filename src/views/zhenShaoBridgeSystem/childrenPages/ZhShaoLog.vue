@@ -131,7 +131,7 @@ export default {
   height: 100%;
 
   .contain {
-    height: calc(100% - 130px);
+    height: calc(100% - 118px);
     padding: 10px 20px;
     box-sizing: border-box;
     background-color: var(--ContainBgColor);

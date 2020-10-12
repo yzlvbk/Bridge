@@ -85,12 +85,12 @@
           </el-menu-item>
 
           <el-menu-item index="/ZhShaoWarning">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-warning"></i>
             <span slot="title">预警系统</span>
           </el-menu-item>
 
           <el-menu-item index="/ZhShaoCommunication">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-s-comment"></i>
             <span slot="title">留言系统</span>
           </el-menu-item>
         </el-menu>

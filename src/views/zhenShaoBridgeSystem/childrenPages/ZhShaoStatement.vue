@@ -133,7 +133,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100% - 116px);
+  height: calc(100% - 118px);
   box-sizing: border-box;
   background-color: var(--ContainBgColor);
   overflow-y: auto;

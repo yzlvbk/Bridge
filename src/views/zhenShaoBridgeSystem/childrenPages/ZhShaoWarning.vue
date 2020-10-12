@@ -75,36 +75,8 @@ export default {
       /* 预警联系方式列表 */
       contactList: [
         {
-          contactType: 19999999999,
-          contactPerson: '1212'
-        },
-        {
-          contactType: 19999999999,
-          contactPerson: '1212'
-        },
-        {
-          contactType: 19999999999,
-          contactPerson: '1212'
-        },
-        {
-          contactType: 19999999999,
-          contactPerson: '1212'
-        },
-        {
-          contactType: 19999999999,
-          contactPerson: '1212'
-        },
-        {
-          contactType: 19999999999,
-          contactPerson: '1212'
-        },
-        {
-          contactType: 19999999999,
-          contactPerson: '1212'
-        },
-        {
-          contactType: 19999999999,
-          contactPerson: '1212'
+          contactType: '199xxxx9999',
+          contactPerson: 'xxx'
         }
       ],
 
@@ -129,8 +101,8 @@ export default {
       this.addDialogVisible = false
       if (!this.addContactPersonValue || !this.addContactTypeValue) return this.$message.warning('请输入正确联系人和联系方式')
       this.contactList.push({
-        contactType: this.addContactPersonValue,
-        contactPerson: this.addContactTypeValue
+        contactType: this.addContactTypeValue,
+        contactPerson: this.addContactPersonValue
       })
       this.addContactPersonValue = ''
       this.addContactTypeValue = ''
@@ -140,15 +112,15 @@ export default {
     editContact(index) {
       this.editDialogVisible = true
       this.editContactIndex = index // 保存修改对象索引
-      this.editContactPersonValue = this.contactList[index].contactType
-      this.editContactTypeValue = this.contactList[index].contactPerson
+      this.editContactPersonValue = this.contactList[index].contactPerson
+      this.editContactTypeValue = this.contactList[index].contactType
     },
     // 确定修改预警联系方式
     confirmEditContact() {
       this.editDialogVisible = false
       if (!this.editContactPersonValue || !this.editContactTypeValue) return this.$message.warning('请输入正确联系人和联系方式')
-      this.contactList[this.editContactIndex].contactType = this.editContactPersonValue
-      this.contactList[this.editContactIndex].contactPerson = this.editContactTypeValue
+      this.contactList[this.editContactIndex].contactType = this.editContactTypeValue
+      this.contactList[this.editContactIndex].contactPerson = this.editContactPersonValue
     },
 
     // 删除预警联系方式

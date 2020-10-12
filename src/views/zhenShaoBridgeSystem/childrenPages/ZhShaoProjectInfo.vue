@@ -54,7 +54,7 @@
 }
 .contain {
   // display: flex;
-  height: calc(100% - 130px);
+  height: calc(100% - 118px);
   padding: 0 80px;
   box-sizing: border-box;
   background-color: var(--ContainBgColor);

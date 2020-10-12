@@ -272,7 +272,7 @@ export default {
 
   .contain {
     display: flex;
-    height: calc(100% - 20px);
+    height: calc(100% - 8px);
 
     .three_d_model,
     .chart {
