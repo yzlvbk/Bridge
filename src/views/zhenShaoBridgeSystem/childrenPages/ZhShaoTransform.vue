@@ -9,7 +9,7 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-      <div class="three_d_model" style="width: 100%;">
+      <div class="three_d_model">
         <TransForm :sliderValue="sliderValue"></TransForm>
         <el-slider
           class="bridge_stress_slider"
@@ -25,27 +25,20 @@
       <!-- 空隙模块 -- 控制模块拖动 -->
       <!-- <div class="vsplitter" ref="vsplitter"></div> -->
 
-      <div class="chart" style="width: 40%;" v-if="false">
-        <!-- echarts图 -->
-        <div v-if="false" class="stress_chart"></div>
-
-        <!-- table表格 -->
-        <div v-if="false" class="stress_data">
-          <el-table
-            ref="tableList"
-            :data="tableData"
-            stripe
-            height="100%"
-            style="width: 100%; border: none;"
-            :row-style="{ height: '60px' }"
-            :row-class-name="tableRowClassName"
-          >
-            <el-table-column prop="id" align="center" label="编号"></el-table-column>
-            <el-table-column prop="name" align="center" label="名称"></el-table-column>
-            <el-table-column prop="material" align="center" label="主题材质"></el-table-column>
-            <el-table-column prop="level" align="center" label="安全级别"></el-table-column>
-          </el-table>
+      <div class="chart">
+        <!-- 颜色差值区域 -->
+        <div class="three_d_model_color">
+          <span class="three_d_model_color_item">2</span>
+          <span class="three_d_model_color_item">40</span>
+          <span class="three_d_model_color_item">80</span>
+          <span class="three_d_model_color_item">120</span>
+          <span class="three_d_model_color_item">160</span>
+          <span class="three_d_model_color_item">200</span>
+          <span class="three_d_model_color_item">240</span>
+          <span class="three_d_model_color_item">280</span>
+          <span class="three_d_model_color_item">&gt;280</span>
         </div>
+        <Stress />
       </div>
     </div>
   </div>
@@ -55,6 +48,7 @@
 /* 监听图表div宽高变化 */
 import elementResizeDetectorMaker from 'element-resize-detector'
 import TransForm from '@/components/ZhenShao/transForm/TransForm'
+import Stress from '@/components/ZhenShao/stress/Stress'
 export default {
   async mounted() {
     // 获取Mesh数据
@@ -384,7 +378,8 @@ export default {
 
   },
   components: {
-    TransForm
+    TransForm,
+    Stress
   }
 }
 </script>
@@ -396,7 +391,8 @@ export default {
 
   .contain {
     display: flex;
-    height: calc(100% - 8px);
+    flex-direction: column;
+    height: calc(100% - 118px);
 
     .three_d_model,
     .chart {
@@ -410,6 +406,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-bottom: 10px;
 
       .bridge_stress_slider {
         position: absolute;
@@ -426,22 +423,33 @@ export default {
     }
 
     .chart {
+      position: relative;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
-      .stress_chart {
-        position: relative;
-        flex-basis: 50%;
-        border-bottom: 5px solid var(--BgColor);
-        overflow: hidden;
-      }
-
-      .stress_data {
+      .three_d_model_color {
+        position: absolute;
         display: flex;
-        flex-direction: column;
-        position: relative;
-        flex-basis: 50%;
-        border-top: 5px solid var(--BgColor);
+        left: center;
+        top: 20px;
+        background-image: linear-gradient(
+          to right,
+          #ff0000,
+          #d8e703,
+          #03e729,
+          #03e7dc,
+          #6200ff
+        );
+
+        .three_d_model_color_item {
+          width: 40px;
+          height: 20px;
+          // border: 1px solid #fff;
+          line-height: 20px;
+          text-align: center;
+          color: #000;
+        }
       }
     }
   }

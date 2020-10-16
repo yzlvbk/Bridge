@@ -1,6 +1,6 @@
 <template>
   <div class="homeThree">
-    <div class="homeThree_header">郑州桥梁展示系统</div>
+    <div class="homeThree_header">桥梁结构实时监测系统</div>
     <div class="homeThree_content">
       <img class="homeThree_content_img" src="../../assets/image/title.png" alt />
 

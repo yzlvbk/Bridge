@@ -45,8 +45,40 @@
       <div class="vsplitter" ref="vsplitter"></div>
 
       <div class="three_d_model" style="width: 50%;">
+        <!-- 应力部分视图 -->
+        <div class="three_d_model_item_top">
+          <!-- 下拉框 -->
+          <div class="select">
+            <el-select v-model="selectElement1Value">
+              <el-option
+                v-for="item in element1Options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </div>
+
+          <img :src="element1PictureSrc" alt />
+        </div>
+        <div class="three_d_model_item_bottom">
+          <!-- 下拉框 -->
+          <div class="select">
+            <el-select v-model="selectElement2Value">
+              <el-option
+                v-for="item in element2Options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </div>
+
+          <img :src="element2PictureSrc" alt />
+        </div>
+
         <!-- 颜色差值区域 -->
-        <div class="three_d_model_color">
+        <!-- <div class="three_d_model_color">
           <span class="three_d_model_color_item">2</span>
           <span class="three_d_model_color_item">40</span>
           <span class="three_d_model_color_item">80</span>
@@ -57,7 +89,7 @@
           <span class="three_d_model_color_item">280</span>
           <span class="three_d_model_color_item">&gt;280</span>
         </div>
-        <Stress />
+        <Stress />-->
       </div>
     </div>
   </div>
@@ -65,7 +97,7 @@
 
 <script>
 /* 监听图表div宽高变化 */
-import Stress from '@/components/ZhenShao/stress/Stress'
+// import Stress from '@/components/ZhenShao/stress/Stress'
 import {
   reqBridgeOneVehicalWeight
 } from '@/request/ZhShao/api.js'
@@ -97,7 +129,58 @@ export default {
       canvasWidth: '', // 应力图宽度
       canvasHeight: '', // 应力图高度度
 
-      stressPictureSrc: 'ZhenShao/arch/animation_arch_1.png', // 应力图片路径
+      stressPictureSrc: 'ZhenShao/arch/new_animation_1.png', // 应力图片路径
+      element1PictureSrc: 'ZhenShao/element/东侧桥面板/东侧桥面板_1.png',
+      element2PictureSrc: 'ZhenShao/element/西侧拱圈/西侧拱圈_1.png',
+
+      selectElement1Value: '东侧桥面板',
+      /* 下拉框配置项 */
+      element1Options:
+        [{
+          value: '东侧桥面板',
+          label: '东侧桥面板'
+        }, {
+          value: '东侧拱圈',
+          label: '东侧拱圈'
+        }, {
+          value: '东侧立柱1',
+          label: '东侧立柱1'
+        }, {
+          value: '东侧立柱2',
+          label: '东侧立柱2'
+        }, {
+          value: '东侧立柱3',
+          label: '东侧立柱3'
+        }, {
+          value: '东侧立柱4',
+          label: '东侧立柱4'
+        }, {
+          value: '跨中',
+          label: '跨中'
+        }],
+      selectElement2Value: '西侧拱圈',
+      /* 下拉框配置项 */
+      element2Options: [
+        {
+          value: '西侧桥面板',
+          label: '西侧桥面板'
+        }, {
+          value: '西侧拱圈',
+          label: '西侧拱圈'
+        }, {
+          value: '西侧立柱1',
+          label: '西侧立柱1'
+        }, {
+          value: '西侧立柱2',
+          label: '西侧立柱2'
+        }, {
+          value: '西侧立柱3',
+          label: '西侧立柱3'
+        }, {
+          value: '西侧立柱4',
+          label: '西侧立柱4'
+        }
+      ],
       currentNum: 1,
 
       /* 车辆载重实时数据 */
@@ -141,19 +224,19 @@ export default {
     /* 绘制车辆载重图 */
     drawWeightChart() {
       // 定义颜色
-      const fontColor = 'rgb(15, 200, 224)'
-      const lineColor = '#CACACA'
+      const fontColor = 'rgb(0,0,0)'
+      const lineColor = '#000'
 
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.weight_chart'))
 
       // 2.配置option
       const option = {
-        color: ['rgb(15,200,224)'], // 线条颜色
+        color: ['rgb(0,0,0)'], // 线条颜色
         title: {
           text: '车辆实时载重',
           textStyle: {
-            color: '#eee',
+            color: '#000',
             fontSize: '14',
             fontWeight: 400
           },
@@ -247,7 +330,9 @@ export default {
       // 激活动画状态
       this.isPlayStressAnimation = true
       const timer = setInterval(() => {
-        this.stressPictureSrc = `ZhenShao/arch/animation_arch_${this.currentNum}.png`
+        this.stressPictureSrc = `ZhenShao/arch/new_animation_${this.currentNum}.png`
+        this.element1PictureSrc = `ZhenShao/element/${this.selectElement1Value}/${this.selectElement1Value}_${this.currentNum}.png`
+        this.element2PictureSrc = `ZhenShao/element/${this.selectElement2Value}/${this.selectElement2Value}_${this.currentNum}.png`
         this.currentNum += 1
         // console.log(this.currentNum)
         if (this.currentNum === 53) {
@@ -260,7 +345,7 @@ export default {
     }
   },
   components: {
-    Stress
+    // Stress
   }
 }
 </script>
@@ -277,15 +362,52 @@ export default {
     .three_d_model,
     .chart {
       height: calc(100% - 110px);
-      background-color: var(--ContainBgColor);
       overflow: hidden;
     }
 
     .three_d_model {
       position: relative;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      // justify-content: center;
+      // align-items: center;
+
+      .three_d_model_item_top {
+        position: relative;
+        height: calc(50% - 5px);
+        margin-bottom: 5px;
+        background-color: #fff;
+        text-align: center;
+
+        .select {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 120px;
+        }
+
+        img {
+          height: 100%;
+        }
+      }
+      .three_d_model_item_bottom {
+        position: relative;
+        height: calc(50% - 5px);
+        margin-top: 5px;
+        background-color: #fff;
+        text-align: center;
+
+        .select {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 120px;
+        }
+
+        img {
+          height: 100%;
+        }
+      }
 
       .three_d_model_color {
         position: absolute;
@@ -320,6 +442,7 @@ export default {
     .chart {
       display: flex;
       flex-direction: column;
+      background-color: #fff;
 
       .stress_chart {
         position: relative;
@@ -358,10 +481,11 @@ export default {
           }
 
           &::after {
-            content: '×10-4';
+            content: '×10^(-4)';
             position: absolute;
             bottom: -20px;
-            right: -10px;
+            right: -40px;
+            color: #333;
           }
         }
       }

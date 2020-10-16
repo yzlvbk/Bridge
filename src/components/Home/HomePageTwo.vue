@@ -1,39 +1,44 @@
 <template>
-<div class="homeTwo">
-  <div class="homeTwo_header">郑州桥梁展示系统</div>
-  <div class="homeTwo_content">
-    <img class="homeTwo_content_img" src="../../assets/image/title.png" alt />
+  <div class="homeTwo">
+    <div class="homeTwo_header">桥梁结构实时监测系统</div>
+    <div class="homeTwo_content">
+      <img class="homeTwo_content_img" src="../../assets/image/title.png" alt />
 
-    <!-- 桥梁安全级别统计模块 -->
-    <div class="homeTwo_safety">
-      <!-- Echarts图表区域 -->
-      <div class="homeTwo_safety_chart"></div>
-      <!-- 无缝滚动区域 -->
-      <div class="homeTwo_safety_form">
-        <div class="homeTwo_safety_form_title">
-          <ul>
-            <li>编号</li>
-            <li>名称</li>
-            <li>类型</li>
-            <li>健康分值</li>
-            <li>安全级别</li>
-          </ul>
+      <!-- 桥梁安全级别统计模块 -->
+      <div class="homeTwo_safety">
+        <!-- Echarts图表区域 -->
+        <div class="homeTwo_safety_chart"></div>
+        <!-- 无缝滚动区域 -->
+        <div class="homeTwo_safety_form">
+          <div class="homeTwo_safety_form_title">
+            <ul>
+              <li>编号</li>
+              <li>名称</li>
+              <li>类型</li>
+              <li>健康分值</li>
+              <li>安全级别</li>
+            </ul>
+          </div>
+          <vue-seamless-scroll
+            :data="safetyLevelList"
+            :class-option="classOption"
+            class="seamless_scroll"
+            :style="'max-height: ' + seamlessMaxHeight"
+          >
+            <ul class="seamless_scroll_ul">
+              <li v-for="item in safetyLevelList" :key="item.BridgeId">
+                <span v-text="item.BridgeId"></span>
+                <span v-text="item.BridgeName"></span>
+                <span v-text="item.BridgeType"></span>
+                <span v-text="item.HealthScore"></span>
+                <span v-text="item.SafetyLevel"></span>
+              </li>
+            </ul>
+          </vue-seamless-scroll>
         </div>
-        <vue-seamless-scroll :data="safetyLevelList" :class-option="classOption" class="seamless_scroll" :style="'max-height: ' + seamlessMaxHeight">
-          <ul class="seamless_scroll_ul">
-            <li v-for="item in safetyLevelList" :key="item.BridgeId">
-              <span v-text="item.BridgeId"></span>
-              <span v-text="item.BridgeName"></span>
-              <span v-text="item.BridgeType"></span>
-              <span v-text="item.HealthScore"></span>
-              <span v-text="item.SafetyLevel"></span>
-            </li>
-          </ul>
-        </vue-seamless-scroll>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -153,7 +158,7 @@ export default {
           textStyle: {
             color: '#c0c3cd'
           },
-          top: '20px',
+          top: '10px',
           left: 'center'
         },
         textStyle: {
@@ -190,7 +195,7 @@ export default {
           left: 20,
           right: 20,
           bottom: 10,
-          top: 40
+          top: 60
         },
         xAxis: {
           nameTextStyle: {

@@ -2,11 +2,11 @@
   <div class="home_one">
     <!-- 头部区域 -->
     <div class="header">
-      <div class="header_title">郑州桥梁展示系统</div>
+      <div class="header_title">桥梁结构实时监测系统</div>
 
       <!-- 滚动表 -->
       <div class="scroll_list">
-        <dv-scroll-board :config="rebroadcastConfig" style="height:60px" />
+        <dv-scroll-board :config="rebroadcastConfig" style="height:90px" />
       </div>
 
       <!-- 天气信息 -->
@@ -414,7 +414,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .home_one {
   height: 100%;
   background: url(../../assets/image/bg.jpg) no-repeat;
@@ -426,9 +426,9 @@ export default {
 
     .header_title {
       text-align: center;
-      line-height: 75px;
-      font-size: 22px;
-      height: 90px;
+      line-height: 90px;
+      font-size: 26px;
+      height: 110px;
       background: url(../../assets/image/topbg.png) no-repeat;
       background-size: 100% 100%;
     }
@@ -440,6 +440,13 @@ export default {
       width: 30%;
       max-width: 500px;
       z-index: 100;
+
+      .dv-scroll-board .header {
+        font-size: 18px;
+      }
+      .dv-scroll-board .rows .row-item {
+        font-size: 18px;
+      }
     }
 
     .header_weather_warp {
@@ -448,7 +455,7 @@ export default {
         align-items: center;
         position: absolute;
         right: 10px;
-        top: 40px;
+        top: 60px;
         height: 60px;
         text-align: left;
 
@@ -477,7 +484,7 @@ export default {
     .main_middle {
       position: absolute;
       width: 100%;
-      height: calc(100% - 90px);
+      height: calc(100% - 110px);
       // border: 1px solid #fff;
     }
     .main_middle_map {
