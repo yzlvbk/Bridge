@@ -130,6 +130,8 @@ export default {
 
     /* 绘制时序图 */
     drawTimeChart() {
+      // 定义颜色
+      const defaultColor = ['', '58,132,255', '19, 255, 235']
       // 保存vuex中数据, 设置X、Y轴数据
       const object = Object.values(this.timeChartData)[0]
       // 根据传感器不同显示不同单位
@@ -141,7 +143,7 @@ export default {
       })
       // 处理series数据
       const series = []
-      for (const key in object) {
+      Object.keys(object).forEach((key, index) => {
         if (key !== 'Time') {
           series.push({
             name: key,
@@ -149,20 +151,20 @@ export default {
             symbol: 'emptyCircle', // 标记形状
             itemStyle: {
               normal: {
-                color: 'rgba(58,132,255,1)', // 圆点颜色
+                color: `rgba(${defaultColor[index]},1)`, // 圆点颜色'rgba(58,132,255,1)'
                 lineStyle: {
-                  color: 'rgba(58,132,255,1)',
+                  color: `rgba(${defaultColor[index]})`,
                   width: 1
                 },
                 areaStyle: {
                   color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     {
                       offset: 0,
-                      color: 'rgba(58,132,255,0.5)' // 渐变色起始颜色
+                      color: `rgba(${defaultColor[index]},0.5)` // 渐变色起始颜色
                     },
                     {
                       offset: 1,
-                      color: 'rgba(58,132,255,0)' // 渐变色结束颜色
+                      color: `rgba(${defaultColor[index]},0)` // 渐变色结束颜色
                     }
                   ])
                 }
@@ -171,7 +173,7 @@ export default {
             data: object[key]
           })
         }
-      }
+      })
 
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'
@@ -320,33 +322,36 @@ export default {
 
     /* 绘制相关性分析图 */
     drawRelationChart() {
+      // 定义颜色
+      const defaultColor = ['58,132,255', '19, 255, 235', '255, 32, 32', '255, 221, 25', '142, 250, 54', '54, 250, 142', '54, 162, 250', '189, 56, 250', '250, 56, 176', '0, 17, 255', '123, 255, 0']
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.relationChartData.x
       // 根据传感器不同显示不同单位
       const yAxisName = Object.keys(this.relationChartData.y)[0].startsWith('SR') ? '倾角(deg)' : '微应变(micro strain)'
       const series = []
       const yObject = this.relationChartData.y
-      for (const key in yObject) {
+
+      Object.keys(yObject).forEach((key, index) => {
         series.push({
           name: key,
           type: 'line',
           symbol: 'emptyCircle', // 标记形状
           itemStyle: {
             normal: {
-              color: 'rgba(58,132,255,1)', // 圆点颜色
+              color: defaultColor[index] ? `rgba(${defaultColor[index]},1)` : 'rgba(58,132,255,1)', // 圆点颜色
               lineStyle: {
-                color: 'rgba(58,132,255,1)',
+                color: defaultColor[index] ? `rgba(${defaultColor[index]},1)` : 'rgba(58,132,255,1)',
                 width: 1
               },
               areaStyle: {
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   {
                     offset: 0,
-                    color: 'rgba(58,132,255,0.5)' // 渐变色起始颜色
+                    color: defaultColor[index] ? `rgba(${defaultColor[index]},0.5)` : 'rgba(58,132,255,1)' // 渐变色起始颜色
                   },
                   {
                     offset: 1,
-                    color: 'rgba(58,132,255,0)' // 渐变色结束颜色
+                    color: defaultColor[index] ? `rgba(${defaultColor[index]},0)` : 'rgba(58,132,255,1)' // 渐变色结束颜色
                   }
                 ])
               }
@@ -354,7 +359,7 @@ export default {
           },
           data: yObject[key]
         })
-      }
+      })
 
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'
@@ -508,33 +513,35 @@ export default {
 
     /* 绘制历史图 */
     drawHistoryChart() {
+      // 定义颜色
+      const defaultColor = ['58,132,255', '19, 255, 235', '255, 32, 32', '255, 221, 25', '142, 250, 54', '54, 250, 142', '54, 162, 250', '189, 56, 250', '250, 56, 176', '0, 17, 255', '123, 255, 0']
       // 保存vuex中数据, 设置X、Y轴数据
       const dataX = this.historyChartData.x
       const yObject = this.historyChartData.y
       // 根据传感器不同显示不同单位
       const yAxisName = Object.keys(this.historyChartData.y)[0].startsWith('SR') ? '倾角(deg)' : '微应变(micro strain)'
       const series = []
-      for (const key in yObject) {
+      Object.keys(yObject).forEach((key, index) => {
         series.push({
           name: key,
           type: 'line',
           symbol: 'emptyCircle', // 标记形状
           itemStyle: {
             normal: {
-              color: 'rgba(58,132,255,1)', // 圆点颜色
+              color: defaultColor[index] ? `rgba(${defaultColor[index]},1)` : 'rgba(58,132,255,1)', // 圆点颜色
               lineStyle: {
-                color: 'rgba(58,132,255,1)',
+                color: defaultColor[index] ? `rgba(${defaultColor[index]},1)` : 'rgba(58,132,255,1)',
                 width: 1
               },
               areaStyle: {
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   {
                     offset: 0,
-                    color: 'rgba(58,132,255,0.5)' // 渐变色起始颜色
+                    color: defaultColor[index] ? `rgba(${defaultColor[index]},0.5)` : 'rgba(58,132,255,1)' // 渐变色起始颜色
                   },
                   {
                     offset: 1,
-                    color: 'rgba(58,132,255,0)' // 渐变色结束颜色
+                    color: defaultColor[index] ? `rgba(${defaultColor[index]},0)` : 'rgba(58,132,255,1)' // 渐变色结束颜色
                   }
                 ])
               }
@@ -542,7 +549,7 @@ export default {
           },
           data: yObject[key]
         })
-      }
+      })
 
       // 定义颜色
       var fontColor = 'rgb(15, 200, 224)'
