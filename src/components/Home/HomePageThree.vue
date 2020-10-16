@@ -65,7 +65,7 @@ export default {
       lis.forEach(li => {
         li.addEventListener('click', this.togglePieChart(li.id), false)
       })
-    }, 100)
+    }, 1000)
   },
 
   data() {
@@ -148,6 +148,63 @@ export default {
           name: '公交车',
           value: 340
         }]
+      },
+
+      // 绘制雷达图数据
+      carNumStatisticsRadar: [],
+      // 模拟5座桥车辆统计雷达图数据
+      mockcarNumStatisticsRadar: {
+        'BC-01': {
+          data: [429, 617, 160, 94, 300],
+          indicator: [
+            { name: '自行车', max: 700 },
+            { name: '小汽车', max: 700 },
+            { name: '卡车', max: 700 },
+            { name: '公交车', max: 700 },
+            { name: '其他', max: 700 }
+          ]
+        },
+        'BC-02': {
+          data: [100, 50, 80, 70, 98, 10, 42],
+          indicator: [
+            { name: '自行车', max: 200 },
+            { name: '汽车', max: 200 },
+            { name: '卡车', max: 200 },
+            { name: '公交车', max: 200 },
+            { name: '电动车', max: 200 }
+          ]
+        },
+        'BC-03': {
+          data: [430, 700, 630, 300, 540, 104, 250],
+          indicator: [
+            { name: '自行车', max: 810 },
+            { name: '汽车', max: 810 },
+            { name: '卡车', max: 810 },
+            { name: '公交车', max: 810 },
+            { name: '行人', max: 810 },
+            { name: '电动车', max: 810 }
+          ]
+        },
+        'BC-04': {
+          data: [230, 100, 80, 350, 390, 190, 130],
+          indicator: [
+            { name: '自行车', max: 400 },
+            { name: '汽车', max: 400 },
+            { name: '公交车', max: 400 },
+            { name: '摩托车', max: 400 },
+            { name: '行人', max: 400 },
+            { name: '电动车', max: 400 }
+          ]
+        },
+        'BC-05': {
+          data: [300, 210, 89, 289, 230, 120, 20],
+          indicator: [
+            { name: '自行车', max: 320 },
+            { name: '汽车', max: 320 },
+            { name: '卡车', max: 320 },
+            { name: '公交车', max: 320 }
+          ]
+        }
       }
     }
   },
@@ -182,11 +239,14 @@ export default {
         this.SafetyScoreList = res[1].data
         this.carNumStatistics = res[2].data
         // 绘制echarts
-        this.drawVehicleNum()
+        // this.drawVehicleNum()
+
+        this.carNumStatisticsRadar = this.mockcarNumStatisticsRadar['BC-01']
+        this.drawVehicleRadarChart('BC-01')
       })
     },
 
-    // 绘制车辆统计图
+    // 绘制车辆统计饼图
     drawVehicleNum() {
       const seriseData = this.carNumStatistics
       // 1.初始化echarts
@@ -199,7 +259,7 @@ export default {
           textStyle: {
             color: '#c0c3cd'
           },
-          top: '20px',
+          top: '10px',
           left: 'center'
         },
         legend: {
@@ -258,6 +318,115 @@ export default {
       })
     },
 
+    // 绘制车辆统计雷达图
+    drawVehicleRadarChart(BridgeName) {
+      // 1.初始化echarts
+      const myChart = this.$echarts.init(document.querySelector('.homeThree_vehicle_chart'))
+
+      // const dataMax = 600
+      // const source = {
+      //   data: [430, 100, 280, 350, 500, 190, 130],
+      //   indicator: [
+      //     { name: '自行车', max: dataMax },
+      //     { name: '汽车', max: dataMax },
+      //     { name: '卡车', max: dataMax },
+      //     { name: '公交车', max: dataMax },
+      //     { name: '摩托车', max: dataMax },
+      //     { name: '行人', max: dataMax },
+      //     { name: '电动车', max: dataMax }
+      //   ]
+      // }
+
+      const source = this.carNumStatisticsRadar
+      const buildSeries = function (data) {
+        const helper = data.map((item, index) => {
+          const arr = new Array(data.length)
+          arr.splice(index, 1, item)
+          return arr
+        })
+
+        return [data, ...helper].map((item, index) => {
+          return {
+            type: 'radar',
+            itemStyle: {
+              color: '#31e586'
+            },
+            lineStyle: {
+              color: index === 0 ? '#31e586' : 'transparent'
+            },
+            areaStyle: {
+              color: index === 0 ? '#31e586' : 'transparent',
+              opacity: 0.3
+            },
+            label: {
+              show: index !== 0
+            },
+            tooltip: {
+              show: index !== 0,
+              formatter: function () {
+                return source.indicator[index - 1].name + '不满意度：' + source.data[index - 1] + '%'
+              }
+            },
+            z: index === 0 ? 1 : 2,
+            data: [item]
+          }
+        })
+      }
+
+      // 2.配置option
+      const option = {
+        backgroundColor: '#080b30',
+        title: {
+          text: `${BridgeName}号桥 车辆统计图`,
+          textStyle: {
+            color: '#fff'
+          },
+          top: '10px',
+          left: 'center'
+        },
+        tooltip: {},
+        radar: {
+          // shape: 'circle',
+          center: ['50%', '60%'],
+          radius: '70%',
+          name: {
+            textStyle: {
+              fontSize: 16,
+              color: ['#d1dbf2'],
+              padding: [3, 5]
+            }
+          },
+          splitNumber: 4,
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['rgba(12,62,129,0)', 'rgba(12,62,129,0.3)', 'rgba(12,62,129,0)', 'rgba(12,62,129,0.3)']
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#0c3e81'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#0c3e81'
+            }
+          },
+          indicator: source.indicator
+        },
+        series: buildSeries(source.data)
+      }
+
+      // 3.将配置项给实例
+      myChart.setOption(option, true)
+
+      // 4.跟随屏幕自适应
+      window.addEventListener('resize', function () {
+        myChart.resize()
+      })
+    },
+
     // 点击无缝滚动列表，切换饼图
     togglePieChart(BridgeName) {
       return () => {
@@ -265,9 +434,13 @@ export default {
         document.querySelectorAll('.seamless_scroll_ul_li').forEach(li => li.classList.remove('current'))
         document.querySelectorAll('#' + BridgeName).forEach(li => li.classList.add('current'))
 
-        // 重新绘制echarts
-        this.carNumStatistics = this.mockcarNumStatistics[BridgeName]
-        this.drawVehicleNum()
+        // 重新绘制echarts饼图
+        // this.carNumStatistics = this.mockcarNumStatistics[BridgeName]
+        // this.drawVehicleNum()
+
+        // 重新绘制echarts雷达图
+        this.carNumStatisticsRadar = this.mockcarNumStatisticsRadar[BridgeName]
+        this.drawVehicleRadarChart(BridgeName)
       }
     }
   },
