@@ -8,7 +8,7 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-      <div class="three_d_model" style="width: 60%;">
+      <div class="three_d_model" style="width: 100%;">
         <!-- <button @click="addImg">添加照片</button> -->
         <div class="showImg">
           <img :src="currentImg" width="500px" heigth="500px" />
@@ -26,9 +26,9 @@
       </div>
 
       <!-- 空隙模块 -- 控制模块拖动 -->
-      <div class="vsplitter" ref="vsplitter"></div>
+      <!-- <div class="vsplitter" ref="vsplitter"></div> -->
 
-      <div class="chart" style="width: 40%;"></div>
+      <!-- <div class="chart" style="width: 40%;"></div> -->
     </div>
   </div>
 </template>

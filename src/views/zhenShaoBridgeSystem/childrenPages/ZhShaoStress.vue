@@ -12,6 +12,7 @@
       <div class="chart" style="width: 50%;">
         <!-- echarts图 -->
         <div class="stress_chart">
+          <div class="stress_chart_title">结构变形整体图</div>
           <img :src="stressPictureSrc" alt />
 
           <!-- 颜色差值区域 -->
@@ -47,6 +48,7 @@
       <div class="three_d_model" style="width: 50%;">
         <!-- 应力部分视图 -->
         <div class="three_d_model_item_top">
+          <div class="three_d_model_item_top_titlt">结构变形东侧局部图</div>
           <!-- 下拉框 -->
           <div class="select">
             <el-select v-model="selectElement1Value">
@@ -62,6 +64,7 @@
           <img :src="element1PictureSrc" alt />
         </div>
         <div class="three_d_model_item_bottom">
+          <div class="three_d_model_item_bottom_titlt">结构变形西侧局部图</div>
           <!-- 下拉框 -->
           <div class="select">
             <el-select v-model="selectElement2Value">
@@ -379,6 +382,15 @@ export default {
         background-color: #fff;
         text-align: center;
 
+        .three_d_model_item_top_titlt {
+          position: absolute;
+          width: 100%;
+          top: 10px;
+          color: #000;
+          text-align: center;
+          font-size: 14px;
+        }
+
         .select {
           position: absolute;
           top: 10px;
@@ -396,6 +408,15 @@ export default {
         margin-top: 5px;
         background-color: #fff;
         text-align: center;
+
+        .three_d_model_item_bottom_titlt {
+          position: absolute;
+          width: 100%;
+          top: 10px;
+          color: #000;
+          text-align: center;
+          font-size: 14px;
+        }
 
         .select {
           position: absolute;
@@ -450,6 +471,15 @@ export default {
         border-bottom: 5px solid var(--BgColor);
         overflow: hidden;
         text-align: center;
+
+        .stress_chart_title {
+          position: absolute;
+          width: 100%;
+          top: 10px;
+          color: #000;
+          text-align: center;
+          font-size: 14px;
+        }
 
         img {
           height: 100%;

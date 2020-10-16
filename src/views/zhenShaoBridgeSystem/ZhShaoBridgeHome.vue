@@ -54,8 +54,8 @@
               <span>结构反应</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="/ZhShaoStress">应力/内力</el-menu-item>
-              <el-menu-item index="/ZhShaoTransform">变形/模态</el-menu-item>
+              <el-menu-item index="/ZhShaoStress">结构变形</el-menu-item>
+              <el-menu-item index="/ZhShaoTransform">变形/弯矩</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
