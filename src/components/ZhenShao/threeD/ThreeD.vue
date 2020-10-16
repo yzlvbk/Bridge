@@ -197,7 +197,7 @@ export default {
         return intersects
       }
 
-      var currentMesh
+      var currentMesh = ''
       // 鼠标移入移出事件
       var mouseMoveFuc = (e) => {
         const raycaster = new THREE.Raycaster() // 光线投射，用于确定鼠标点击位置
@@ -206,41 +206,39 @@ export default {
         if (intersects.length > 0) {
           if (intersects[0].object.geometry.name) {
             // 保存当前选中物体
-            currentMesh = intersects[0].object
-
-            // 选中变色
-            intersects[0].object.material = new THREE.MeshLambertMaterial({
-              color: 'lightgreen', // 三角面颜色
-              side: THREE.DoubleSide // 两面可见
-            })
-
-            // console.log(currentMesh)
-            // console.log(currentMesh.position.y)
-            // console.log(currentMesh)
+            currentMesh = intersects[0].object.geometry.name
+            console.log('pointer')
+            document.querySelector('.three_d').style.cursor = 'pointer'
           } else if (currentMesh) {
-            resetMaterials()
+            // resetMaterials()
+            document.querySelector('.three_d').style.cursor = 'default'
           }
         } else if (currentMesh) {
-          resetMaterials()
+          // resetMaterials()
+          document.querySelector('.three_d').style.cursor = 'default'
         }
       }
 
       // 重置传感器颜色
-      function resetMaterials() {
-        const name = currentMesh.geometry.name
-        let color = ''
-        if (name.startsWith('SR')) {
-          color = 'red'
-        } else if (name.startsWith('ZS')) {
-          color = 'blue'
-        }
+      // function resetMaterials() {
+      //   const name = currentMesh.moveName
+      //   let color = ''
+      //   if (name.startsWith('SR')) {
+      //     color = 'red'
+      //   } else if (name.startsWith('ZS')) {
+      //     color = 'blue'
+      //   }
+      //   console.log('reset', currentMesh)
 
-        currentMesh.material = new THREE.MeshLambertMaterial({
-          color, // 三角面颜色
-          side: THREE.DoubleSide // 两面可见
-        })
-        currentMesh = ''
-      }
+      //   const mesh = group.children.find(item => item.geometry.name === currentMesh.moveName)
+      //   if (mesh) {
+      //     mesh.material = new THREE.MeshLambertMaterial({
+      //       color, // 三角面颜色
+      //       side: THREE.DoubleSide // 两面可见
+      //     })
+      //     currentMesh.moveName = ''
+      //   }
+      // }
 
       // 鼠标点击事件
       var mouseDownFuc = async (e) => {
@@ -249,6 +247,28 @@ export default {
         const intersects = getSelsectOBj(mouse, raycaster, e)
         if (intersects.length > 0) {
           if (intersects[0].object.geometry.name) {
+            // 先清空之前变色
+            group.children.forEach(item => {
+              const name = item.geometry.name
+              if (name) {
+                let color = ''
+                if (name.startsWith('SR')) {
+                  color = 'red'
+                } else if (name.startsWith('ZS')) {
+                  color = 'blue'
+                }
+                item.material = new THREE.MeshLambertMaterial({
+                  color, // 三角面颜色
+                  side: THREE.DoubleSide // 两面可见
+                })
+              }
+            })
+
+            // 点击当前变色
+            intersects[0].object.material = new THREE.MeshLambertMaterial({
+              color: 'lightgreen', // 三角面颜色
+              side: THREE.DoubleSide // 两面可见
+            })
             // 点击传感器，通知setting组件，选中当前传感器
             _this.$bus.$emit('selectSensor', intersects[0].object.geometry.name)
           }
@@ -264,7 +284,6 @@ export default {
             // 记录上次缩放比例
             _this.zoom = controls.object.zoom
             clearTimeout(timer)
-            console.log(controls.object.zoom)
           }, 500)
         }
       }
