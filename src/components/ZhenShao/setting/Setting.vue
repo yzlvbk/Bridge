@@ -265,6 +265,8 @@ export default {
 
       // 通知父组件重新绘制Echarts
       this.$emit('reDrawChart', 'time')
+      // console.log('time', this.timeValue)
+      this.$bus.$emit('selectTime', this.timeValue[1])
     },
 
     // 相关性分析图确认
@@ -303,6 +305,8 @@ export default {
 
       // 通知父组件重新绘制Echarts
       this.$emit('reDrawChart', 'relation')
+
+      this.$bus.$emit('selectRelation', Ids)
     },
 
     // 历史图确认
@@ -342,6 +346,8 @@ export default {
 
       // 通知父组件重新绘制Echarts
       this.$emit('reDrawChart', 'history')
+
+      this.$bus.$emit('selectHistory', Ids)
     },
 
     // 传感器数据确认

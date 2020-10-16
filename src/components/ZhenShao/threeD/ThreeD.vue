@@ -83,7 +83,6 @@ export default {
 
     // 注册监听点击table事件，选中桥梁部分变色
     this.$bus.$on('tableRowClick', (MemberId) => {
-      console.log('tableRowClick', MemberId)
       if (MemberId === 10004) {
         this.bridgePartMap.panel1 = !this.bridgePartMap.panel1
       } else if (MemberId === 10008) {
@@ -91,7 +90,6 @@ export default {
       } else if (MemberId === 20005) {
         this.bridgePartMap.vaulted = !this.bridgePartMap.vaulted
       }
-
       this.drawThreeD()
     })
   },
@@ -207,7 +205,6 @@ export default {
           if (intersects[0].object.geometry.name) {
             // 保存当前选中物体
             currentMesh = intersects[0].object.geometry.name
-            console.log('pointer')
             document.querySelector('.three_d').style.cursor = 'pointer'
           } else if (currentMesh) {
             // resetMaterials()
@@ -239,6 +236,88 @@ export default {
       //     currentMesh.moveName = ''
       //   }
       // }
+
+      // 注册监听点击setting，选中时序图，选中选项传感器变色
+      this.$bus.$on('selectTime', (sensorName) => {
+        // 先清空之前变色
+        group.children.forEach(item => {
+          const name = item.geometry.name
+          if (name) {
+            let color = ''
+            if (name.startsWith('SR')) {
+              color = 'red'
+            } else if (name.startsWith('ZS')) {
+              color = 'blue'
+            }
+            item.material = new THREE.MeshLambertMaterial({
+              color, // 三角面颜色
+              side: THREE.DoubleSide // 两面可见
+            })
+          }
+        })
+        // 点击当前变色
+        const mesh = group.children.find(item => item.geometry.name === sensorName)
+        mesh.material = new THREE.MeshLambertMaterial({
+          color: 'lightgreen', // 三角面颜色
+          side: THREE.DoubleSide // 两面可见
+        })
+      })
+
+      // 注册监听点击setting，选中相关性分析图，选中选项传感器变色
+      this.$bus.$on('selectRelation', (Ids) => {
+        // 先清空之前变色
+        group.children.forEach(item => {
+          const name = item.geometry.name
+          if (name) {
+            let color = ''
+            if (name.startsWith('SR')) {
+              color = 'red'
+            } else if (name.startsWith('ZS')) {
+              color = 'blue'
+            }
+            item.material = new THREE.MeshLambertMaterial({
+              color, // 三角面颜色
+              side: THREE.DoubleSide // 两面可见
+            })
+          }
+        })
+        // 点击当前变色
+        Ids.forEach(id => {
+          const mesh = group.children.find(item => item.geometry.name === id)
+          mesh.material = new THREE.MeshLambertMaterial({
+            color: 'lightgreen', // 三角面颜色
+            side: THREE.DoubleSide // 两面可见
+          })
+        })
+      })
+
+      // 注册监听点击setting，选中历史图，选中选项传感器变色
+      this.$bus.$on('selectHistory', (Ids) => {
+        // 先清空之前变色
+        group.children.forEach(item => {
+          const name = item.geometry.name
+          if (name) {
+            let color = ''
+            if (name.startsWith('SR')) {
+              color = 'red'
+            } else if (name.startsWith('ZS')) {
+              color = 'blue'
+            }
+            item.material = new THREE.MeshLambertMaterial({
+              color, // 三角面颜色
+              side: THREE.DoubleSide // 两面可见
+            })
+          }
+        })
+        // 点击当前变色
+        Ids.forEach(id => {
+          const mesh = group.children.find(item => item.geometry.name === id)
+          mesh.material = new THREE.MeshLambertMaterial({
+            color: 'lightgreen', // 三角面颜色
+            side: THREE.DoubleSide // 两面可见
+          })
+        })
+      })
 
       // 鼠标点击事件
       var mouseDownFuc = async (e) => {

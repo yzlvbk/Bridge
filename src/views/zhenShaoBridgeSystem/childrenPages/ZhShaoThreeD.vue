@@ -69,8 +69,6 @@ export default {
       if (selectName.startsWith('SR')) {
         const iclData = this.iclTableData.filter(item => item.Name === selectName)[0]
         const accelData = this.accelTableData.filter(item => item.Name === selectName)[0]
-        console.log(this.iclTableData.length !== 0)
-        console.log(this.iclTableData)
         this.sensorName = iclData.Name
         this.sensorType = '姿态盒'
         this.iclX = iclData.IclX
