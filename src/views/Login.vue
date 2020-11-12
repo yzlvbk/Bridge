@@ -27,6 +27,10 @@
 import { reqPostUser } from '@/request/ZhShao/api.js'
 import { mapMutations } from 'vuex'
 export default {
+  mounted() {
+    // 注册回车键登录事件
+    window.addEventListener('keydown', this.enterkeyDown)
+  },
   data() {
     return {
       // 登录表单绑定数据
@@ -55,13 +59,14 @@ export default {
         if (valid) {
           // 请求接口
           const data = await reqPostUser(this.loginForm.username, this.loginForm.password)
-          console.log(data)
+          console.log('login', data)
           // 请求接口成功
           if (Array.isArray(data.data)) {
+            // 将用户信息保存至vuex
             this.setUser(data.data[0])
-
-            window.sessionStorage.setItem('token', data.data[0].UserToken)
+            data.data[0].UserToken && window.sessionStorage.setItem('token', data.data[0].UserToken)
             window.sessionStorage.setItem('user', JSON.stringify(data.data[0]))
+            // 跳转去用户想去的页面，否则默认去健康监测页
             this.$route.query.direction ? this.$router.push(this.$route.query.direction) : this.$router.push('/ZhShaoMonitor')
           } else {
             // 登录失败
@@ -71,7 +76,19 @@ export default {
       })
     },
 
+    // 回车键登录
+    enterkeyDown(e) {
+      if (e.keyCode === 13) {
+        this.login()
+        return false
+      }
+    },
+
     ...mapMutations('user', ['setUser'])
+  },
+  beforeDestroy() {
+    // 清除监听回车事件
+    window.removeEventListener('keydown', this.enterkeyDown)
   }
 }
 </script>

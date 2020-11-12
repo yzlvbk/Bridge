@@ -61,6 +61,15 @@ export const reqBridgeOneAccelTable = () => http('/v10/bridgeOne/GetAccelTable',
 /* 桥梁系统1-车流实时图片 */
 export const reqBridgeOneTrafficPic = (Id) => http('/v10/bridgeOne/GetPic', { Id }, 'GET')
 
+/* 桥梁系统1-车流日统计 */
+export const reqBridgeOneTrafficCountDay = (endTime) => http('/v10/bridgeOne/GetVehicalCountDay', { endTime }, 'GET')
+
+/* 桥梁系统1-车流周统计 */
+export const reqBridgeOneTrafficCountWeek = (endTime) => http('/v10/bridgeOne/GetVehicalCountWeek', { endTime }, 'GET')
+
+/* 桥梁系统1-车流月统计 */
+export const reqBridgeOneTrafficCountMonth = (endTime) => http('/v10/bridgeOne/GetVehicalCountMonth', { endTime }, 'GET')
+
 /* 桥梁系统1-Mesh模型 */
 export const reqBridgeOneMesh = (Id) => http('/v10/bridgeOne/GetMesh', {}, 'GET')
 

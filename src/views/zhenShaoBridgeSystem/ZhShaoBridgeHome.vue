@@ -131,7 +131,7 @@ export default {
     // 获取用户数据
     if (!this.userInfo) {
       const userInfo = JSON.parse(window.sessionStorage.getItem('user'))
-      this.setUser(userInfo)
+      userInfo ? this.setUser(userInfo) : this.$router.push('/Login')
     }
   },
   data() {

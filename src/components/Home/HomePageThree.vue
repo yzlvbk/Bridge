@@ -364,7 +364,7 @@ export default {
             tooltip: {
               show: index !== 0,
               formatter: function () {
-                return source.indicator[index - 1].name + '不满意度：' + source.data[index - 1] + '%'
+                return source.indicator[index - 1].name + '：' + source.data[index - 1] + '辆'
               }
             },
             z: index === 0 ? 1 : 2,
@@ -507,12 +507,15 @@ export default {
       margin-left: 20px;
       background: linear-gradient(to left, #003bcf, #003bcf) left top no-repeat,
         linear-gradient(to bottom, #003bcf, #003bcf) left top no-repeat,
-        linear-gradient(to left, #003bcf, #003bcf) right top no-repeat,
-        linear-gradient(to bottom, #003bcf, #003bcf) right top no-repeat,
-        linear-gradient(to left, #003bcf, #003bcf) left bottom no-repeat,
-        linear-gradient(to bottom, #003bcf, #003bcf) left bottom no-repeat,
-        linear-gradient(to left, #003bcf, #003bcf) right bottom no-repeat,
-        linear-gradient(to left, #003bcf, #003bcf) right bottom no-repeat;
+          linear-gradient(to left, #003bcf, #003bcf) right top no-repeat,
+            linear-gradient(to bottom, #003bcf, #003bcf) right top no-repeat,
+              linear-gradient(to left, #003bcf, #003bcf) left bottom no-repeat,
+                linear-gradient(to bottom, #003bcf, #003bcf) left bottom
+                    no-repeat,
+                  linear-gradient(to left, #003bcf, #003bcf) right bottom
+                      no-repeat,
+                    linear-gradient(to left, #003bcf, #003bcf) right bottom
+                      no-repeat;
       background-size: 2px 10px, 10px 2px, 2px 10px, 10px 2px;
       background-color: #0b0f2a;
 

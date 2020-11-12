@@ -8,88 +8,88 @@
 
     <!-- 内容区域 -->
     <div class="contain">
-      <div class="three_d_model" style="width: 100%;">
-        <!-- <button @click="addImg">添加照片</button> -->
+      <!-- 监控图片区域 -->
+      <div class="three_d_model" style="width: 60%;">
         <div class="showImg">
-          <img :src="currentImg" width="500px" heigth="500px" />
+          <img :src="currentImg" />
         </div>
 
         <swiper class="swiper" :options="swiperOption" ref="mySwiper">
           <swiperSlide v-for="(item, index) in imgList" :key="index">
             <img class="swiper_img" :src="item" @click="handle(item)" width="100%" />
           </swiperSlide>
-
-          <!-- <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-pagination" slot="pagination"></div>-->
         </swiper>
       </div>
 
       <!-- 空隙模块 -- 控制模块拖动 -->
-      <!-- <div class="vsplitter" ref="vsplitter"></div> -->
+      <div class="vsplitter" ref="vsplitter"></div>
 
-      <!-- <div class="chart" style="width: 40%;"></div> -->
+      <!-- 车型统计区域 -->
+      <div class="chart" style="width: 40%;">
+        <TrafficSetting class="traffic_setting" />
+        <!-- Echarts图表区域 -->
+        <div class="traffic_chart"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import TrafficSetting from '@/components/ZhenShao/trafficSetting/TrafficSetting'
 import 'swiper/dist/css/swiper.css'
-import { reqBridgeOneTrafficPic } from '@/request/ZhShao/api.js'
+import { reqBridgeOneTrafficPic, reqBridgeOneTrafficCountDay } from '@/request/ZhShao/api.js'
 export default {
   async activated() {
     // 获取车流图片数据
     this.getTrafficImg(0)
     this.timer = setInterval(this.getTrafficImg, 5000)
 
-    // setTimeout(() => {
-    //   clearInterval(this.timer)
-    // }, 20000)
-
     /* 添加移动内容区域窗口大小事件 */
     // const div = document.querySelector('.vsplitter')
     // div.addEventListener('mousedown', this.mouseResize)
 
-    // this.$refs.mySwiper.on('click', this.handleClickSlide)
+    const data = await reqBridgeOneTrafficCountDay('2020-11-07 00:00:00')
+    console.log(data)
+    this.drawTrafficChart()
   },
   data() {
     return {
       timer: '',
       swiperOption: {
         slidesPerView: 5,
-        spaceBetween: 30,
+        spaceBetween: 10,
         freeMode: true,
-        grabCursor: true, // 鼠标放在照片上变成手形
-        pagination: {
-          // el: '.swiper-pagination',
-          // clickable: true
-        },
-        navigation: {
-          // nextEl: '.swiper-button-next', // 前进按钮的css选择器或HTML元素。
-          // revEl: '.swiper-button-prev' // 后退按钮的css选择器或HTML元素。
-          // hideOnClick: true
-        }
+        grabCursor: true // 鼠标放在照片上变成手形
       },
 
       imgList: [], // 照片数组
 
       currentImg: '', // 当前展示的照片
-      reqImgId: 0 // 请求图片Id94960
+      reqImgId: 0 // 请求图片Id
+    }
+  },
+  computed: {
+    swiper() {
+      return this.$refs.mySwiper.swiper
     }
   },
   methods: {
     /* 请求车流图片 */
     async getTrafficImg() {
       const data = await reqBridgeOneTrafficPic(this.reqImgId)
-      if (this.reqImgId === 0) this.reqImgId = data.data[0].Id - 5
-      // console.log(this.reqImgId)
-      // console.log(data)
+      if (this.reqImgId === 0) {
+        this.reqImgId = data.data[0].Id - 5
+        this.getTrafficImg()
+        return
+      }
       if (data.data.length === 0) return
       this.currentImg = 'data:image/png;base64,' + data.data[0].Base64Data
+      // 当图片大于20张时，从头部开始删除
+      this.imgList.length >= 20 && this.imgList.shift()
       this.imgList.push(this.currentImg)
-      // this.reqImgId = data.data[0].Id + 1
       this.reqImgId++
+      this.swiper.slideNext()
     },
 
     /* 鼠标点击改变尺寸 */
@@ -114,14 +114,124 @@ export default {
         document.onmousedown = null
       }
     },
-
+    /* 点击轮播图片 */
     handle(img) {
       this.currentImg = img
+    },
+
+    /* 绘制车型统计图 */
+    drawTrafficChart() {
+      // 1.初始化echarts
+      const myChart = this.$echarts.init(document.querySelector('.traffic_chart'))
+
+      const dataMax = 600
+      const source = {
+        data: [430, 100, 280, 350, 500, 190, 130],
+        indicator: [
+          { name: '自行车', max: dataMax },
+          { name: '汽车', max: dataMax },
+          { name: '卡车', max: dataMax },
+          { name: '公交车', max: dataMax },
+          { name: '摩托车', max: dataMax },
+          { name: '行人', max: dataMax },
+          { name: '电动车', max: dataMax }
+        ]
+      }
+
+      // const source = this.carNumStatisticsRadar
+      const buildSeries = function (data) {
+        const helper = data.map((item, index) => {
+          const arr = new Array(data.length)
+          arr.splice(index, 1, item)
+          return arr
+        })
+
+        return [data, ...helper].map((item, index) => {
+          return {
+            type: 'radar',
+            itemStyle: {
+              color: '#31e586'
+            },
+            lineStyle: {
+              color: index === 0 ? '#31e586' : 'transparent'
+            },
+            areaStyle: {
+              color: index === 0 ? '#31e586' : 'transparent',
+              opacity: 0.3
+            },
+            label: {
+              show: index !== 0
+            },
+            tooltip: {
+              show: index !== 0,
+              formatter: function () {
+                return source.indicator[index - 1].name + '：' + source.data[index - 1] + '辆'
+              }
+            },
+            z: index === 0 ? 1 : 2,
+            data: [item]
+          }
+        })
+      }
+
+      // 2.配置option
+      const option = {
+        // backgroundColor: '#080b30',
+        title: {
+          text: '车型统计图',
+          textStyle: {
+            color: '#fff'
+          },
+          top: '10px',
+          left: 'center'
+        },
+        tooltip: {},
+        radar: {
+          // shape: 'circle',
+          center: ['50%', '55%'],
+          radius: '60%',
+          name: {
+            textStyle: {
+              fontSize: 16,
+              color: ['#d1dbf2'],
+              padding: [3, 5]
+            }
+          },
+          splitNumber: 4,
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['rgba(12,62,129,0)', 'rgba(12,62,129,0.3)', 'rgba(12,62,129,0)', 'rgba(12,62,129,0.3)']
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#0c3e81'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#0c3e81'
+            }
+          },
+          indicator: source.indicator
+        },
+        series: buildSeries(source.data)
+      }
+
+      // 3.将配置项给实例
+      myChart.setOption(option, true)
+
+      // 4.跟随屏幕自适应
+      window.addEventListener('resize', function () {
+        myChart.resize()
+      })
     }
   },
   components: {
     swiper,
-    swiperSlide
+    swiperSlide,
+    TrafficSetting
   },
   deactivated() {
     clearInterval(this.timer)
@@ -152,16 +262,30 @@ export default {
       align-items: center;
 
       .showImg {
-        width: 500px;
-        height: 500px;
+        width: 380px;
+        height: 380px;
         margin-bottom: 40px;
 
         img {
           width: 100%;
           height: 100%;
-          background-color: #444;
+          background-color: transparent;
           transform: rotate(0deg);
         }
+      }
+    }
+
+    .chart {
+      position: relative;
+
+      .traffic_setting {
+        top: 6px;
+        right: 18px;
+      }
+
+      .traffic_chart {
+        width: 100%;
+        height: 100%;
       }
     }
 
@@ -185,7 +309,11 @@ export default {
     text-align: center;
     font-weight: bold;
     font-size: 14px;
-    // background-color: lightgreen;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .swiper_img {
