@@ -39,14 +39,13 @@ import 'swiper/dist/css/swiper.css'
 import { reqBridgeOneTrafficPic } from '@/request/ZhShao/api.js'
 export default {
   async activated() {
-    console.log('activated')
     // 获取车流图片数据
-    this.getTrafficImg()
-    this.timer = setInterval(this.getTrafficImg, 2000)
+    this.getTrafficImg(0)
+    this.timer = setInterval(this.getTrafficImg, 5000)
 
-    setTimeout(() => {
-      clearInterval(this.timer)
-    }, 20000)
+    // setTimeout(() => {
+    //   clearInterval(this.timer)
+    // }, 20000)
 
     /* 添加移动内容区域窗口大小事件 */
     // const div = document.querySelector('.vsplitter')
@@ -76,18 +75,21 @@ export default {
       imgList: [], // 照片数组
 
       currentImg: '', // 当前展示的照片
-      reqImgId: 94960 // 请求图片Id
+      reqImgId: 0 // 请求图片Id94960
     }
   },
   methods: {
     /* 请求车流图片 */
     async getTrafficImg() {
       const data = await reqBridgeOneTrafficPic(this.reqImgId)
-      console.log(data)
+      if (this.reqImgId === 0) this.reqImgId = data.data[0].Id - 5
+      // console.log(this.reqImgId)
+      // console.log(data)
       if (data.data.length === 0) return
       this.currentImg = 'data:image/png;base64,' + data.data[0].Base64Data
       this.imgList.push(this.currentImg)
-      this.reqImgId = data.data[0].Id + 1
+      // this.reqImgId = data.data[0].Id + 1
+      this.reqImgId++
     },
 
     /* 鼠标点击改变尺寸 */
@@ -122,7 +124,6 @@ export default {
     swiperSlide
   },
   deactivated() {
-    console.log('deactivated')
     clearInterval(this.timer)
   }
 }
@@ -159,7 +160,7 @@ export default {
           width: 100%;
           height: 100%;
           background-color: #444;
-          transform: rotate(90deg);
+          transform: rotate(0deg);
         }
       }
     }
@@ -188,7 +189,7 @@ export default {
   }
 
   .swiper_img {
-    transform: rotate(90deg);
+    transform: rotate(0deg);
   }
 }
 </style>

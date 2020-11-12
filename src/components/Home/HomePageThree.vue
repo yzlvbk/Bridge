@@ -65,7 +65,7 @@ export default {
       lis.forEach(li => {
         li.addEventListener('click', this.togglePieChart(li.id), false)
       })
-    }, 1000)
+    }, 3000)
   },
 
   data() {
@@ -387,8 +387,8 @@ export default {
         tooltip: {},
         radar: {
           // shape: 'circle',
-          center: ['50%', '60%'],
-          radius: '70%',
+          center: ['50%', '55%'],
+          radius: '60%',
           name: {
             textStyle: {
               fontSize: 16,

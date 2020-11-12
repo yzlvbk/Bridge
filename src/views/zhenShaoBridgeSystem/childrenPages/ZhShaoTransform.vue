@@ -4,7 +4,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>郑少高速桥</el-breadcrumb-item>
       <el-breadcrumb-item>结构反应</el-breadcrumb-item>
-      <el-breadcrumb-item>变形/模态</el-breadcrumb-item>
+      <el-breadcrumb-item>变形/弯矩</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 内容区域 -->

@@ -143,8 +143,43 @@ export default {
       }
     })
   },
+  activated() {
+    // 实时更新时序图
+    this.timer = setInterval(async () => {
+      if (this.activeName === 'time') {
+        // 判断类型，发送请求
+        if (this.timeValue[0] === '姿态盒倾角') {
+          const data = await reqBridgeOneIclTimeAndHistory([this.timeValue[1]])
+          // 请求数据成功
+          if (data.statusCode !== 200) return
+          // 保存数据到vuex
+          this.setTimeChartData(data.data)
+        } else if (this.timeValue[0] === '姿态盒加速度') {
+          const data = await reqBridgeOneAccelTimeAndHistory([this.timeValue[1]])
+          // 请求数据成功
+          if (data.statusCode !== 200) return
+          // 保存数据到vuex
+          this.setTimeChartData(data.data)
+        } else if (this.timeValue[0] === '应变片') {
+          const data = await reqBridgeOneStrainTimeAndHistory([this.timeValue[1]])
+          // 请求数据成功
+          if (data.statusCode !== 200) return
+          // 保存数据到vuex
+          this.setTimeChartData(data.data)
+        }
+
+        // 通知父组件重新绘制Echarts
+        this.$emit('reDrawChart', 'time')
+      }
+    }, 1000)
+  },
+
+  deactivated() {
+    clearInterval(this.timer)
+  },
   data() {
     return {
+      timer: null,
       // 是否显示设置面板
       isShowPanel: false,
 
@@ -168,7 +203,7 @@ export default {
       ],
 
       // 时序图选中项
-      timeValue: ['姿态盒倾角', 'SR1'], // 默认选中第一项
+      timeValue: ['应变片', 'ZS01010'], // 默认选中第一项
 
       // 相关性分析图选中项
       relationValue: [['姿态盒倾角', 'SR1'], ['姿态盒倾角', 'SR3']],
