@@ -26,7 +26,8 @@
 
       <!-- 车型统计区域 -->
       <div class="chart" style="width: 40%;">
-        <TrafficSetting class="traffic_setting" />
+        <!-- 设置按钮 -->
+        <TrafficSetting class="traffic_setting" @redrawChart="redrawChart" />
         <!-- Echarts图表区域 -->
         <div class="traffic_chart"></div>
       </div>
@@ -38,7 +39,12 @@
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import TrafficSetting from '@/components/ZhenShao/trafficSetting/TrafficSetting'
 import 'swiper/dist/css/swiper.css'
-import { reqBridgeOneTrafficPic, reqBridgeOneTrafficCountDay } from '@/request/ZhShao/api.js'
+import {
+  reqBridgeOneTrafficPic,
+  reqBridgeOneTrafficCountDay,
+  reqBridgeOneTrafficCountWeek,
+  reqBridgeOneTrafficCountMonth
+} from '@/request/ZhShao/api.js'
 export default {
   async activated() {
     // 获取车流图片数据
@@ -48,9 +54,6 @@ export default {
     /* 添加移动内容区域窗口大小事件 */
     // const div = document.querySelector('.vsplitter')
     // div.addEventListener('mousedown', this.mouseResize)
-
-    const data = await reqBridgeOneTrafficCountDay('2020-11-07 00:00:00')
-    console.log(data)
     this.drawTrafficChart()
   },
   data() {
@@ -66,7 +69,13 @@ export default {
       imgList: [], // 照片数组
 
       currentImg: '', // 当前展示的照片
-      reqImgId: 0 // 请求图片Id
+      reqImgId: 0, // 请求图片Id
+
+      // 车型统计图数据资源
+      trafficChartSource: {
+        data: [],
+        indicator: []
+      }
     }
   },
   computed: {
@@ -120,25 +129,13 @@ export default {
     },
 
     /* 绘制车型统计图 */
-    drawTrafficChart() {
+    drawTrafficChart(type) {
       // 1.初始化echarts
       const myChart = this.$echarts.init(document.querySelector('.traffic_chart'))
 
-      const dataMax = 600
-      const source = {
-        data: [430, 100, 280, 350, 500, 190, 130],
-        indicator: [
-          { name: '自行车', max: dataMax },
-          { name: '汽车', max: dataMax },
-          { name: '卡车', max: dataMax },
-          { name: '公交车', max: dataMax },
-          { name: '摩托车', max: dataMax },
-          { name: '行人', max: dataMax },
-          { name: '电动车', max: dataMax }
-        ]
-      }
+      // 车型数量
+      const source = this.trafficChartSource
 
-      // const source = this.carNumStatisticsRadar
       const buildSeries = function (data) {
         const helper = data.map((item, index) => {
           const arr = new Array(data.length)
@@ -178,7 +175,7 @@ export default {
       const option = {
         // backgroundColor: '#080b30',
         title: {
-          text: '车型统计图',
+          text: `车型${type}图`,
           textStyle: {
             color: '#fff'
           },
@@ -226,6 +223,48 @@ export default {
       window.addEventListener('resize', function () {
         myChart.resize()
       })
+    },
+
+    /* 重新绘制车型统计图 */
+    async redrawChart(type, endTime) {
+      let data
+      if (type === '日统计') {
+        data = await reqBridgeOneTrafficCountDay(endTime)
+      } else if (type === '周统计') {
+        data = await reqBridgeOneTrafficCountWeek(endTime)
+      } else if (type === '月统计') {
+        data = await reqBridgeOneTrafficCountMonth(endTime)
+      }
+
+      /*
+      配置样例
+       trafficChartSource: {
+        data: [430, 100, 280, 350, 500, 190, 130],
+        indicator: [
+          { name: '自行车', max: 500 },
+          { name: '汽车', max: 500 },
+          { name: '卡车', max: 500 },
+          { name: '公交车', max: 500 },
+          { name: '摩托车', max: 500 },
+          { name: '行人', max: 500 },
+          { name: '电动车', max: 500 }
+        ]
+      }
+      */
+
+      if (data.data.length === 0) return this.$message.error('请求数据失败')
+      this.trafficChartSource.data = []
+      this.trafficChartSource.indicator = []
+      data.data.forEach(item => {
+        this.trafficChartSource.data.push(item.value)
+      })
+      // 找出最大数量
+      const dataMax = Math.max(...this.trafficChartSource.data)
+      data.data.forEach(item => {
+        this.trafficChartSource.indicator.push({ name: item.name, max: dataMax })
+      })
+
+      this.drawTrafficChart(type)
     }
   },
   components: {

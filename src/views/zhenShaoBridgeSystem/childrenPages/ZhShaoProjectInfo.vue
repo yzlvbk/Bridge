@@ -73,7 +73,8 @@
   }
 
   .contain_img_warp {
-    margin-top: 30px;
+    max-width: 500px;
+    margin: 30px auto 0;
     text-align: center;
 
     img {

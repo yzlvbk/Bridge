@@ -24,7 +24,6 @@
           :options="Options"
           :props="relationProps"
           collapse-tags
-          clearable
         ></el-cascader>
       </div>
 
